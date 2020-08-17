@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pengfu.dao.DormitoryMapper">
+
+	<!-- 封装宿舍对象 -->
+	<resultMap id="dormitoryMap" type="dormitory">
+		<result property="name" column="name"/>
+		<!-- 封装学生集合对象 -->
+		<collection property="students" ofType="student">
+			<result property="sid" column="sid"/>
+			<result property="password" column="password"/>
+			<result property="name" column="name"/>
+			<result property="gender" column="gender"/>
+			<result property="idCard" column="id_card"/>
+			<result property="college" column="college"/>
+			<result property="classes" column="classes"/>
+			<result property="phone" column="phone"/>
+		</collection>
+	</resultMap>
+		
+	<!-- 根据宿舍楼查询所有宿舍 -->
+	<select id="selecAllByBid" resultMap="dormitoryMap">
+		select d.name,s.* from dormitory d left outer join student s on s.did == d.did where d.bid == 'C16'
+	</select>
+	
+</mapper>
