@@ -4,7 +4,6 @@ import java.awt.Container;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
@@ -36,38 +35,39 @@ public class LoginFrame extends BaseFrame {
 		Container contentPane = getContentPane();
 		contentPane.setBackground(ColorConfig.BG_COLOR);
 		contentPane.setLayout(null);
-		
-		// 页面标题
-		JLabel Label0 = new JLabel("宿舍信息管理系统");
-		Label0.setBounds(50, 10, 64, 32);
-		contentPane.add(Label0);
-		
-		JLabel Label1 = new JLabel("登陆");
-		Label1.setBounds(100, 20, 64, 32);
-		contentPane.add(Label1);
-		
-		InputBox UsernameInputBox = new InputBox("username", 8);
-		UsernameInputBox.setLocation(100, 60);
+
+		// 账号输入框
+		InputBox UsernameInputBox = new InputBox("username", 16, true);
+		UsernameInputBox.setLocation(90, 50);
 		contentPane.add(UsernameInputBox);
-		
-		InputBox PasswordInputBox = new InputBox("password", 8);
-		PasswordInputBox.setLocation(100, 150);
+		// 密码输入框
+		InputBox PasswordInputBox = new InputBox("password", 16, false);
+		PasswordInputBox.setLocation(90, 140);
 		contentPane.add(PasswordInputBox);
 		
 		// 登陆人员单选按钮
 		JRadioButton studentRBtn = new JRadioButton("学生");
+		studentRBtn.setBackground(ColorConfig.BG_COLOR);
 		studentRBtn.setSelected(true);
-		studentRBtn.setBounds(100, 250, 64, 32);
+		studentRBtn.setBounds(90, 240, 64, 32);
 		contentPane.add(studentRBtn);
 		JRadioButton manageRBtn = new JRadioButton("管理员");
-		manageRBtn.setBounds(200, 250, 64, 32);
+		manageRBtn.setBackground(ColorConfig.BG_COLOR);
+		manageRBtn.setBounds(190, 240, 64, 32);
 		contentPane.add(manageRBtn);	
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(studentRBtn);
 		buttonGroup.add(manageRBtn);
 		
+		// 记住密码
+//		JRadioButton keepPassword = new JRadioButton("记住密码");
+//		keepPassword.setBackground(ColorConfig.BG_COLOR);
+//		keepPassword.setBounds(380, 220, 128, 32);
+//		contentPane.add(keepPassword);	
+		
+		// 登陆按钮
 		JButton LoginBtn = new JButton("登陆");
-		LoginBtn.setBounds(400, 300, 64, 32);
+		LoginBtn.setBounds(380, 240, 96, 32);
 		contentPane.add(LoginBtn);
 		
 		// 添加监听器

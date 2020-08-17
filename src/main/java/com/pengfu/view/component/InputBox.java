@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class InputBox extends JPanel {
@@ -20,7 +21,7 @@ public class InputBox extends JPanel {
 	JTextField jTextField = null;
 	JLabel jLabel = null;
 
-	public InputBox(String text, int columns) {
+	public InputBox(String text, int columns, boolean showText) {
 		// 设置大小
 		Dimension dimension = new Dimension(columns * FONTSIZE, FONTSIZE * 5 / 2);
 		setSize(dimension);
@@ -34,7 +35,11 @@ public class InputBox extends JPanel {
 		Font font = new Font("宋体", Font.BOLD, FONTSIZE);
 		
 		// 创建输入框
-		jTextField = new JTextField();
+		if(showText) {
+			jTextField = new JTextField();
+		}else {
+			jTextField = new JPasswordField();
+		}
 		jTextField.setOpaque(false);
 		jTextField.setFont(font);
 		jTextField.setBounds(0, FONTSIZE * 3 / 2, columns * FONTSIZE, FONTSIZE);
