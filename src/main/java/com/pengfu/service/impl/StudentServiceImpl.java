@@ -1,5 +1,7 @@
 package com.pengfu.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +39,11 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public void addStudent(Student student) {
 		studentMapper.insert(student);
+	}
+
+	@Override
+	public List<Student> getAll() {
+		return studentMapper.selectAll();
 	}
 
 

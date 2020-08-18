@@ -1,5 +1,7 @@
 package com.pengfu.service;
 
+import java.util.List;
+
 import com.pengfu.entity.Student;
 
 public interface StudentService {
@@ -12,4 +14,7 @@ public interface StudentService {
 	
 	/** 添加学生 */
 	void addStudent(Student student);
+	
+	/** 查询所有学生 */
+	List<Student> getAll(); 
 }

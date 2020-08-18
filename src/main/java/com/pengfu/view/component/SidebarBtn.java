@@ -12,7 +12,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
 public class SidebarBtn extends JRadioButton {
@@ -30,6 +33,9 @@ public class SidebarBtn extends JRadioButton {
 	
 	// 鼠标是否在按钮上
 	private boolean entered = false; 
+	
+	private List<SidebarBtn> items = new ArrayList<>();
+	private static ButtonGroup buttonGroup = new ButtonGroup();
 
 	public SidebarBtn(String imgPath, String text, int width) {
 		this.text = text;
@@ -70,10 +76,24 @@ public class SidebarBtn extends JRadioButton {
 			}
 		});
 	}
+	
+	public List<SidebarBtn> getItems() {
+		return items;
+	}
+	
+	public void setTextX(int textX) {
+		this.textX = textX;
+	}
 
-	/** 设置文本字体 */
-	public void setFont(Font font) {
-		this.font = font;
+	public int getTextX() {
+		return textX;
+	}
+	
+	/** 添加子按钮  */
+	public void addSideBtnItem(SidebarBtn sideBtnItem) {
+		buttonGroup.add(sideBtnItem);
+		sideBtnItem.setTextX(sideBtnItem.getTextX() + 20);
+		items.add(sideBtnItem);
 	}
 
 	@Override
@@ -103,4 +123,61 @@ public class SidebarBtn extends JRadioButton {
 		g2.setFont(font);
 		g2.drawString(text, textX, textY);
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((buttonGroup == null) ? 0 : buttonGroup.hashCode());
+		result = prime * result + (entered ? 1231 : 1237);
+		result = prime * result + ((font == null) ? 0 : font.hashCode());
+		result = prime * result + height;
+		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		result = prime * result + textH;
+		result = prime * result + textX;
+		result = prime * result + textY;
+		result = prime * result + width;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SidebarBtn other = (SidebarBtn) obj;
+		if (entered != other.entered)
+			return false;
+		if (font == null) {
+			if (other.font != null)
+				return false;
+		} else if (!font.equals(other.font))
+			return false;
+		if (height != other.height)
+			return false;
+		if (items == null) {
+			if (other.items != null)
+				return false;
+		} else if (!items.equals(other.items))
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
+			return false;
+		if (textH != other.textH)
+			return false;
+		if (textX != other.textX)
+			return false;
+		if (textY != other.textY)
+			return false;
+		if (width != other.width)
+			return false;
+		return true;
+	}
+
 }

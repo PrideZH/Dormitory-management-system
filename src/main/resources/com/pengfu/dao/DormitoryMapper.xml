@@ -23,7 +23,7 @@
 		
 	<!-- 根据宿舍楼查询所有宿舍 -->
 	<select id="selecAllByBid" resultMap="dormitoryMap">
-		select d.name,s.* from dormitory d left outer join student s on s.did == d.did where d.bid == 'C16'
+		select d.name,s.* from dormitory d left outer join student s on s.did == d.did where d.bid == #{bid}
 	</select>
 	
 </mapper>

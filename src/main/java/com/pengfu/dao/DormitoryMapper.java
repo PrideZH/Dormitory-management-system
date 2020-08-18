@@ -6,5 +6,7 @@ import com.pengfu.entity.Dormitory;
 
 public interface DormitoryMapper {
 
-	List<Dormitory> selecAllByBid();
+	/** 通过楼宇编号查询所有宿舍 */
+	List<Dormitory> selecAllByBid(String bid);
+	
 }

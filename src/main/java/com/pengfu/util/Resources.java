@@ -10,6 +10,8 @@ import javax.swing.ImageIcon;
  */
 public class Resources {
 	
+	private Resources() {}
+	
 	/** 通过路径获得图片资源 */
 	public static ImageIcon getImageIcon(String imgPath) {
 		String resource = Resources.class.getClassLoader().getResource(imgPath).getPath();

@@ -8,6 +8,10 @@
 	<select id="selectById" resultType="student">
 		select * from student where sid = #{id}
 	</select>
+	
+	<select id="selectAll" resultType="student">
+		select * from student
+	</select>
 
 	<insert id="insert" parameterType="com.pengfu.entity.Student">
 		insert into student(sid,password,name,gender,id_card,college,classes,phone)

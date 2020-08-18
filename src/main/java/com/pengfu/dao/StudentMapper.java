@@ -10,6 +10,9 @@ public interface StudentMapper {
 	/** 根据id查询学生 */
 	Student selectById(String id);
 	
+	/** 查询所有学生 */
+	List<Student> selectAll();
+	
 	/** 添加学生信息 */
 	void insert(Student student);
 	

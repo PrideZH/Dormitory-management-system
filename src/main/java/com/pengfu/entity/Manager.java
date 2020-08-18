@@ -5,6 +5,7 @@ public class Manager {
 	private String username;
 	private String password;
 	private String name;
+	private String phone;
 	private int role;
 	private String bid;
 
@@ -31,6 +32,14 @@ public class Manager {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public int getRole() {
 		return role;
@@ -50,7 +59,7 @@ public class Manager {
 
 	@Override
 	public String toString() {
-		return "Manager [username=" + username + ", password=" + password + ", name=" + name
+		return "Manager [username=" + username + ", password=" + password + ", name=" + name + ", phone=" + phone
 				+ ", role=" + role + ", bid=" + bid + "]";
 	}
 	

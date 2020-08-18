@@ -1,24 +1,28 @@
-package com.pengfu.view.Panel;
+package com.pengfu.view.page;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class HomePanel extends JPanel {
+/** 首页 */
+public class HomePanel extends BasePanel {
 
 	private static final long serialVersionUID = 1L;
 	
 	public HomePanel() {
 		setBackground(Color.WHITE);
+		setBorder(BorderFactory.createLineBorder(new Color(65, 113, 156), 1));
 		
 		initComponents();
 	}
 	
-	private void initComponents() {
+	@Override
+	protected void initComponents() {
 		setLayout(new BorderLayout());
 		
 		// 标题栏
