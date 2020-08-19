@@ -6,7 +6,12 @@
 <mapper namespace="com.pengfu.dao.StudentMapper">
 
 	<select id="selectById" resultType="student">
-		select * from student where sid = #{id}
+		select 
+			s.*, d.name DormitoryId, b.bid BuildingId
+		from 
+			student s, dormitory d, building b
+		where 
+			s.sid = #{id} and s.did = d.did and d.bid = b.bid
 	</select>
 	
 	<select id="selectAll" resultType="student">

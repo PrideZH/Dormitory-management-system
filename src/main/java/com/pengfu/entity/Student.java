@@ -10,6 +10,8 @@ public class Student {
 	private String college;
 	private String classes;
 	private String phone;
+	private String BuildingId;
+	private String DormitoryId;
 
 	public String getSid() {
 		return sid;
@@ -75,10 +77,27 @@ public class Student {
 		this.phone = phone;
 	}
 
+	public String getBuildingId() {
+		return BuildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		BuildingId = buildingId;
+	}
+
+	public String getDormitoryId() {
+		return DormitoryId;
+	}
+
+	public void setDormitoryId(String dormitoryId) {
+		DormitoryId = dormitoryId;
+	}
 
 	@Override
 	public String toString() {
 		return "Student [sid=" + sid + ", password=" + password + ", name=" + name + ", gender=" + gender + ", idCard="
-				+ idCard + ", college=" + college + ", classes=" + classes + ", phone=" + phone + "]";
+				+ idCard + ", college=" + college + ", classes=" + classes + ", phone=" + phone + ", BuildingId="
+				+ BuildingId + ", DormitoryId=" + DormitoryId + "]";
 	}
+
 }

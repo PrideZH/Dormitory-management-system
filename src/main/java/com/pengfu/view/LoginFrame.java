@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 import com.pengfu.controller.LoginControl;
-import com.pengfu.util.ColorConfig;
+import com.pengfu.util.ConstantConfig;
 import com.pengfu.view.component.InputBox;
 
 public class LoginFrame extends BaseFrame {
@@ -33,7 +33,7 @@ public class LoginFrame extends BaseFrame {
 	
 	private void initComponents() {
 		Container contentPane = getContentPane();
-		contentPane.setBackground(ColorConfig.BG_COLOR);
+		contentPane.setBackground(ConstantConfig.BG_COLOR);
 		contentPane.setLayout(null);
 
 		// 账号输入框
@@ -47,12 +47,12 @@ public class LoginFrame extends BaseFrame {
 		
 		// 登陆人员单选按钮
 		JRadioButton studentRBtn = new JRadioButton("学生");
-		studentRBtn.setBackground(ColorConfig.BG_COLOR);
+		studentRBtn.setBackground(ConstantConfig.BG_COLOR);
 		studentRBtn.setSelected(true);
 		studentRBtn.setBounds(90, 240, 64, 32);
 		contentPane.add(studentRBtn);
 		JRadioButton manageRBtn = new JRadioButton("管理员");
-		manageRBtn.setBackground(ColorConfig.BG_COLOR);
+		manageRBtn.setBackground(ConstantConfig.BG_COLOR);
 		manageRBtn.setBounds(190, 240, 64, 32);
 		contentPane.add(manageRBtn);	
 		ButtonGroup buttonGroup = new ButtonGroup();

@@ -18,12 +18,13 @@ import javax.swing.JPanel;
 import com.pengfu.entity.Manager;
 import com.pengfu.entity.Student;
 import com.pengfu.model.Role;
-import com.pengfu.util.ColorConfig;
-import com.pengfu.util.PageFactory;
+import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.Sidebar;
 import com.pengfu.view.component.SidebarBtn;
-import com.pengfu.view.page.BasePanel;
-import com.pengfu.view.page.HomePanel;
+import com.pengfu.view.page.BasePage;
+import com.pengfu.view.page.ManagerProfilePage;
+import com.pengfu.view.page.StudentProfilePage;
 
 public class MainFrame extends BaseFrame {
 
@@ -34,6 +35,10 @@ public class MainFrame extends BaseFrame {
 	private Container contentPane;
 	private JPanel pagePanel;
 	private CardLayout cardLayout;
+	
+	// 路径显示
+	private String parentPath;
+	private JLabel pathLabel; 
 	
 	// 用户权限
 	private Role role;
@@ -48,6 +53,7 @@ public class MainFrame extends BaseFrame {
 	public MainFrame(Student student) {
 		this();
 		role = Role.Student;
+		SpringContextUtils.getBean("studentProfilePage", StudentProfilePage.class).setStudent(student);
 		initComponents();
 	}
 	
@@ -59,6 +65,7 @@ public class MainFrame extends BaseFrame {
 		}else if(manager.getRole() == 1) {
 			role = Role.SuperManage;
 		}
+		SpringContextUtils.getBean("managerProfilePage", ManagerProfilePage.class).setManager(manager);
 		initComponents();
 	}
 
@@ -80,20 +87,21 @@ public class MainFrame extends BaseFrame {
 		contentBar.add(pathPanel, BorderLayout.NORTH);
 		pathPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 16));
 		
-		JLabel pathLabel = new JLabel("首页");
+		pathLabel = new JLabel("首页");
 		pathLabel.setFont(new Font("宋体", Font.BOLD, 16));
 		pathPanel.add(pathLabel);
 		
 		// 页面显示		
 		pagePanel = new JPanel();
-		pagePanel.setBackground(ColorConfig.BG_COLOR);
+		pagePanel.setBackground(ConstantConfig.BG_COLOR);
 		pagePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 		contentBar.add(pagePanel, BorderLayout.CENTER);
 		
 		// 设置卡片布局
 		cardLayout = new CardLayout();
 		pagePanel.setLayout(cardLayout);
-		pagePanel.add(new HomePanel()); // 首页
+		// 首页
+		pagePanel.add(SpringContextUtils.getBean("homePage", BasePage.class)); 
 	}
 	
 	/** 初始化侧边 */
@@ -107,58 +115,104 @@ public class MainFrame extends BaseFrame {
 		SidebarBtn personalBtn = new SidebarBtn("", "个人中心", SIDEBAR_WIDTH);	
 		
 		SidebarBtn dormitoryInfoBtn = new SidebarBtn("", "宿舍信息", SIDEBAR_WIDTH);
-		personalBtn.addSideBtnItem(dormitoryInfoBtn);
-		dormitoryInfoBtn.setName("DormitoryInfoPanel");
+		dormitoryInfoBtn.setName("dormitoryInfoPage");
 		
 		SidebarBtn personalInfoBtn = new SidebarBtn("", "个人信息", SIDEBAR_WIDTH);
-		personalBtn.addSideBtnItem(personalInfoBtn);
-		personalInfoBtn.setName("PersonalInfoPanel");
 	
 		// 楼宇管理
 		SidebarBtn buildingBtn = new SidebarBtn("", "楼宇管理", SIDEBAR_WIDTH);	
 		
 		SidebarBtn buildingListBtn = new SidebarBtn("", "楼宇列表", SIDEBAR_WIDTH);
-		buildingBtn.addSideBtnItem(buildingListBtn);
-		buildingListBtn.setName("BuildingListPanel");
+		buildingListBtn.setName("buildingListPage");
 		
 		// 宿舍管理
 		SidebarBtn dormitoryBtn = new SidebarBtn("", "宿舍管理", SIDEBAR_WIDTH);	
 		
 		SidebarBtn dormitoryListBtn = new SidebarBtn("", "宿舍列表", SIDEBAR_WIDTH);
-		dormitoryBtn.addSideBtnItem(dormitoryListBtn);
-		dormitoryListBtn.setName("DormitoryListPanel");
+		dormitoryListBtn.setName("dormitoryListPage");
 		
 		// 用户权限管理
 		SidebarBtn managerBtn = new SidebarBtn("", "用户权限管理", SIDEBAR_WIDTH);	
 		
 		SidebarBtn managerListBtn = new SidebarBtn("", "用户权限列表", SIDEBAR_WIDTH);
-		managerBtn.addSideBtnItem(managerListBtn);
-		managerListBtn.setName("ManagerListPanel");
+		managerListBtn.setName("managerListPage");
 		
 		// 学生管理
 		SidebarBtn studentBtn = new SidebarBtn("", "学生管理", SIDEBAR_WIDTH);
 		
 		SidebarBtn studentListBtn = new SidebarBtn("", "学生列表", SIDEBAR_WIDTH);
-		studentBtn.addSideBtnItem(studentListBtn);
-		studentListBtn.setName("StudentListPanel");
+		studentListBtn.setName("studentListPage");
 		
-//		SidebarBtn logisticsBtn = new SidebarBtn("", "后勤服务", SIDEBAR_WIDTH);
-//		SidebarBtn lifeBtn = new SidebarBtn("", "生活服务", SIDEBAR_WIDTH);
+		// 后勤服务
+		SidebarBtn logisticsBtn = new SidebarBtn("", "后勤服务", SIDEBAR_WIDTH);
+		
+		SidebarBtn damageWarrantyBtn = new SidebarBtn("", "损坏保修", SIDEBAR_WIDTH);
+		damageWarrantyBtn.setName("damageWarrantyPage");
+		
+		SidebarBtn damageListBtn = new SidebarBtn("", "损坏列表", SIDEBAR_WIDTH);
+		damageListBtn.setName("damageListPage");
+		
+		// 生活服务
+		SidebarBtn lifeBtn = new SidebarBtn("", "生活服务", SIDEBAR_WIDTH);
+		
+		SidebarBtn electricityBtn = new SidebarBtn("", "电费充值", SIDEBAR_WIDTH);
+		electricityBtn.setName("electricityPage");
+		
+		SidebarBtn networktBtn = new SidebarBtn("", "校园网充值", SIDEBAR_WIDTH);
+		networktBtn.setName("networkPage");
+		
+		SidebarBtn cardBtn = new SidebarBtn("", "校园一卡通", SIDEBAR_WIDTH);
+		cardBtn.setName("cardPage");
 		
 		// 根据权限添加按钮
 		if(role == Role.Student) {
 			sidebar.addBtn(personalBtn);
+			personalBtn.addSideBtnItem(dormitoryInfoBtn);
+			personalBtn.addSideBtnItem(personalInfoBtn);
+			personalInfoBtn.setName("studentProfilePage");
+			
+			sidebar.addBtn(logisticsBtn);
+			logisticsBtn.addSideBtnItem(damageWarrantyBtn);
+			
+			sidebar.addBtn(lifeBtn);
+			lifeBtn.addSideBtnItem(electricityBtn);
+			lifeBtn.addSideBtnItem(networktBtn);
+			lifeBtn.addSideBtnItem(cardBtn);
 		}else if(role == Role.GeneralManage) {
 			sidebar.addBtn(personalBtn);
+			personalBtn.addSideBtnItem(personalInfoBtn);
+			personalInfoBtn.setName("managerProfilePage");
+			
 			sidebar.addBtn(buildingBtn);
+			buildingBtn.addSideBtnItem(buildingListBtn);
+			
 			sidebar.addBtn(dormitoryBtn);
+			dormitoryBtn.addSideBtnItem(dormitoryListBtn);
+			
 			sidebar.addBtn(studentBtn);
+			studentBtn.addSideBtnItem(studentListBtn);
+			
+			sidebar.addBtn(logisticsBtn);
+			logisticsBtn.addSideBtnItem(damageListBtn);
 		}else if(role == Role.SuperManage) {
 			sidebar.addBtn(personalBtn);
+			personalBtn.addSideBtnItem(personalInfoBtn);
+			personalInfoBtn.setName("managerProfilePage");
+			
 			sidebar.addBtn(buildingBtn);
+			buildingBtn.addSideBtnItem(buildingListBtn);
+			
 			sidebar.addBtn(dormitoryBtn);
+			dormitoryBtn.addSideBtnItem(dormitoryListBtn);
+			
 			sidebar.addBtn(managerBtn);
+			managerBtn.addSideBtnItem(managerListBtn);
+			
 			sidebar.addBtn(studentBtn);
+			studentBtn.addSideBtnItem(studentListBtn);
+			
+			sidebar.addBtn(logisticsBtn);
+			logisticsBtn.addSideBtnItem(damageListBtn);
 		}
 
 		// 父级按钮监听器
@@ -189,6 +243,8 @@ public class MainFrame extends BaseFrame {
 					sidebar.add(item, index + 1);
 				}
 				sidebar.updateUI();
+				// 保存父路径
+				parentPath = btn.getText();
 			}
 		};
 		
@@ -198,16 +254,18 @@ public class MainFrame extends BaseFrame {
 			/** 实现页面切换 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SidebarBtn btn = (SidebarBtn) e.getSource();
-				BasePanel page = PageFactory.getPage(btn.getName());
-				if(page == null) {
+				try {
+					SidebarBtn btn = (SidebarBtn) e.getSource();
+					BasePage page = SpringContextUtils.getBean(btn.getName(), BasePage.class);
+					pagePanel.add(btn.getName(), page);
+					cardLayout.show(pagePanel, btn.getName());
+					// 显示路径
+					pathLabel.setText(parentPath + " > " + btn.getText());
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "功能尚未实现，敬请期待!");
-					return;
 				}
-				pagePanel.add(btn.getName(), page);
-				cardLayout.show(pagePanel, btn.getName());
 			}
-		
+			
 		};
 		
 		// 为所有侧边栏按钮添加监听器

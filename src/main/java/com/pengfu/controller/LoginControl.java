@@ -23,20 +23,22 @@ public class LoginControl {
 		managerService = SpringContextUtils.getBean("managerService", ManagerService.class);
 	}
 
-	/** 登陆操作 */
+	/** 登陆操作  */
 	public void Logint(boolean isStudent, String username, String password) throws Exception {
-		if("".equals(username)) {
-			throw new Exception("账号不能为空");
-		}else if("".equals(password)) {
-			throw new Exception("密码不能为空");
-		}
+//		if("".equals(username)) {
+//			throw new Exception("账号不能为空");
+//		}else if("".equals(password)) {
+//			throw new Exception("密码不能为空");
+//		}
 		
 		MainFrame mainFrame = null;
 		if(isStudent) { // 用户登陆
-			Student student = studentService.loginQuery(username, password);
+			//Student student = studentService.loginQuery(username, password);
+			Student student = studentService.loginQuery("201910097001", "123456");
 			mainFrame = new MainFrame(student);
 		}else { // 管理员登陆
-			Manager manager = managerService.loginQuery(username, password);
+			//Manager manager = managerService.loginQuery(username, password);
+			Manager manager = managerService.loginQuery("123456", "123456");
 			mainFrame = new MainFrame(manager);
 		}
 		mainFrame.setVisible(true);
