@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -21,6 +22,11 @@ import com.pengfu.controller.MoveFrameEvent;
 import com.pengfu.util.Resources;
 import com.pengfu.view.component.ImgBtn;
 
+/**
+ * 基类窗口
+ * 用于美化窗口
+ * @author PrideZH
+ */
 public class BaseFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -36,7 +42,8 @@ public class BaseFrame extends JFrame {
 	
 	public BaseFrame() {
 		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// 默认关闭模式为释放资源
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		initComponents();
 		
@@ -53,6 +60,7 @@ public class BaseFrame extends JFrame {
 		
 		// 内容面板
 		center = new JPanel();
+		center.setBorder(BorderFactory.createLineBorder(new Color(36, 38, 48)));
 		windowPane.add(center, BorderLayout.CENTER);
 		
 		// 初始化标题栏
@@ -126,7 +134,13 @@ public class BaseFrame extends JFrame {
 		ImgBtn exitBtn = new ImgBtn("images/button/关闭_灰.png", 16, 16);
 		exitBtn.setRolloverIcon("images/button/关闭_白.png");
 		exitBtn.setToolTipText("关闭");
-		exitBtn.addActionListener((e) -> { dispose(); });
+		exitBtn.addActionListener((e) -> { 
+			if(getDefaultCloseOperation() == JFrame.DISPOSE_ON_CLOSE) {
+				dispose(); 
+			}else if(getDefaultCloseOperation() == JFrame.EXIT_ON_CLOSE) {
+				System.exit(0);
+			}
+		});
 		box.add(exitBtn);
 	}
 

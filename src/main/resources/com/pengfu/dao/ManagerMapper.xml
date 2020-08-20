@@ -13,4 +13,10 @@
 		select * from manager
 	</select>
 	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="manager">
+		insert into manager(bid, mid)
+		values(#{name},#{buildingId})
+	</insert>
+	
 </mapper>

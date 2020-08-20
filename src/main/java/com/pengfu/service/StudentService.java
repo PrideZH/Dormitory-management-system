@@ -13,7 +13,7 @@ public interface StudentService {
 	Student getStudentById(String id);
 	
 	/** 添加学生 */
-	void addStudent(Student student);
+	void addStudent(Student student) throws Exception;
 	
 	/** 查询所有学生 */
 	List<Student> getAll(); 

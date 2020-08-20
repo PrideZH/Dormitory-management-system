@@ -2,12 +2,21 @@ package com.pengfu.entity;
 
 public class Manager {
 
+	private String mid;
 	private String username;
 	private String password;
 	private String name;
 	private String phone;
 	private int role;
 	private String bid;
+	
+	public String getMid() {
+		return mid;
+	}
+
+	public void setMid(String mid) {
+		this.mid = mid;
+	}
 
 	public String getUsername() {
 		return username;

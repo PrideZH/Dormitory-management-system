@@ -7,30 +7,41 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
 import com.pengfu.controller.LoginControl;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.view.component.InputBox;
 
+/**
+ * 登陆界面
+* @author PrideZH
+*/
+@Component
+@Lazy
 public class LoginFrame extends BaseFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
+	// 控制层对象
 	private LoginControl control;
 	
-	public LoginFrame() {
+	@Autowired
+	public LoginFrame(LoginControl control) {
+		this.control = control;
+		
+		setText("登陆");
 		setSize(600, 400);
 		setLocationRelativeTo(null);
 		// 设置最大化按钮不可用
 		setMaximizeEnabled(false);
-		
-		setText("登陆");
-		
-		// 创建控制器
-		control = new LoginControl(this);
-		
+
 		initComponents();
 	}
 	
+	/** 初始化组件 */
 	private void initComponents() {
 		Container contentPane = getContentPane();
 		contentPane.setBackground(ConstantConfig.BG_COLOR);
@@ -76,6 +87,7 @@ public class LoginFrame extends BaseFrame {
 			try {
 				control.Logint(studentRBtn.isSelected(), UsernameInputBox.getText(), PasswordInputBox.getText());
 			} catch (Exception e1) {
+				e1.printStackTrace();
 				JOptionPane.showMessageDialog(this, e1.getMessage());
 			}
 		});

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Student;
+import com.pengfu.model.Role;
 import com.pengfu.view.component.InfoBar;
 
 /** 学生个人信息 */
@@ -18,6 +19,12 @@ public class StudentProfilePage extends BasePage {
 	private static final long serialVersionUID = 1L;
 	
 	private Student student;
+	
+	public StudentProfilePage() {
+		student = Role.getStudent();
+		
+		initComponents();
+	}
 
 	@Override
 	protected void initComponents() {
@@ -43,14 +50,5 @@ public class StudentProfilePage extends BasePage {
 		JButton setPasswordBtn = new JButton("修改密码");
 		contxtPane.add(setPasswordBtn);
 	}
-	
-	public Student getStudent() {
-		return student;
-	}
 
-	public void setStudent(Student student) {
-		this.student = student;
-		initComponents();
-	}
-	
 }

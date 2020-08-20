@@ -10,4 +10,7 @@ public interface ManagerMapper {
 
 	/** 查询所有 */
 	List<Manager> selectAll();
+
+	/** 添加管理员 */
+	void insert(ManagerMapper managerMapper);
 }

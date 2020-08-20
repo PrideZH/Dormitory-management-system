@@ -11,4 +11,7 @@ public interface ManagerService {
 	
 	/** 获得所有管理者所有 */
 	List<Manager> getAll();
+
+	/** 添加管理员 */
+	void addManager(Manager manager);
 }

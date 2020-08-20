@@ -23,7 +23,20 @@
 		
 	<!-- 根据宿舍楼查询所有宿舍 -->
 	<select id="selecAllByBid" resultMap="dormitoryMap">
-		select d.name,s.* from dormitory d left outer join student s on s.did == d.did where d.bid == #{bid}
+		select d.name,s.* from dormitory d 
+		left outer join student s on s.did = d.did 
+		where d.bid = #{bid}
 	</select>
 	
+	<!-- 根据宿舍楼查询所有宿舍号 -->
+	<select id="selecAllIdByBid" resultType="String">
+		select dormitory.name from dormitory where dormitory.bid = #{bid}
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="dormitory">
+		insert into building(bid, mid)
+		values(#{name},#{buildingId})
+	</insert>
+
 </mapper>

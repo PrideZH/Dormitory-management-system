@@ -13,15 +13,16 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("all")
 public class SpringContextUtils implements ApplicationContextAware {
 
-    /** 上下文对象实例 */
+    /** spring核心容器 */
     private static ApplicationContext applicationContext;
 
+    /** 设置核心容器 */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
     }
 
-    /** 获取applicationContext */
+    /** 获取核心容器 */
     public static ApplicationContext getApplicationContext() {
         return applicationContext;
     }

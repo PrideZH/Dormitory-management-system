@@ -15,12 +15,25 @@
 	</select>
 	
 	<select id="selectAll" resultType="student">
-		select * from student
+		select 
+			s.*, d.name DormitoryId, b.bid BuildingId
+		from 
+			student s, dormitory d, building b
+		where 
+			s.did = d.did and d.bid = b.bid
+	</select>
+	
+	<select id="selectSid" resultType="boolean">
+		select count(*) from student where student.sid = #{id}
 	</select>
 
-	<insert id="insert" parameterType="com.pengfu.entity.Student">
-		insert into student(sid,password,name,gender,id_card,college,classes,phone)
-		values(#{sid},#{password},#{name},#{gender},#{idCard},#{college},#{classes},#{phone})
+	<!-- 添加 -->
+	<insert id="insert" parameterType="student">
+		insert into
+			student(sid,password,name,gender,id_card,college,classes,phone,did)
+		values
+			(#{sid},#{password},#{name},#{gender},#{idCard},#{college},#{classes},#{phone},
+			(select dormitory.did from dormitory where dormitory.name = #{BuildingId}))
 	</insert>
 	
 	<select id="selectByName" parameterType="string" resultType="student">

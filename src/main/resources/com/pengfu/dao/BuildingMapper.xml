@@ -22,4 +22,15 @@
 		select b.bid,m.* from building b,manager m where b.mid == m.mid;
 	</select>
 	
+	<!-- 查询所有编号 -->
+	<select id="selectAllId" resultType="String">
+		select building.bid from building
+	</select>
+	
+	<!-- 添加 -->
+	<insert id="insert" parameterType="building">
+		insert into building(bid, mid)
+		values(#{bid},#{manager.mid})
+	</insert>
+	
 </mapper>

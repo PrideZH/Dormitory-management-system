@@ -35,8 +35,8 @@ public class StudentTableModel extends AbstractTableModel {
 		case 4: return student.getPhone();
 		case 5: return student.getCollege();
 		case 6: return student.getClasses();
-		//case 7: return student.get
-		//case 8: return student.getSid();
+		case 7: return student.getBuildingId();
+		case 8: return student.getDormitoryId();
 		case 9: return 0;
 		}
 		return null;

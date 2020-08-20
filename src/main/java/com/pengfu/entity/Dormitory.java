@@ -5,6 +5,7 @@ import java.util.List;
 public class Dormitory {
 
 	private String name;
+	private String buildingId;
 	private List<Student> students;
 
 	public String getName() {
@@ -15,6 +16,14 @@ public class Dormitory {
 		this.name = name;
 	}
 
+	public String getBuildingId() {
+		return buildingId;
+	}
+
+	public void setBuildingId(String buildingId) {
+		this.buildingId = buildingId;
+	}
+	
 	public List<Student> getStudents() {
 		return students;
 	}
@@ -25,7 +34,7 @@ public class Dormitory {
 
 	@Override
 	public String toString() {
-		return "Dormitory [name=" + name + ", students=" + students + "]";
+		return "Dormitory [name=" + name + ", BuildingId=" + buildingId + "]";
 	}
-
+	
 }

@@ -13,6 +13,9 @@ public interface StudentMapper {
 	/** 查询所有学生 */
 	List<Student> selectAll();
 	
+	/** 查询学号 */
+	boolean selectSid(String id);
+	
 	/** 添加学生信息 */
 	void insert(Student student);
 	

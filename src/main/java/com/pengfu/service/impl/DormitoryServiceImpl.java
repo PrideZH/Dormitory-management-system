@@ -21,5 +21,15 @@ public class DormitoryServiceImpl implements DormitoryService {
 	public List<Dormitory> getDormitoryByBid(String bid) {
 		return dormitoryMapper.selecAllByBid(bid);
 	}
+
+	@Override
+	public List<String> getAllIdByBid(String bid) {
+		return dormitoryMapper.selecAllIdByBid(bid);
+	}
+
+	@Override
+	public void addDormitoryt(Dormitory dormitory) {
+		dormitoryMapper.insert(dormitory);
+	}
 	
 }

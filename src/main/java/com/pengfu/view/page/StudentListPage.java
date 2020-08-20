@@ -19,6 +19,7 @@ import com.pengfu.service.StudentService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
+import com.pengfu.view.AddStudentFrame;
 
 @Component("studentListPage")
 @Lazy
@@ -67,10 +68,10 @@ public class StudentListPage extends BasePage {
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(ConstantConfig.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
-		
+
 		// 监听器 
 		addBtn.addActionListener((e) ->{
-			
+			SpringContextUtils.getBean(AddStudentFrame.class).setVisible(true);
 		});
 	}
 	

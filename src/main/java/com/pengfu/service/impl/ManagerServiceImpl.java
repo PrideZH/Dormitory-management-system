@@ -36,4 +36,9 @@ public class ManagerServiceImpl implements ManagerService {
 		return managerMapper.selectAll();
 	}
 
+	@Override
+	public void addManager(Manager manager) {
+		managerMapper.insert(managerMapper);
+	}
+
 }

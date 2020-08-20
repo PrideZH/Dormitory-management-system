@@ -11,21 +11,27 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.pengfu.entity.Manager;
-import com.pengfu.entity.Student;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
+
 import com.pengfu.model.Role;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.Sidebar;
 import com.pengfu.view.component.SidebarBtn;
 import com.pengfu.view.page.BasePage;
-import com.pengfu.view.page.ManagerProfilePage;
-import com.pengfu.view.page.StudentProfilePage;
 
+/**
+ * 主界面
+* @author PrideZH
+*/
+@Controller
+@Lazy
 public class MainFrame extends BaseFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -44,28 +50,13 @@ public class MainFrame extends BaseFrame {
 	private Role role;
 
 	private MainFrame() {
+		setText("宿舍信息管理系统");
 		setSize(1600, 900);
 		setLocationRelativeTo(null);
-		setText("宿舍信息管理系统");
-	}
-
-	/** 学生登陆 */
-	public MainFrame(Student student) {
-		this();
-		role = Role.Student;
-		SpringContextUtils.getBean("studentProfilePage", StudentProfilePage.class).setStudent(student);
-		initComponents();
-	}
-	
-	/** 管理员登陆 */
-	public MainFrame(Manager manager) {
-		this();
-		if(manager.getRole() == 0) {
-			role = Role.GeneralManage;
-		}else if(manager.getRole() == 1) {
-			role = Role.SuperManage;
-		}
-		SpringContextUtils.getBean("managerProfilePage", ManagerProfilePage.class).setManager(manager);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		role = Role.getRole();
+		
 		initComponents();
 	}
 
@@ -165,7 +156,8 @@ public class MainFrame extends BaseFrame {
 		cardBtn.setName("cardPage");
 		
 		// 根据权限添加按钮
-		if(role == Role.Student) {
+		switch(role) {
+		case Student:
 			sidebar.addBtn(personalBtn);
 			personalBtn.addSideBtnItem(dormitoryInfoBtn);
 			personalBtn.addSideBtnItem(personalInfoBtn);
@@ -178,7 +170,8 @@ public class MainFrame extends BaseFrame {
 			lifeBtn.addSideBtnItem(electricityBtn);
 			lifeBtn.addSideBtnItem(networktBtn);
 			lifeBtn.addSideBtnItem(cardBtn);
-		}else if(role == Role.GeneralManage) {
+			break;
+		case GeneralManage:
 			sidebar.addBtn(personalBtn);
 			personalBtn.addSideBtnItem(personalInfoBtn);
 			personalInfoBtn.setName("managerProfilePage");
@@ -194,7 +187,8 @@ public class MainFrame extends BaseFrame {
 			
 			sidebar.addBtn(logisticsBtn);
 			logisticsBtn.addSideBtnItem(damageListBtn);
-		}else if(role == Role.SuperManage) {
+			break;
+		case SuperManage:
 			sidebar.addBtn(personalBtn);
 			personalBtn.addSideBtnItem(personalInfoBtn);
 			personalInfoBtn.setName("managerProfilePage");
@@ -213,6 +207,9 @@ public class MainFrame extends BaseFrame {
 			
 			sidebar.addBtn(logisticsBtn);
 			logisticsBtn.addSideBtnItem(damageListBtn);
+			break;
+		default:
+			break;
 		}
 
 		// 父级按钮监听器

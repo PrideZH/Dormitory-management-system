@@ -6,6 +6,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.LoginFrame;
 
 @SpringBootApplication
@@ -15,14 +16,8 @@ public class App {
 	public static void main(String[] args) {
 		// 初始化Spring
 		new SpringApplicationBuilder(App.class).headless(false).run(args);
-		// 显示显示界面
-		EventQueue.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new LoginFrame().setVisible(true);
-			}
-		});
-		
+		// 显示登陆界面
+		EventQueue.invokeLater(() -> SpringContextUtils.getBean(LoginFrame.class).setVisible(true));
 	}
 	
 }

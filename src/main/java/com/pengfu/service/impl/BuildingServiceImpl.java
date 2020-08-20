@@ -22,4 +22,14 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingMapper.selectAll();
 	}
 
+	@Override
+	public List<String> getAllId() {
+		return buildingMapper.selectAllId();
+	}
+
+	@Override
+	public void addBuilding(Building building) {
+		buildingMapper.insert(building);
+	}
+
 }
