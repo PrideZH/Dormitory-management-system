@@ -106,7 +106,7 @@ public class MainFrame extends BaseFrame {
 		SidebarBtn personalBtn = new SidebarBtn("", "个人中心", SIDEBAR_WIDTH);	
 		
 		SidebarBtn dormitoryInfoBtn = new SidebarBtn("", "宿舍信息", SIDEBAR_WIDTH);
-		dormitoryInfoBtn.setName("dormitoryInfoPage");
+		dormitoryInfoBtn.setName("dormInfoPage");
 		
 		SidebarBtn personalInfoBtn = new SidebarBtn("", "个人信息", SIDEBAR_WIDTH);
 	
@@ -120,13 +120,13 @@ public class MainFrame extends BaseFrame {
 		SidebarBtn dormitoryBtn = new SidebarBtn("", "宿舍管理", SIDEBAR_WIDTH);	
 		
 		SidebarBtn dormitoryListBtn = new SidebarBtn("", "宿舍列表", SIDEBAR_WIDTH);
-		dormitoryListBtn.setName("dormitoryListPage");
+		dormitoryListBtn.setName("dormListPage");
 		
 		// 用户权限管理
 		SidebarBtn managerBtn = new SidebarBtn("", "用户权限管理", SIDEBAR_WIDTH);	
 		
 		SidebarBtn managerListBtn = new SidebarBtn("", "用户权限列表", SIDEBAR_WIDTH);
-		managerListBtn.setName("managerListPage");
+		managerListBtn.setName("adminListPage");
 		
 		// 学生管理
 		SidebarBtn studentBtn = new SidebarBtn("", "学生管理", SIDEBAR_WIDTH);
@@ -174,7 +174,7 @@ public class MainFrame extends BaseFrame {
 		case GeneralManage:
 			sidebar.addBtn(personalBtn);
 			personalBtn.addSideBtnItem(personalInfoBtn);
-			personalInfoBtn.setName("managerProfilePage");
+			personalInfoBtn.setName("adminProfilePage");
 			
 			sidebar.addBtn(buildingBtn);
 			buildingBtn.addSideBtnItem(buildingListBtn);
@@ -191,7 +191,7 @@ public class MainFrame extends BaseFrame {
 		case SuperManage:
 			sidebar.addBtn(personalBtn);
 			personalBtn.addSideBtnItem(personalInfoBtn);
-			personalInfoBtn.setName("managerProfilePage");
+			personalInfoBtn.setName("adminProfilePage");
 			
 			sidebar.addBtn(buildingBtn);
 			buildingBtn.addSideBtnItem(buildingListBtn);
@@ -259,6 +259,7 @@ public class MainFrame extends BaseFrame {
 					// 显示路径
 					pathLabel.setText(parentPath + " > " + btn.getText());
 				} catch (Exception e1) {
+					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "功能尚未实现，敬请期待!");
 				}
 			}

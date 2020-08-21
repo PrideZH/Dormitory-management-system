@@ -1,21 +1,22 @@
 package com.pengfu.entity;
 
-public class Manager {
+/** 管理员 */
+public class Admin {
 
-	private String mid;
-	private String username;
-	private String password;
-	private String name;
-	private String phone;
-	private int role;
-	private String bid;
+	private int aid; // id
+	private String username; // 用户名
+	private String password; // 密码
+	private String name; // 姓名
+	private String phone; // 联系电话
+	private int role; // 权限 0-普通管理 1-超级管理
+	private String bid; // 管理楼宇编号
 	
-	public String getMid() {
-		return mid;
+	public int getAid() {
+		return aid;
 	}
 
-	public void setMid(String mid) {
-		this.mid = mid;
+	public void setAid(int aid) {
+		this.aid = aid;
 	}
 
 	public String getUsername() {

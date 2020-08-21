@@ -19,8 +19,9 @@ import com.pengfu.service.BuildingService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
+import com.pengfu.view.AddBuildingFrame;
 
-@Component("buildingListPage")
+@Component
 @Lazy
 public class BuildingListPage extends BasePage {
 
@@ -72,6 +73,11 @@ public class BuildingListPage extends BasePage {
 		southPane.setBackground(ConstantConfig.PAGE_COLOR);
 		southPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(southPane, BorderLayout.SOUTH);
+		
+		// 监听器 
+		addBtn.addActionListener((e) ->{
+			SpringContextUtils.getBean(AddBuildingFrame.class).setVisible(true);
+		});
 	}
 
 }

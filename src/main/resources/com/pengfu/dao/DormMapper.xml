@@ -3,11 +3,12 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.pengfu.dao.DormitoryMapper">
+<mapper namespace="com.pengfu.dao.DormMapper">
 
 	<!-- 封装宿舍对象 -->
-	<resultMap id="dormitoryMap" type="dormitory">
+	<resultMap id="dormMap" type="dorm">
 		<result property="name" column="name"/>
+		<result property="bid" column="bid"/>
 		<!-- 封装学生集合对象 -->
 		<collection property="students" ofType="student">
 			<result property="sid" column="sid"/>
@@ -22,21 +23,43 @@
 	</resultMap>
 		
 	<!-- 根据宿舍楼查询所有宿舍 -->
-	<select id="selecAllByBid" resultMap="dormitoryMap">
-		select d.name,s.* from dormitory d 
-		left outer join student s on s.did = d.did 
-		where d.bid = #{bid}
+	<select id="selectAllByBid" resultMap="dormMap">
+		select
+			dorm.name, student.*, dorm.bid
+		from
+			dorm
+		left outer join
+			student
+		on
+			student.did = dorm.did
+		where
+			dorm.bid = #{bid}
 	</select>
 	
 	<!-- 根据宿舍楼查询所有宿舍号 -->
-	<select id="selecAllIdByBid" resultType="String">
-		select dormitory.name from dormitory where dormitory.bid = #{bid}
+	<select id="selectAllIdByBid" resultType="String">
+		select
+			dorm.name
+		from
+			dorm
+		where
+			dorm.bid = #{bid}
 	</select>
 	
 	<!-- 添加 -->
-	<insert id="insert" parameterType="dormitory">
-		insert into building(bid, mid)
-		values(#{name},#{buildingId})
+	<insert id="insert" parameterType="dorm">
+		insert into 
+			dorm(name, bid)
+		values
+			(#{name},#{bid})
 	</insert>
+
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from 
+			dorm 
+		where 
+			name = #{name} and bid = #{bid};
+	</delete>
 
 </mapper>

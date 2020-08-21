@@ -2,16 +2,16 @@ package com.pengfu.entity;
 
 public class Student {
 	
-	private String sid;
-	private String password;
-	private String name;
-	private String gender;
-	private String idCard;
-	private String college;
-	private String classes;
-	private String phone;
-	private String BuildingId;
-	private String DormitoryId;
+	private String sid; // 学号
+	private String password; // 密码
+	private String name; // 姓名
+	private String gender; // 性别
+	private String idCard; // 身份证号
+	private String college; // 学院
+	private String classes; // 班级
+	private String phone; // 联系电话
+	private String bid; // 楼宇编号
+	private String dormName; // 宿舍号
 
 	public String getSid() {
 		return sid;
@@ -77,27 +77,27 @@ public class Student {
 		this.phone = phone;
 	}
 
-	public String getBuildingId() {
-		return BuildingId;
+	public String getBid() {
+		return bid;
 	}
 
-	public void setBuildingId(String buildingId) {
-		BuildingId = buildingId;
+	public void setBid(String bid) {
+		this.bid = bid;
 	}
 
-	public String getDormitoryId() {
-		return DormitoryId;
+	public String getDormName() {
+		return dormName;
 	}
 
-	public void setDormitoryId(String dormitoryId) {
-		DormitoryId = dormitoryId;
+	public void setDormName(String dormName) {
+		this.dormName = dormName;
 	}
 
 	@Override
 	public String toString() {
 		return "Student [sid=" + sid + ", password=" + password + ", name=" + name + ", gender=" + gender + ", idCard="
-				+ idCard + ", college=" + college + ", classes=" + classes + ", phone=" + phone + ", BuildingId="
-				+ BuildingId + ", DormitoryId=" + DormitoryId + "]";
+				+ idCard + ", college=" + college + ", classes=" + classes + ", phone=" + phone + ", bid="
+				+ bid + ", dormName=" + dormName + "]";
 	}
 
 }

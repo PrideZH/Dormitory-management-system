@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import org.springframework.stereotype.Component;
 
 /** 首页 */
-@Component("homePage")
+@Component
 public class HomePage extends BasePage {
 
 	private static final long serialVersionUID = 1L;

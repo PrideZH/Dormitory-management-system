@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -13,23 +14,24 @@ import javax.swing.JTable;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.pengfu.model.DormitoryTableModel;
-import com.pengfu.service.DormitoryService;
+import com.pengfu.model.DormTableModel;
+import com.pengfu.service.DormService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
+import com.pengfu.view.AddDormFrame;
 
-@Component("dormitoryListPage")
+@Component
 @Lazy
-public class DormitoryListPage extends BasePage {
+public class DormListPage extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 
-	DormitoryTableModel model = new DormitoryTableModel();
+	DormTableModel model = new DormTableModel();
 	
-	public DormitoryListPage() {
+	public DormListPage() {
 		// 获取Service对象
-		DormitoryService dormitoryService = SpringContextUtils.getBean("dormitoryService", DormitoryService.class);
+		DormService dormitoryService = SpringContextUtils.getBean("dormitoryService", DormService.class);
 		model.setDormitorys(dormitoryService.getDormitoryByBid("C16"));
 
 		initComponents();
@@ -50,11 +52,26 @@ public class DormitoryListPage extends BasePage {
 		// 内容栏
 		contxtPane.setLayout(new BorderLayout());
 		
+		// 列表操作
+		JPanel northPane = new JPanel();
+		northPane.setBackground(ConstantConfig.PAGE_COLOR);
+		northPane.setPreferredSize(new Dimension(0, 64));	
+		contxtPane.add(northPane, BorderLayout.NORTH);
+		
+		// 添加按钮
+		JButton addBtn = new JButton("添加");
+		northPane.add(addBtn);
+		
 		// 宿舍信息列表
 		JTable table = TableBuilder.getTableBuilder().build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(ConstantConfig.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
+		
+		// 监听器 
+		addBtn.addActionListener((e) ->{
+			SpringContextUtils.getBean(AddDormFrame.class).setVisible(true);
+		});
 	}
 
 }

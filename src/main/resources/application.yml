@@ -5,3 +5,5 @@ spring:
 
 mybatis: 
   type-aliases-package: com.pengfu.entity
+  configuration:
+    map-underscore-to-camel-case: true

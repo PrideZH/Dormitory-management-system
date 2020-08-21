@@ -1,6 +1,6 @@
 package com.pengfu.model;
 
-import com.pengfu.entity.Manager;
+import com.pengfu.entity.Admin;
 import com.pengfu.entity.Student;
 
 public enum Role {
@@ -11,7 +11,7 @@ public enum Role {
 	
 	private String RoleName;
 	private static Student student;
-	private static Manager manager;
+	private static Admin manager;
 	
 	private Role(String RoleName) { 
         this.RoleName = RoleName; 
@@ -21,7 +21,7 @@ public enum Role {
 		return student;
 	}
 
-	public static Manager getManager() {
+	public static Admin getManager() {
 		return manager;
 	}
 
@@ -29,7 +29,7 @@ public enum Role {
 		Role.student = student;
 	}
 
-	public static void setManager(Manager manager) {
+	public static void setManager(Admin manager) {
 		Role.manager = manager;
 	}
 

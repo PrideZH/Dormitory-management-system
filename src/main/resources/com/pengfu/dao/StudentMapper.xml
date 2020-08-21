@@ -5,26 +5,44 @@
 
 <mapper namespace="com.pengfu.dao.StudentMapper">
 
-	<select id="selectById" resultType="student">
-		select 
-			s.*, d.name DormitoryId, b.bid BuildingId
-		from 
-			student s, dormitory d, building b
-		where 
-			s.sid = #{id} and s.did = d.did and d.bid = b.bid
-	</select>
-	
+	<!-- 查询所有 -->
 	<select id="selectAll" resultType="student">
 		select 
-			s.*, d.name DormitoryId, b.bid BuildingId
+			student.*, dorm.name dormName, building.bid
 		from 
-			student s, dormitory d, building b
+			student, dorm, building
 		where 
-			s.did = d.did and d.bid = b.bid
+			student.did = dorm.did and dorm.bid = building.bid
 	</select>
 	
+	<!-- 根据id查 -->
+	<select id="selectById" resultType="student">
+		select 
+			student.*, dorm.name dormName, building.bid
+		from 
+			student, dorm, building
+		where 
+			student.sid = #{id} and student.did = dorm.did and dorm.bid = building.bid
+	</select>
+	
+	<!-- 根据姓名查 -->
+	<select id="selectByName" parameterType="string" resultType="student">
+		select 
+			student.*, dorm.name dormName, building.bid
+		from
+			student, dorm, building
+		where
+			student.name like #{name} and student.did = dorm.did and dorm.bid = building.bid
+	</select>
+	
+	<!-- 查询学号是否存在 -->
 	<select id="selectSid" resultType="boolean">
-		select count(*) from student where student.sid = #{id}
+		select
+			count(*)
+		from
+			student
+		where
+			student.sid = #{id}
 	</select>
 
 	<!-- 添加 -->
@@ -33,11 +51,25 @@
 			student(sid,password,name,gender,id_card,college,classes,phone,did)
 		values
 			(#{sid},#{password},#{name},#{gender},#{idCard},#{college},#{classes},#{phone},
-			(select dormitory.did from dormitory where dormitory.name = #{BuildingId}))
+			(select dorm.did from dorm where dorm.did = #{bid}))
 	</insert>
 	
-	<select id="selectByName" parameterType="string" resultType="student">
-		select * from student where name like #{name}
-	</select>
+	<!-- 修改 -->
+	<update id="update">
+		update 
+			student
+		set 
+			password = #{password}, phone = #{phone}
+		where 
+			sid = #{sid}
+	</update>
+	
+	<!-- 删除 -->
+	<delete id="delete">
+		delete from 
+			student 
+		where 
+			sid = #{sid};
+	</delete>
 	
 </mapper>

@@ -21,7 +21,7 @@ import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
 import com.pengfu.view.AddStudentFrame;
 
-@Component("studentListPage")
+@Component
 @Lazy
 public class StudentListPage extends BasePage {
 

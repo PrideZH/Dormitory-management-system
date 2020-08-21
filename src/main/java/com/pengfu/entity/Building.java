@@ -3,7 +3,7 @@ package com.pengfu.entity;
 public class Building {
 
 	private String bid;
-	private Manager manager;
+	private Admin admin;
 
 	public String getBid() {
 		return bid;
@@ -13,17 +13,17 @@ public class Building {
 		this.bid = bid;
 	}
 
-	public Manager getManager() {
-		return manager;
+	public Admin getAdmin() {
+		return admin;
 	}
 
-	public void setManager(Manager manager) {
-		this.manager = manager;
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
 	}
 
 	@Override
 	public String toString() {
-		return "Building [bid=" + bid + ", manager=" + manager + "]";
+		return "Building [bid=" + bid + ", admin=" + admin + "]";
 	}
 	
 }

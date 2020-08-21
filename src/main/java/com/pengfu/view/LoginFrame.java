@@ -4,14 +4,13 @@ import java.awt.Container;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.pengfu.controller.LoginControl;
+import com.pengfu.controller.AppControl;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.view.component.InputBox;
 
@@ -26,10 +25,10 @@ public class LoginFrame extends BaseFrame {
 	private static final long serialVersionUID = 1L;
 	
 	// 控制层对象
-	private LoginControl control;
+	private AppControl control;
 	
 	@Autowired
-	public LoginFrame(LoginControl control) {
+	public LoginFrame(AppControl control) {
 		this.control = control;
 		
 		setText("登陆");
@@ -84,12 +83,7 @@ public class LoginFrame extends BaseFrame {
 		// 添加监听器
 		// 登陆按钮
 		LoginBtn.addActionListener((e) -> {
-			try {
-				control.Logint(studentRBtn.isSelected(), UsernameInputBox.getText(), PasswordInputBox.getText());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, e1.getMessage());
-			}
+			control.Logint(studentRBtn.isSelected(), UsernameInputBox.getText(), PasswordInputBox.getText());
 		});
 	}
 

@@ -2,10 +2,10 @@ package com.pengfu.entity;
 
 import java.util.List;
 
-public class Dormitory {
+public class Dorm {
 
 	private String name;
-	private String buildingId;
+	private String bid;
 	private List<Student> students;
 
 	public String getName() {
@@ -16,12 +16,12 @@ public class Dormitory {
 		this.name = name;
 	}
 
-	public String getBuildingId() {
-		return buildingId;
+	public String getBid() {
+		return bid;
 	}
 
-	public void setBuildingId(String buildingId) {
-		this.buildingId = buildingId;
+	public void setBid(String bid) {
+		this.bid = bid;
 	}
 	
 	public List<Student> getStudents() {
@@ -34,7 +34,7 @@ public class Dormitory {
 
 	@Override
 	public String toString() {
-		return "Dormitory [name=" + name + ", BuildingId=" + buildingId + "]";
+		return "Dorm [name=" + name + ", bid=" + bid + ", students=" + students + "]";
 	}
 	
 }

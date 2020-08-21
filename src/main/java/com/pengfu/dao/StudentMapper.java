@@ -7,24 +7,28 @@ import com.pengfu.entity.Student;
 
 public interface StudentMapper {
 
-	/** 根据id查询学生 */
-	Student selectById(String id);
-	
 	/** 查询所有学生 */
 	List<Student> selectAll();
 	
-	/** 查询学号 */
+	/** 根据id查 */
+	Student selectById(String id);
+	
+	/** 根据姓名查 */
+	List<Student> selectByName(String name);
+	
+	/** 根据身份证号查 */
+	List<Student> selectByIdCard(String idCard);
+	
+	/** 查询学号是否存在 */
 	boolean selectSid(String id);
 	
-	/** 添加学生信息 */
+	/** 添加 */
 	void insert(Student student);
 	
-	/** 更新学生信息 */
+	/** 修改 */
 	void update(Student student);
 	
-	/** 删除学生信息 */
+	/** 删除 */
 	void deleteById(String id);
-	
-	/** 根据名称模糊查询 */
-	List<Student> selectByName(String name);
+
 }

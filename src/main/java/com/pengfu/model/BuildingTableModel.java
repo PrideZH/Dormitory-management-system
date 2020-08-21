@@ -29,8 +29,8 @@ public class BuildingTableModel extends AbstractTableModel {
 		Building building = buildings.get(rowIndex);
 		switch(columnIndex) {
 		case 0: return building.getBid();
-		case 1: return building.getManager().getName();
-		case 2: return building.getManager().getPhone();
+		case 1: return building.getAdmin().getName();
+		case 2: return building.getAdmin().getPhone();
 		case 3: return 0;
 		}
 		return null;

@@ -5,14 +5,14 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.pengfu.entity.Manager;
+import com.pengfu.entity.Admin;
 
-public class ManagerTableModel extends AbstractTableModel {
+public class AdminTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
 
 	private String[] title = {"", "姓名", "联系电话", "权限", "操作"};
-	private List<Manager>  managers = new ArrayList<>();
+	private List<Admin>  managers = new ArrayList<>();
 
 	@Override
 	public int getRowCount() {
@@ -26,7 +26,7 @@ public class ManagerTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Manager manager = managers.get(rowIndex);
+		Admin manager = managers.get(rowIndex);
 		switch(columnIndex) {
 		case 0: return rowIndex + 1;
 		case 1: return manager.getName();
@@ -49,11 +49,11 @@ public class ManagerTableModel extends AbstractTableModel {
 		return false;
 	}
 	
-	public List<Manager> getManagers() {
+	public List<Admin> getManagers() {
 		return managers;
 	}
 
-	public void setManagers(List<Manager> managers) {
+	public void setManagers(List<Admin> managers) {
 		this.managers = managers;
 	}
 	

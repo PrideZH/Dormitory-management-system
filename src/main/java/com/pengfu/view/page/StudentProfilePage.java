@@ -12,7 +12,7 @@ import com.pengfu.model.Role;
 import com.pengfu.view.component.InfoBar;
 
 /** 学生个人信息 */
-@Component("studentProfilePage")
+@Component
 @Lazy
 public class StudentProfilePage extends BasePage {
 
@@ -34,8 +34,8 @@ public class StudentProfilePage extends BasePage {
 		InfoBar collegeInfoBar = new InfoBar("学院", student.getCollege());
 		InfoBar classesInfoBar = new InfoBar("班级", student.getClasses());
 		InfoBar phoneInfoBar = new InfoBar("联系电话", student.getPhone());
-		InfoBar buildingInfoBar = new InfoBar("所在楼宇", student.getBuildingId());
-		InfoBar DormitoryInfoBar = new InfoBar("宿舍号", student.getDormitoryId());
+		InfoBar buildingInfoBar = new InfoBar("所在楼宇", student.getBid());
+		InfoBar DormitoryInfoBar = new InfoBar("宿舍号", student.getDormName());
 
 		contxtPane.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 32));
 		contxtPane.add(nameInfoBar);

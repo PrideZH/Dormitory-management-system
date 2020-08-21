@@ -9,7 +9,7 @@
 	<resultMap id="buildingMap" type="building">
 		<result property="bid" column="bid"/>
 		<!-- 封装管理员对象 -->
-		<association property="manager" column="mid" javaType="manager">
+		<association property="admin" column="aid" javaType="admin">
 			<result property="username" column="username"/>
 			<result property="password" column="password"/>
 			<result property="name" column="name"/>
@@ -19,18 +19,56 @@
 		
 	<!-- 查询所有 -->
 	<select id="selectAll" resultMap="buildingMap">
-		select b.bid,m.* from building b,manager m where b.mid == m.mid;
+		select
+			building.bid, admin.*
+		from
+			building, admin
+		where
+			building.aid = admin.aid
 	</select>
 	
 	<!-- 查询所有编号 -->
 	<select id="selectAllId" resultType="String">
-		select building.bid from building
+		select
+			building.bid
+		from
+			building
+	</select>
+	
+	<!-- 查询编号是否存在 -->
+	<select id="selectBid"  resultType="boolean">
+		select
+			count(*)
+		from
+			building
+		where 
+			building.bid = #{id}
 	</select>
 	
 	<!-- 添加 -->
 	<insert id="insert" parameterType="building">
-		insert into building(bid, mid)
-		values(#{bid},#{manager.mid})
+		insert into
+			building(bid, aid)
+		values
+			(#{bid}, #{admin.aid})
 	</insert>
+	
+	<!-- 修改 -->
+	<update id="update">
+		update 
+			building
+		set 
+			aid = #{admin.aid}
+		where 
+			bid = #{bid}
+	</update>
+	
+	<!-- 通过楼宇编号删除 -->
+	<delete id="delete">
+		delete from 
+			building 
+		where 
+			bid = #{bid};
+	</delete>
 	
 </mapper>

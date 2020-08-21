@@ -5,14 +5,14 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.pengfu.entity.Dormitory;
+import com.pengfu.entity.Dorm;
 
-public class DormitoryTableModel extends AbstractTableModel {
+public class DormTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
 	private String[] title = {"宿舍号", "状态", "操作"};
-	private List<Dormitory> dormitorys = new ArrayList<>();
+	private List<Dorm> dormitorys = new ArrayList<>();
 
 	@Override
 	public int getRowCount() {
@@ -26,7 +26,7 @@ public class DormitoryTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Dormitory dormitory = dormitorys.get(rowIndex);
+		Dorm dormitory = dormitorys.get(rowIndex);
 		switch(columnIndex) {
 		case 0: return dormitory.getName();
 		case 1: return dormitory.getStudents().size();
@@ -47,11 +47,11 @@ public class DormitoryTableModel extends AbstractTableModel {
 		return false;
 	}
 	
-	public List<Dormitory> getDormitorys() {
+	public List<Dorm> getDormitorys() {
 		return dormitorys;
 	}
 
-	public void setDormitorys(List<Dormitory> dormitorys) {
+	public void setDormitorys(List<Dorm> dormitorys) {
 		this.dormitorys = dormitorys;
 	}
 	
