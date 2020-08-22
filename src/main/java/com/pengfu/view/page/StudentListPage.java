@@ -28,6 +28,7 @@ public class StudentListPage extends BasePage {
 	private static final long serialVersionUID = 1L;
 	
 	private StudentTableModel model = new StudentTableModel();
+	private JTable table;
 	private StudentService studentService;
 
 	public StudentListPage() {
@@ -58,21 +59,34 @@ public class StudentListPage extends BasePage {
 		northPane.setBackground(ConstantConfig.PAGE_COLOR);
 		northPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(northPane, BorderLayout.NORTH);
-		
 		// 添加按钮
 		JButton addBtn = new JButton("添加");
 		northPane.add(addBtn);
+		// 刷新按钮
+		JButton updateBtn = new JButton("刷新");
+		northPane.add(updateBtn);
 		
 		// 学生信息列表
-		JTable table = TableBuilder.getTableBuilder().build(model);
+		table = TableBuilder.getTableBuilder().build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(ConstantConfig.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
 
 		// 监听器 
-		addBtn.addActionListener((e) ->{
+		// 添加
+		addBtn.addActionListener((e) -> {
 			SpringContextUtils.getBean(AddStudentFrame.class).setVisible(true);
 		});
+		// 刷新
+		updateBtn.addActionListener(e -> updateTable());
+		
+	}
+	
+	/** 更新表格数据 */
+	public void updateTable() {
+		System.out.println(2);
+		model.setStudents(studentService.getAll());
+		table.updateUI();
 	}
 	
 }

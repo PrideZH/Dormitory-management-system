@@ -34,11 +34,13 @@ public class SidebarBtn extends JRadioButton {
 	// 鼠标是否在按钮上
 	private boolean entered = false; 
 	
-	private List<SidebarBtn> items = new ArrayList<>();
+	private String pageName; // 绑定Page
+	private List<SidebarBtn> items = new ArrayList<>(); // 子按钮
 	private static ButtonGroup buttonGroup = new ButtonGroup();
 
-	public SidebarBtn(String imgPath, String text, int width) {
+	public SidebarBtn(String imgPath, String text, String pageName, int width) {
 		this.text = text;
+		this.pageName = pageName;
 		this.width = width;
 		
 		// 设置按钮大小
@@ -75,6 +77,14 @@ public class SidebarBtn extends JRadioButton {
 				repaint();
 			}
 		});
+	}
+	
+	public String getPageName() {
+		return pageName;
+	}
+
+	public void setPageName(String pageName) {
+		this.pageName = pageName;
 	}
 	
 	public List<SidebarBtn> getItems() {
@@ -128,56 +138,38 @@ public class SidebarBtn extends JRadioButton {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((buttonGroup == null) ? 0 : buttonGroup.hashCode());
-		result = prime * result + (entered ? 1231 : 1237);
-		result = prime * result + ((font == null) ? 0 : font.hashCode());
-		result = prime * result + height;
 		result = prime * result + ((items == null) ? 0 : items.hashCode());
+		result = prime * result + ((pageName == null) ? 0 : pageName.hashCode());
 		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		result = prime * result + textH;
-		result = prime * result + textX;
-		result = prime * result + textY;
-		result = prime * result + width;
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
 		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		SidebarBtn other = (SidebarBtn) obj;
-		if (entered != other.entered)
-			return false;
-		if (font == null) {
-			if (other.font != null)
-				return false;
-		} else if (!font.equals(other.font))
-			return false;
-		if (height != other.height)
-			return false;
 		if (items == null) {
 			if (other.items != null)
 				return false;
 		} else if (!items.equals(other.items))
+			return false;
+		if (pageName == null) {
+			if (other.pageName != null)
+				return false;
+		} else if (!pageName.equals(other.pageName))
 			return false;
 		if (text == null) {
 			if (other.text != null)
 				return false;
 		} else if (!text.equals(other.text))
 			return false;
-		if (textH != other.textH)
-			return false;
-		if (textX != other.textX)
-			return false;
-		if (textY != other.textY)
-			return false;
-		if (width != other.width)
-			return false;
 		return true;
 	}
+
+
+
 
 }

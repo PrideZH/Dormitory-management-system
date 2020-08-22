@@ -20,7 +20,7 @@
 	</properties>
 
 	<dependencies>
-	
+
 		<!-- sqlite -->
 		<dependency>
 		    <groupId>org.xerial</groupId>

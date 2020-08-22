@@ -59,6 +59,8 @@ public class StudentService {
 			throw new Exception("班级不能为空");
 		}else if(StringUtil.isEmpty(student.getPhone())) {
 			throw new Exception("联系电话不能为空");
+		}else if(StringUtil.isEmpty(student.getDormName())) {
+			throw new Exception("楼宇号不能为空");
 		}
 		// 学号唯一
 		if(studentMapper.selectSid(student.getSid())) {

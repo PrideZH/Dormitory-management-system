@@ -51,7 +51,7 @@
 			student(sid,password,name,gender,id_card,college,classes,phone,did)
 		values
 			(#{sid},#{password},#{name},#{gender},#{idCard},#{college},#{classes},#{phone},
-			(select dorm.did from dorm where dorm.did = #{bid}))
+			(select dorm.did from dorm where dorm.name = #{dormName} and dorm.bid = #{bid}))
 	</insert>
 	
 	<!-- 修改 -->
