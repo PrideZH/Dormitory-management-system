@@ -11,7 +11,7 @@ public class StudentTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 
-	private String[] title = {"", "姓名", "学号", "性别", "联系电话", "学院", "班级", "楼宇号", "宿舍号", "操作"};
+	private String[] title = {"", "姓名", "学号","身份证号", "性别", "联系电话", "学院", "班级", "楼宇号", "宿舍号"};
 	private List<Student> students = new ArrayList<>();
 	
 	@Override
@@ -31,13 +31,13 @@ public class StudentTableModel extends AbstractTableModel {
 		case 0: return rowIndex + 1;
 		case 1: return student.getName();
 		case 2: return student.getSid();
-		case 3: return student.getGender();
-		case 4: return student.getPhone();
-		case 5: return student.getCollege();
-		case 6: return student.getClasses();
-		case 7: return student.getBid();
-		case 8: return student.getDormName();
-		case 9: return 0;
+		case 3: return student.getIdCard();
+		case 4: return student.getGender();
+		case 5: return student.getPhone();
+		case 6: return student.getCollege();
+		case 7: return student.getClasses();
+		case 8: return student.getBid();
+		case 9: return student.getDormName();
 		}
 		return null;
 	}
@@ -48,7 +48,7 @@ public class StudentTableModel extends AbstractTableModel {
 		return title[column];
 	}
 	
-	/**不可编辑 */
+	/** 设置是否可编辑 */
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
@@ -60,6 +60,11 @@ public class StudentTableModel extends AbstractTableModel {
 
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+	
+	/** 获得指定行数据 */
+	public Student get(int rowIndex) {
+		return students.get(rowIndex);
 	}
 
 }

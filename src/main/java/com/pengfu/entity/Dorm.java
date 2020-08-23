@@ -4,16 +4,16 @@ import java.util.List;
 
 public class Dorm {
 
-	private String name;
+	private String number;
 	private String bid;
 	private List<Student> students;
 
-	public String getName() {
-		return name;
+	public String getNumber() {
+		return number;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNumber(String number) {
+		this.number = number;
 	}
 
 	public String getBid() {
@@ -34,7 +34,7 @@ public class Dorm {
 
 	@Override
 	public String toString() {
-		return "Dorm [name=" + name + ", bid=" + bid + ", students=" + students + "]";
+		return "Dorm [number=" + number + ", bid=" + bid + ", students=" + students + "]";
 	}
 	
 }

@@ -7,19 +7,22 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.pengfu.entity.Student;
 import com.pengfu.model.StudentTableModel;
 import com.pengfu.service.StudentService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
-import com.pengfu.view.AddStudentFrame;
+import com.pengfu.view.PopupFrame;
 
 @Component
 @Lazy
@@ -29,11 +32,12 @@ public class StudentListPage extends BasePage {
 	
 	private StudentTableModel model = new StudentTableModel();
 	private JTable table;
+	
 	private StudentService studentService;
-
-	public StudentListPage() {
-		// 获取Service对象
-		studentService = SpringContextUtils.getBean("studentService", StudentService.class);
+	
+	@Autowired
+	public StudentListPage(StudentService studentService) {
+		this.studentService = studentService;
 		model.setStudents(studentService.getAll());
 
 		initComponents();
@@ -59,10 +63,14 @@ public class StudentListPage extends BasePage {
 		northPane.setBackground(ConstantConfig.PAGE_COLOR);
 		northPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(northPane, BorderLayout.NORTH);
-		// 添加按钮
+		
+		// 操作按钮
 		JButton addBtn = new JButton("添加");
 		northPane.add(addBtn);
-		// 刷新按钮
+		JButton setBtn = new JButton("修改");
+		northPane.add(setBtn);
+		JButton deleteBtn = new JButton("删除");
+		northPane.add(deleteBtn);
 		JButton updateBtn = new JButton("刷新");
 		northPane.add(updateBtn);
 		
@@ -73,18 +81,41 @@ public class StudentListPage extends BasePage {
 		contxtPane.add(tablePane, BorderLayout.CENTER);
 
 		// 监听器 
-		// 添加
 		addBtn.addActionListener((e) -> {
-			SpringContextUtils.getBean(AddStudentFrame.class).setVisible(true);
+			PopupFrame popupFrame = SpringContextUtils.getBean(PopupFrame.class);
+			popupFrame.showAddPane("addStudent");
+			popupFrame.setVisible(true);
 		});
-		// 刷新
+		setBtn.addActionListener(e -> {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showMessageDialog(null, "未选择目标");
+				return;
+			}
+			// 获得欲修改学生信息
+			Student student = model.get(row);
+			// 显示修改信息面板
+			PopupFrame popupFrame = SpringContextUtils.getBean(PopupFrame.class);
+			popupFrame.showSetPane("setStudent", student);
+			popupFrame.setVisible(true);
+		});
+		deleteBtn.addActionListener(e -> {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showMessageDialog(null, "未选择目标");
+				return;
+			}
+			if(studentService.delete((String) model.getValueAt(row, 1)) > 0) {
+				updateTable();
+				JOptionPane.showMessageDialog(null, "删除成功");
+			}	
+		});
 		updateBtn.addActionListener(e -> updateTable());
 		
 	}
 	
 	/** 更新表格数据 */
 	public void updateTable() {
-		System.out.println(2);
 		model.setStudents(studentService.getAll());
 		table.updateUI();
 	}

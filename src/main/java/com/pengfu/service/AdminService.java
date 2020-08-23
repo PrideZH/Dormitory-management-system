@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pengfu.dao.AdminMapper;
+import com.pengfu.dao.BuildingMapper;
 import com.pengfu.entity.Admin;
 import com.pengfu.util.StringUtil;
 
@@ -16,6 +17,8 @@ public class AdminService {
 
 	@Autowired
 	private AdminMapper adminMapper;
+	@Autowired
+	private BuildingMapper buildingMapper;
 	
 	/** 判断登陆信息是否正确 */
 	public Admin loginQuery(String username, String password) throws Exception {
@@ -28,6 +31,13 @@ public class AdminService {
 		Admin admin = adminMapper.selectByUsername(username);
 		if(admin != null) {
 			if(admin.getPassword().equals(password)) {
+				if(1 == admin.getRole()) {
+					// 超级管理员管理所有楼宇id
+					admin.setBids(buildingMapper.selectAllId());
+				}else {
+					// 获得本权限管理的所有楼宇id
+					admin.setBids(buildingMapper.selectAllIdByAid(admin.getAid()));
+				}
 				return admin;
 			}else {
 				throw new Exception("密码错误");
@@ -39,7 +49,11 @@ public class AdminService {
 
 	/** 获得所有管理者 */
 	public List<Admin> getAll() {
-		return adminMapper.selectAll();
+		List<Admin> admins = adminMapper.selectAll();
+		for(Admin admin : admins) {
+			admin.setBids(buildingMapper.selectAllIdByAid(admin.getAid()));
+		}
+		return admins;
 	}
 
 	/** 添加管理员 */
@@ -54,6 +68,11 @@ public class AdminService {
 		}
 		// 添加
 		adminMapper.insert(admin);
+	}
+
+	/** 移除 */
+	public int delete(String username) {
+		return adminMapper.delete(username);
 	}
 
 	

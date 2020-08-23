@@ -11,12 +11,12 @@ public class DormTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String[] title = {"宿舍号", "状态", "操作"};
-	private List<Dorm> dormitorys = new ArrayList<>();
+	private String[] title = {"", "宿舍号", "状态"};
+	private List<Dorm> dorms = new ArrayList<>();
 
 	@Override
 	public int getRowCount() {
-		return dormitorys.size();
+		return dorms.size();
 	}
 
 	@Override
@@ -26,11 +26,11 @@ public class DormTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Dorm dormitory = dormitorys.get(rowIndex);
+		Dorm dorm = dorms.get(rowIndex);
 		switch(columnIndex) {
-		case 0: return dormitory.getName();
-		case 1: return dormitory.getStudents().size();
-		case 2: return 0;
+		case 0: return rowIndex + 1;
+		case 1: return dorm.getNumber();
+		case 2: return dorm.getStudents().size() + "/4";
 		}
 		return null;
 	}
@@ -41,18 +41,23 @@ public class DormTableModel extends AbstractTableModel {
 		return title[column];
 	}
 	
-	/**不可编辑 */
+	/** 设置是否可编辑 */
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
 	}
 	
-	public List<Dorm> getDormitorys() {
-		return dormitorys;
+	public List<Dorm> getDorms() {
+		return dorms;
 	}
 
-	public void setDormitorys(List<Dorm> dormitorys) {
-		this.dormitorys = dormitorys;
+	public void setDorms(List<Dorm> dorms) {
+		this.dorms = dorms;
+	}
+	
+	/** 获得指定行数据 */
+	public Dorm get(int rowIndex) {
+		return dorms.get(rowIndex);
 	}
 	
 }

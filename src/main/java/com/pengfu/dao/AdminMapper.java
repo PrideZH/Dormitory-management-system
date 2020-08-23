@@ -23,6 +23,6 @@ public interface AdminMapper {
 	void update(Admin admin);
 	
 	/** 通过用户名删除 */
-	void delete(String username);
+	int delete(String username);
 	
 }

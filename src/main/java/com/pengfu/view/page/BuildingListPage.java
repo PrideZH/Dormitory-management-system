@@ -7,19 +7,22 @@ import java.awt.Dimension;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.pengfu.entity.Building;
 import com.pengfu.model.BuildingTableModel;
 import com.pengfu.service.BuildingService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
-import com.pengfu.view.AddBuildingFrame;
+import com.pengfu.view.PopupFrame;
 
 @Component
 @Lazy
@@ -27,11 +30,14 @@ public class BuildingListPage extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 	
-	BuildingTableModel model = new BuildingTableModel();
+	private BuildingTableModel model = new BuildingTableModel();
+	private JTable table;
 	
-	public BuildingListPage() {
-		// 获取Service对象
-		BuildingService buildingService = SpringContextUtils.getBean("buildingService", BuildingService.class);
+	private BuildingService buildingService;
+	
+	@Autowired
+	public BuildingListPage(BuildingService buildingService) {
+		this.buildingService = buildingService;
 		model.setBuildings(buildingService.getAll());
 
 		initComponents();
@@ -58,17 +64,23 @@ public class BuildingListPage extends BasePage {
 		northPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(northPane, BorderLayout.NORTH);
 		
-		// 添加按钮
+		// 操作按钮
 		JButton addBtn = new JButton("添加");
 		northPane.add(addBtn);
+		JButton setBtn = new JButton("修改");
+		northPane.add(setBtn);
+		JButton deleteBtn = new JButton("删除");
+		northPane.add(deleteBtn);
+		JButton updateBtn = new JButton("刷新");
+		northPane.add(updateBtn);
 		
 		// 楼宇信息列表
-		JTable table = TableBuilder.getTableBuilder().build(model);
+		table = TableBuilder.getTableBuilder().build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(ConstantConfig.PAGE_COLOR);	
 		contxtPane.add(tablePane, BorderLayout.CENTER);
 		
-		// 分页
+		// 分页栏
 		JPanel southPane = new JPanel();
 		southPane.setBackground(ConstantConfig.PAGE_COLOR);
 		southPane.setPreferredSize(new Dimension(0, 64));	
@@ -76,8 +88,42 @@ public class BuildingListPage extends BasePage {
 		
 		// 监听器 
 		addBtn.addActionListener((e) ->{
-			SpringContextUtils.getBean(AddBuildingFrame.class).setVisible(true);
+			PopupFrame popupFrame = SpringContextUtils.getBean(PopupFrame.class);
+			popupFrame.showAddPane("addBuilding");
+			popupFrame.setVisible(true);
 		});
+		setBtn.addActionListener(e -> {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showMessageDialog(null, "未选择目标");
+				return;
+			}
+			// 获得欲修改楼宇信息
+			Building building = model.get(row);
+			// 显示修改信息面板
+			PopupFrame popupFrame = SpringContextUtils.getBean(PopupFrame.class);
+			popupFrame.showSetPane("setBuilding", building);
+			popupFrame.setVisible(true);
+		});
+		deleteBtn.addActionListener(e -> {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showMessageDialog(null, "未选择目标");
+				return;
+			}
+			if(buildingService.delete((String) model.getValueAt(row, 1)) > 0) {
+				updateTable();
+				JOptionPane.showMessageDialog(null, "删除成功");
+			}	
+		});
+		// 刷新
+		updateBtn.addActionListener(e -> updateTable());
+		
 	}
-
+	
+	/** 更新表格数据 */
+	public void updateTable() {
+		model.setBuildings(buildingService.getAll());
+		table.updateUI();
+	}
 }

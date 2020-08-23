@@ -25,12 +25,10 @@ public class LoginFrame extends BaseFrame {
 	private static final long serialVersionUID = 1L;
 	
 	// 控制层对象
+	@Autowired
 	private AppControl control;
 	
-	@Autowired
-	public LoginFrame(AppControl control) {
-		this.control = control;
-		
+	public LoginFrame() {
 		setText("登陆");
 		setSize(600, 400);
 		setLocationRelativeTo(null);
@@ -79,7 +77,7 @@ public class LoginFrame extends BaseFrame {
 		JButton LoginBtn = new JButton("登陆");
 		LoginBtn.setBounds(380, 240, 96, 32);
 		contentPane.add(LoginBtn);
-		
+
 		// 添加监听器
 		// 登陆按钮
 		LoginBtn.addActionListener((e) -> {

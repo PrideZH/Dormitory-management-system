@@ -11,7 +11,7 @@ public class BuildingTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private String[] title = {"楼宇编号", "负责人", "联系电话", "操作"};
+	private String[] title = {"", "楼宇编号", "负责人", "联系电话"};
 	private List<Building> buildings = new ArrayList<>();
 
 	@Override
@@ -28,10 +28,14 @@ public class BuildingTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Building building = buildings.get(rowIndex);
 		switch(columnIndex) {
-		case 0: return building.getBid();
-		case 1: return building.getAdmin().getName();
-		case 2: return building.getAdmin().getPhone();
-		case 3: return 0;
+		case 0: return rowIndex + 1;
+		case 1: return building.getBid();
+		case 2: 
+			if(building.getAdmin() == null) return "-";
+			return building.getAdmin().getName();
+		case 3: 
+			if(building.getAdmin() == null) return "-";
+			return building.getAdmin().getPhone();
 		}
 		return null;
 	}
@@ -42,7 +46,7 @@ public class BuildingTableModel extends AbstractTableModel {
 		return title[column];
 	}
 	
-	/**不可编辑 */
+	/** 设置是否可编辑 */
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
@@ -54,6 +58,11 @@ public class BuildingTableModel extends AbstractTableModel {
 
 	public void setBuildings(List<Building> buildings) {
 		this.buildings = buildings;
+	}
+	
+	/** 获得指定行数据 */
+	public Building get(int rowIndex) {
+		return buildings.get(rowIndex);
 	}
 	
 }

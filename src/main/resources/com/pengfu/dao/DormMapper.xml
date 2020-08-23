@@ -7,7 +7,7 @@
 
 	<!-- 封装宿舍对象 -->
 	<resultMap id="dormMap" type="dorm">
-		<result property="name" column="name"/>
+		<result property="number" column="number"/>
 		<result property="bid" column="bid"/>
 		<!-- 封装学生集合对象 -->
 		<collection property="students" ofType="student">
@@ -25,7 +25,7 @@
 	<!-- 根据宿舍楼查询所有宿舍 -->
 	<select id="selectAllByBid" resultMap="dormMap">
 		select
-			dorm.name, student.*, dorm.bid
+			dorm.number, student.*, dorm.bid
 		from
 			dorm
 		left outer join
@@ -37,29 +37,23 @@
 	</select>
 	
 	<!-- 根据宿舍楼查询所有宿舍号 -->
-	<select id="selectAllIdByBid" resultType="String">
-		select
-			dorm.name
-		from
-			dorm
-		where
-			dorm.bid = #{bid}
+	<select id="selectAllNumberByBid" resultType="String">
+		select dorm.number from dorm where dorm.bid = #{bid}
+	</select>
+	
+	<!-- 查询宿舍号是否存在 -->
+	<select id="selectNumber" resultType="boolean">
+		select count(*) from dorm where dorm.number = #{number} and dorm.bid = #{bid}
 	</select>
 	
 	<!-- 添加 -->
 	<insert id="insert" parameterType="dorm">
-		insert into 
-			dorm(name, bid)
-		values
-			(#{name},#{bid})
+		insert into dorm(number, bid) values (#{number},#{bid})
 	</insert>
 
 	<!-- 删除 -->
 	<delete id="delete">
-		delete from 
-			dorm 
-		where 
-			name = #{name} and bid = #{bid};
+		delete from dorm where number = #{number} and bid = #{bid}
 	</delete>
 
 </mapper>

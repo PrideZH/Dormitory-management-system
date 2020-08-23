@@ -10,12 +10,15 @@ public interface DormMapper {
 	List<Dorm> selectAllByBid(String bid);
 	
 	/** 通过楼宇编号查询所有宿舍号 */
-	List<String> selectAllIdByBid(String bid);
+	List<String> selectAllNumberByBid(String bid);
+	
+	/** 查询 宿舍号是否存在 */
+	boolean selectNumber(Dorm dorm);
 
 	/** 添加 */
 	void insert(Dorm dorm);
 	
 	/** 删除 */
-	void delete(Dorm dorm);
-	
+	int delete(Dorm dorm);
+
 }

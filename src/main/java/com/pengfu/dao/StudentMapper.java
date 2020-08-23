@@ -29,6 +29,6 @@ public interface StudentMapper {
 	void update(Student student);
 	
 	/** 删除 */
-	void deleteById(String id);
+	int deleteById(String id);
 
 }

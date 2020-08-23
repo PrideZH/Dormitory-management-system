@@ -76,5 +76,14 @@ public class StudentService {
 		return studentMapper.selectAll();
 	}
 
+	/** 修改 */
+	public void update(Student student) {
+		studentMapper.update(student);
+	}
+
+	public int delete(String id) {
+		return studentMapper.deleteById(id);
+	}
+
 
 }

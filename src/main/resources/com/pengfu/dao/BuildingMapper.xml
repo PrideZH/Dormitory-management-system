@@ -13,6 +13,7 @@
 			<result property="username" column="username"/>
 			<result property="password" column="password"/>
 			<result property="name" column="name"/>
+			<result property="phone" column="phone"/>
 			<result property="role" column="role"/>
 		</association>
 	</resultMap>
@@ -22,53 +23,41 @@
 		select
 			building.bid, admin.*
 		from
-			building, admin
-		where
-			building.aid = admin.aid
+			building
+		left outer join
+     		admin
+		on
+			admin.aid = building.aid
 	</select>
 	
 	<!-- 查询所有编号 -->
 	<select id="selectAllId" resultType="String">
-		select
-			building.bid
-		from
-			building
+		select building.bid from building
+	</select>
+	
+	<!-- 根据管理员id查询所有编号 -->
+	<select id="selectAllIdByAid" resultType="String">
+		select building.bid from building where building.aid == #{aid}
 	</select>
 	
 	<!-- 查询编号是否存在 -->
-	<select id="selectBid"  resultType="boolean">
-		select
-			count(*)
-		from
-			building
-		where 
-			building.bid = #{id}
+	<select id="selectBid" resultType="boolean">
+		select count(*) from building where building.bid = #{id}
 	</select>
 	
 	<!-- 添加 -->
 	<insert id="insert" parameterType="building">
-		insert into
-			building(bid, aid)
-		values
-			(#{bid}, #{admin.aid})
+		insert into building(bid, aid) values (#{bid}, #{admin.aid})
 	</insert>
 	
 	<!-- 修改 -->
 	<update id="update">
-		update 
-			building
-		set 
-			aid = #{admin.aid}
-		where 
-			bid = #{bid}
+		update building set aid = #{admin.aid} where bid = #{bid}
 	</update>
 	
 	<!-- 通过楼宇编号删除 -->
 	<delete id="delete">
-		delete from 
-			building 
-		where 
-			bid = #{bid};
+		delete from building where bid = #{bid};
 	</delete>
 	
 </mapper>

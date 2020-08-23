@@ -1,5 +1,7 @@
 package com.pengfu.entity;
 
+import java.util.List;
+
 /** 管理员 */
 public class Admin {
 
@@ -9,7 +11,7 @@ public class Admin {
 	private String name; // 姓名
 	private String phone; // 联系电话
 	private int role; // 权限 0-普通管理 1-超级管理
-	private String bid; // 管理楼宇编号
+	private List<String> bids; // 管理楼宇编号
 	
 	public int getAid() {
 		return aid;
@@ -58,19 +60,19 @@ public class Admin {
 	public void setRole(int role) {
 		this.role = role;
 	}
+
+	public List<String> getBids() {
+		return bids;
+	}
+
+	public void setBids(List<String> bids) {
+		this.bids = bids;
+	}
 	
-	public String getBid() {
-		return bid;
-	}
-
-	public void setBid(String bid) {
-		this.bid = bid;
-	}
-
 	@Override
 	public String toString() {
-		return "Manager [username=" + username + ", password=" + password + ", name=" + name + ", phone=" + phone
-				+ ", role=" + role + ", bid=" + bid + "]";
+		return "Admin [aid=" + aid + ", username=" + username + ", password=" + password + ", name=" + name + ", phone="
+				+ phone + ", role=" + role + ", bids=" + bids + "]";
 	}
 	
 }

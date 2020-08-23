@@ -23,20 +23,28 @@ public class DormService {
 	}
 
 	/** 通过楼宇编号查找所有宿舍号 */
-	public List<String> getAllIdByBid(String bid) {
-		return dormitoryMapper.selectAllIdByBid(bid);
+	public List<String> getAllNumberByBid(String bid) {
+		return dormitoryMapper.selectAllNumberByBid(bid);
 	}
 
 	/** 添加宿舍 */
 	public void addDormitoryt(Dorm dorm) throws Exception {
 		// 不为空
-		if(StringUtil.isEmpty(dorm.getName())) {
+		if(StringUtil.isEmpty(dorm.getNumber())) {
 			throw new Exception("宿舍号不能为空");
 		}else if(StringUtil.isEmpty(dorm.getBid())) {
 			throw new Exception("宿舍楼不能为空");
 		}
+		// 同楼宇里宿舍号唯一
+		if(dormitoryMapper.selectNumber(dorm)) {
+			throw new Exception("该宿舍号已存在");
+		}
 		// 添加
 		dormitoryMapper.insert(dorm);
+	}
+
+	public int delete(Dorm dorm) {
+		return dormitoryMapper.delete(dorm);
 	}
 	
 }

@@ -5,8 +5,6 @@ import javax.swing.JOptionPane;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import com.pengfu.entity.Building;
-import com.pengfu.entity.Dorm;
 import com.pengfu.entity.Admin;
 import com.pengfu.entity.Student;
 import com.pengfu.model.Role;
@@ -46,43 +44,17 @@ public class AppControl {
 				Role.setStudent(student);
 			}else { // 管理员登陆
 				//Manager manager = managerService.loginQuery(username, password);
-				Admin manager = adminService.loginQuery("123456", "123456");
-				Role.setManager(manager);
+				Admin admin = adminService.loginQuery("123456", "123456");
+				Role.setAdmin(admin);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 			e.printStackTrace();
 		}
-		
 		// 显示主窗口
 		SpringContextUtils.getBean(MainFrame.class).setVisible(true);
-		
-		closeLoginFrame();
-	}
-	
-	/** 关闭登陆窗口 */
-	public void closeLoginFrame() {
+		// 关闭登陆窗口
 		SpringContextUtils.getBean(LoginFrame.class).dispose();
-	}
-	
-	/** 添加楼宇 */
-	public void addBuilding(Building building) throws Exception {
-		buildingService.addBuilding(building);
-	}
-
-	/** 添加宿舍 */
-	public void addDormitory(Dorm dormitory) throws Exception {
-		dormService.addDormitoryt(dormitory);
-	}
-
-	/** 添加管理员 */
-	public void addManager(Admin manager) throws Exception {
-		adminService.addManager(manager);
-	}
-
-	/** 添加学生 */
-	public void addStudent(Student student) throws Exception {
-		studentService.addStudent(student);
 	}
 
 }

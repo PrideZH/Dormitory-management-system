@@ -39,4 +39,12 @@ public class BuildingService {
 		buildingMapper.insert(building);
 	}
 
+	public int delete(String bid) {
+		return buildingMapper.delete(bid);
+	}
+
+	public void update(Building building) {
+		buildingMapper.update(building);
+	}
+
 }

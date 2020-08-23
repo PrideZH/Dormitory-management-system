@@ -12,6 +12,9 @@ public interface BuildingMapper {
 	/** 查询所有编号 */
 	List<String> selectAllId();
 	
+	/** 根据管理员id查询所有编号 */
+	List<String> selectAllIdByAid(int aid);
+	
 	/** 查询编号是否存在 */
 	boolean selectBid(String bid);
 
@@ -22,6 +25,6 @@ public interface BuildingMapper {
 	void update(Building building);
 	
 	/** 通过楼宇编号删除 */
-	void delete(String bid);
+	int delete(String bid);
 	
 }

@@ -11,12 +11,12 @@ public class AdminTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
 
-	private String[] title = {"", "姓名", "联系电话", "权限", "操作"};
-	private List<Admin>  managers = new ArrayList<>();
+	private String[] title = {"", "姓名", "联系电话", "权限"};
+	private List<Admin> admins = new ArrayList<>();
 
 	@Override
 	public int getRowCount() {
-		return managers.size();
+		return admins.size();
 	}
 
 	@Override
@@ -26,13 +26,12 @@ public class AdminTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Admin manager = managers.get(rowIndex);
+		Admin admin = admins.get(rowIndex);
 		switch(columnIndex) {
 		case 0: return rowIndex + 1;
-		case 1: return manager.getName();
-		case 2: return manager.getPhone();
-		case 3: return manager.getRole();
-		case 4: return 0;
+		case 1: return admin.getName();
+		case 2: return admin.getPhone();
+		case 3: return admin.getRole();
 		}
 		return null;
 	}
@@ -43,18 +42,23 @@ public class AdminTableModel extends AbstractTableModel {
 		return title[column];
 	}
 	
-	/**不可编辑 */
+	/** 设置是否可编辑 */
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
 	}
 	
-	public List<Admin> getManagers() {
-		return managers;
+	public List<Admin> getAdmins() {
+		return admins;
 	}
 
-	public void setManagers(List<Admin> managers) {
-		this.managers = managers;
+	public void setAdmins(List<Admin> admins) {
+		this.admins = admins;
+	}
+	
+	/** 获得指定行数据 */
+	public Admin get(int rowIndex) {
+		return admins.get(rowIndex);
 	}
 	
 }

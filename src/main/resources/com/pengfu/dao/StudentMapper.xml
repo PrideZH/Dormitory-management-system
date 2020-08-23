@@ -8,7 +8,7 @@
 	<!-- 查询所有 -->
 	<select id="selectAll" resultType="student">
 		select 
-			student.*, dorm.name dormName, building.bid
+			student.*, dorm.number dormName, building.bid
 		from 
 			student, dorm, building
 		where 
@@ -18,7 +18,7 @@
 	<!-- 根据id查 -->
 	<select id="selectById" resultType="student">
 		select 
-			student.*, dorm.name dormName, building.bid
+			student.*, dorm.number dormName, building.bid
 		from 
 			student, dorm, building
 		where 
@@ -28,7 +28,7 @@
 	<!-- 根据姓名查 -->
 	<select id="selectByName" parameterType="string" resultType="student">
 		select 
-			student.*, dorm.name dormName, building.bid
+			student.*, dorm.number dormName, building.bid
 		from
 			student, dorm, building
 		where
@@ -37,12 +37,7 @@
 	
 	<!-- 查询学号是否存在 -->
 	<select id="selectSid" resultType="boolean">
-		select
-			count(*)
-		from
-			student
-		where
-			student.sid = #{id}
+		select count(*) from student where student.sid = #{id}
 	</select>
 
 	<!-- 添加 -->
@@ -56,12 +51,7 @@
 	
 	<!-- 修改 -->
 	<update id="update">
-		update 
-			student
-		set 
-			password = #{password}, phone = #{phone}
-		where 
-			sid = #{sid}
+		update student set password = #{password}, phone = #{phone} where sid = #{sid}
 	</update>
 	
 	<!-- 删除 -->

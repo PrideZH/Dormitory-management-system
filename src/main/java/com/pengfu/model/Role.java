@@ -32,8 +32,6 @@ public enum Role {
 			
 			// 个人中心：个人信息
 			permissionList.put("personal", Arrays.asList("adminProfile"));
-			// 楼宇管理：楼宇列表
-			permissionList.put("building", Arrays.asList("buildingList"));
 			// 宿舍管理：宿舍列表
 			permissionList.put("dormitory", Arrays.asList("dormitoryList"));
 			// 学生管理
@@ -68,14 +66,14 @@ public enum Role {
 	
 	private String RoleName;
 	private static Student student;
-	private static Admin manager;
+	private static Admin admin;
 	
 	/** 获得已初始化对象 */
 	public static Role getRole() {
 		if(student != null) {
 			return Student;
-		}else if(manager != null) {
-			return manager.getRole() == 1 ? SuperManage : GeneralManage;
+		}else if(admin != null) {
+			return admin.getRole() == 1 ? SuperManage : GeneralManage;
 		}else {
 			return null;
 		}
@@ -92,16 +90,16 @@ public enum Role {
 		return student;
 	}
 
-	public static Admin getManager() {
-		return manager;
+	public static Admin getAdmin() {
+		return admin;
 	}
 
 	public static void setStudent(Student student) {
 		Role.student = student;
 	}
 
-	public static void setManager(Admin manager) {
-		Role.manager = manager;
+	public static void setAdmin(Admin admin) {
+		Role.admin = admin;
 	}
 
 	public String getRoleName() {

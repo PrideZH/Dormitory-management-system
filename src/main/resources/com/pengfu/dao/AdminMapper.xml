@@ -7,38 +7,17 @@
 
 	<!-- 通过用户名查询 -->
 	<select id="selectByUsername" resultType="admin">
-		select 
-			admin.*,building.bid 
-		from 
-			admin 
-		left outer join 
-			building 
-		on 
-			admin.aid = building.aid 
-		where 
-			username = #{username}
+		select * from admin where username = #{username}
 	</select>
 	
 	<!-- 查询所有 -->
 	<select id="selectAll" resultType="admin">
-		select 
-			admin.*,building.bid 
-		from 
-			admin 
-		left outer join 
-			building 
-		on 
-			admin.aid = building.aid 
+		select * from admin
 	</select>
 	
 	<!-- 查询用户名是否存在 -->
 	<select id="selectUsername" resultType="boolean">
-		select 
-			count(*) 
-		from 
-			admin 
-		where 
-			admin.username = #{username}
+		select count(*) from admin where admin.username = #{username}
 	</select>
 	
 	<!-- 添加 -->
@@ -51,20 +30,14 @@
 	
 	<!-- 修改 -->
 	<update id="update">
-		update 
-			admin
-		set 
-			username=#{username},password=#{password},name=#{name},phone=#{phone},role=#{role}
-		where 
-			aid = #{aid}
+		update admin
+		set username=#{username},password=#{password},name=#{name},phone=#{phone},role=#{role}
+		where aid = #{aid}
 	</update>
 	
 	<!-- 通过用户名删除 -->
 	<delete id="delete">
-		delete from 
-			admin 
-		where 
-			username = #{username};
+		delete from admin where username = #{username};
 	</delete>
 	
 </mapper>
