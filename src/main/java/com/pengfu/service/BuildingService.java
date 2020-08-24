@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.pengfu.dao.BuildingMapper;
 import com.pengfu.entity.Building;
+import com.pengfu.util.StringUtil;
 
 @Transactional
 @Service("buildingService")
@@ -29,7 +30,7 @@ public class BuildingService {
 	/** 添加楼宇 */
 	public void addBuilding(Building building) throws Exception {
 		// 不为空
-		if(building.getBid() == null) {
+		if(StringUtil.isEmpty(building.getBid())) {
 			throw new Exception("楼宇编号不能为空");
 		}
 		// 楼宇编号唯一

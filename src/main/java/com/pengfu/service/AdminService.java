@@ -57,14 +57,18 @@ public class AdminService {
 	}
 
 	/** 添加管理员 */
-	public void addManager(Admin admin) throws Exception {
+	public void addAdmin(Admin admin) throws Exception {
 		// 不为空
-		if(admin.getUsername() == null) {
+		if(StringUtil.isEmpty(admin.getUsername())) {
 			throw new Exception("用户名不能为空");
-		}else if(admin.getPassword() == null) {
-			throw new Exception("密码不能为空");
-		}else if(admin.getName() == null) {
+		}else if(StringUtil.isEmpty(admin.getName())) {
 			throw new Exception("姓名不能为空");
+		}else if(StringUtil.isEmpty(admin.getPhone())) {
+			throw new Exception("联系电话不能为空");
+		}
+		// 用户名唯一
+		if(adminMapper.selectUsername(admin.getUsername())) {
+			throw new Exception("该用户已存在");
 		}
 		// 添加
 		adminMapper.insert(admin);
@@ -73,6 +77,19 @@ public class AdminService {
 	/** 移除 */
 	public int delete(String username) {
 		return adminMapper.delete(username);
+	}
+
+	/** 修改 */
+	public void update(Admin admin) throws Exception {
+		// 不为空
+		if(StringUtil.isEmpty(admin.getUsername())) {
+			throw new Exception("用户名不能为空");
+		}else if(StringUtil.isEmpty(admin.getName())) {
+			throw new Exception("姓名不能为空");
+		}else if(StringUtil.isEmpty(admin.getPhone())) {
+			throw new Exception("联系电话不能为空");
+		}
+		adminMapper.update(admin);
 	}
 
 	

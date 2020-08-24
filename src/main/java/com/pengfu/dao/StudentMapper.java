@@ -13,8 +13,8 @@ public interface StudentMapper {
 	/** 根据id查 */
 	Student selectById(String id);
 	
-	/** 根据姓名查 */
-	List<Student> selectByName(String name);
+	/** 模糊查询 */
+	List<Student> selectByStudent(Student student);
 	
 	/** 根据身份证号查 */
 	List<Student> selectByIdCard(String idCard);

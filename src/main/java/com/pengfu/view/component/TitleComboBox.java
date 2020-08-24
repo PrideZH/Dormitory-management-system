@@ -30,17 +30,20 @@ public class TitleComboBox extends JPanel {
 		add(comboBox);
 	}
 	
+	/** 设置数据 */
 	public void setModel(String[] list) {
 		comboBox.setModel(new DefaultComboBoxModel<String>(list));
 	}
 	
+	/** 设置数据 */
 	public void setModel(List<String> list) {
 		String[] strings = new String[list.size()];
 		list.toArray(strings);
 		comboBox.setModel(new DefaultComboBoxModel<String>(strings));
 	}
 	
-	public void setModel(String item) {
+	/** 添加数据 */
+	public void addItem(String item) {
 		comboBox.addItem(item);
 	}
 

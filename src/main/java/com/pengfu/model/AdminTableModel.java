@@ -11,7 +11,7 @@ public class AdminTableModel extends AbstractTableModel {
 	
 	private static final long serialVersionUID = 1L;
 
-	private String[] title = {"", "姓名", "联系电话", "权限"};
+	private String[] title = {"", "用户名", "姓名", "联系电话", "权限"};
 	private List<Admin> admins = new ArrayList<>();
 
 	@Override
@@ -29,9 +29,10 @@ public class AdminTableModel extends AbstractTableModel {
 		Admin admin = admins.get(rowIndex);
 		switch(columnIndex) {
 		case 0: return rowIndex + 1;
-		case 1: return admin.getName();
-		case 2: return admin.getPhone();
-		case 3: return admin.getRole();
+		case 1: return admin.getUsername();
+		case 2: return admin.getName();
+		case 3: return admin.getPhone();
+		case 4: return admin.getRole() == 1 ? "超级管理员" : "普通管理员";
 		}
 		return null;
 	}

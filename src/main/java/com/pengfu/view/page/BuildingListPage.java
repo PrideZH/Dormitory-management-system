@@ -1,12 +1,9 @@
 package com.pengfu.view.page;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,6 +20,7 @@ import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
 import com.pengfu.view.PopupFrame;
+import com.pengfu.view.component.AppButton;
 
 @Component
 @Lazy
@@ -45,16 +43,6 @@ public class BuildingListPage extends BasePage {
 	
 	@Override
 	protected void initComponents() {		
-		// 搜索栏
-		JPanel topPane = new JPanel();
-		topPane.setPreferredSize(new Dimension(0, 64));
-		topPane.setBackground(ConstantConfig.PAGE_COLOR);
-		topPane.setBorder(BorderFactory.createLineBorder(new Color(65, 113, 156), 1));
-		add(topPane, 0);
-		
-		// 分割
-		add(Box.createVerticalStrut(16), 1);
-		
 		// 内容栏
 		contxtPane.setLayout(new BorderLayout());
 		
@@ -63,15 +51,15 @@ public class BuildingListPage extends BasePage {
 		northPane.setBackground(ConstantConfig.PAGE_COLOR);
 		northPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(northPane, BorderLayout.NORTH);
-		
+		northPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 16, 5));
 		// 操作按钮
-		JButton addBtn = new JButton("添加");
+		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
 		northPane.add(addBtn);
-		JButton setBtn = new JButton("修改");
+		AppButton setBtn = new AppButton("修改", ConstantConfig.SET_IMG);
 		northPane.add(setBtn);
-		JButton deleteBtn = new JButton("删除");
+		AppButton deleteBtn = new AppButton("删除", ConstantConfig.DELETE_IMG);
 		northPane.add(deleteBtn);
-		JButton updateBtn = new JButton("刷新");
+		AppButton updateBtn = new AppButton("刷新", ConstantConfig.UPDATE_IMG);
 		northPane.add(updateBtn);
 		
 		// 楼宇信息列表
@@ -106,15 +94,18 @@ public class BuildingListPage extends BasePage {
 			popupFrame.setVisible(true);
 		});
 		deleteBtn.addActionListener(e -> {
-			int row = table.getSelectedRow();
-			if(row == -1) {
-				JOptionPane.showMessageDialog(null, "未选择目标");
-				return;
+			if(JOptionPane.showConfirmDialog(null, "确定删除此楼宇?", "删除", JOptionPane.YES_NO_OPTION) 
+					== JOptionPane.YES_OPTION) {
+				int row = table.getSelectedRow();
+				if(row == -1) {
+					JOptionPane.showMessageDialog(null, "未选择目标");
+					return;
+				}
+				if(buildingService.delete((String) model.getValueAt(row, 1)) > 0) {
+					updateTable();
+					JOptionPane.showMessageDialog(null, "删除成功");
+				}
 			}
-			if(buildingService.delete((String) model.getValueAt(row, 1)) > 0) {
-				updateTable();
-				JOptionPane.showMessageDialog(null, "删除成功");
-			}	
 		});
 		// 刷新
 		updateBtn.addActionListener(e -> updateTable());

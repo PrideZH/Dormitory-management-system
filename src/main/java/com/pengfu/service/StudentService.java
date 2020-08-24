@@ -75,6 +75,27 @@ public class StudentService {
 	public List<Student> getAll() {
 		return studentMapper.selectAll();
 	}
+	
+	/** 模糊搜索 */
+	public List<Student> search(Student student) {
+		// 楼宇编号
+		if(StringUtil.isEmpty(student.getBid())) {
+			student.setBid(null);
+		}
+		// 学号
+		if(StringUtil.isEmpty(student.getSid())) {
+			student.setSid(null);
+		}else {
+			student.setSid("%" +student.getSid() + "%");
+		}
+		// 姓名
+		if(StringUtil.isEmpty(student.getName())) {
+			student.setName(null);
+		}else {
+			student.setName("%" + student.getName() + "%");
+		}
+		return studentMapper.selectByStudent(student);
+	}
 
 	/** 修改 */
 	public void update(Student student) {

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -28,8 +27,10 @@ import com.pengfu.service.DormService;
 import com.pengfu.service.StudentService;
 import com.pengfu.util.ConstantConfig;
 import com.pengfu.util.SpringContextUtils;
+import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.TitleComboBox;
 import com.pengfu.view.component.TitleInputBox;
+import com.pengfu.view.page.AdminListPage;
 import com.pengfu.view.page.BuildingListPage;
 import com.pengfu.view.page.DormListPage;
 import com.pengfu.view.page.StudentListPage;
@@ -55,6 +56,7 @@ public class PopupFrame extends BaseFrame {
 	private BuildingService buildingService;
 	
 	// 学生信息
+	private String studntPassword;
 	private TitleInputBox nameInputBox;
 	private TitleComboBox genderComboBox;
 	private TitleInputBox idCardInputBox;
@@ -63,6 +65,14 @@ public class PopupFrame extends BaseFrame {
 	
 	// 楼宇信息
 	private TitleInputBox buildingIdInputBox;
+	
+	// 管理员信息
+	private int aid;
+	private String password;
+	private TitleInputBox adminName;
+	private TitleInputBox adminUsername;
+	private TitleInputBox adminPhone;
+	private TitleComboBox adminRole;
 
 	@Autowired
 	public PopupFrame(StudentService studentService, AdminService adminService, DormService dormService, 
@@ -73,7 +83,7 @@ public class PopupFrame extends BaseFrame {
 		this.buildingService = buildingService;
 		
 		setText("添加学生");
-		setSize(750, 400);
+		setSize(750, 300);
 		setLocationRelativeTo(null);
 
 		initComponents();
@@ -116,6 +126,7 @@ public class PopupFrame extends BaseFrame {
 	 */
 	public void showSetPane(String name, Student student) {
 		showAddPane(name);
+		studntPassword = student.getPassword();
 		nameInputBox.setText(student.getName());
 		genderComboBox.setText(student.getGender());
 		idCardInputBox.setText(student.getIdCard());
@@ -129,6 +140,12 @@ public class PopupFrame extends BaseFrame {
 	 * @param student 欲设置信息
 	 */
 	public void showSetPane(String name, Admin admin) {
+		aid = admin.getAid();
+		password = admin.getPassword();
+		adminName.setText(admin.getName());
+		adminUsername.setText(admin.getUsername());
+		adminPhone.setText(admin.getPhone());
+		adminRole.setText(admin.getRole() == 1 ? "超级管理员" : "普通管理员");
 		showAddPane(name);
 	}
 	
@@ -208,14 +225,12 @@ public class PopupFrame extends BaseFrame {
 		
 		// 宿舍号
 		TitleComboBox dormComboBox = new TitleComboBox("宿舍");
-		// 获得当前楼宇编号
-		String bid = dormComboBox.getText();
-		// 修改宿舍号下拉列表数据
-		dormComboBox.setModel(dormService.getAllNumberByBid(bid));
+		// 根据楼宇编号修改宿舍号下拉列表数据
+		dormComboBox.setModel(dormService.getAllNumberByBid(buildingIdComboBox.getText()));
 		pane.add(dormComboBox);		
 		
 		// 添加按钮
-		JButton addBtn = new JButton("添加");
+		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
 		pane.add(addBtn);
 		
 		// 监听器
@@ -250,16 +265,59 @@ public class PopupFrame extends BaseFrame {
 		return pane;
 	}
 
+	/** 添加管理员信息界面 */
 	private JPanel getAddAdminPanel(String title) {
 		JPanel pane = new JPanel();
 		pane.setBackground(ConstantConfig.BG_COLOR);
 		pane.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 5));
 		pane.setName(title);
 		
+		// 姓名
+		TitleInputBox nameInputBox = new TitleInputBox("姓名");
+		pane.add(nameInputBox);
+		
+		// 用户名
+		TitleInputBox usernameBox = new TitleInputBox("用户名");
+		pane.add(usernameBox);
+		
+		// 联系电话
+		TitleInputBox phoneInputBox = new TitleInputBox("联系电话");
+		pane.add(phoneInputBox);
+		
+		// 权限
+		String[] roleList = new String[] {"普通管理员", "超级管理员"};
+		TitleComboBox roleComboBox = new TitleComboBox("权限");
+		roleComboBox.setModel(roleList);
+		pane.add(roleComboBox);	
+		
+		// 添加按钮
+		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
+		pane.add(addBtn);
+
+		// 添加按钮
+		addBtn.addActionListener((e) -> {
+			// 创建管理员对象
+			Admin admin = new Admin();
+			admin.setUsername(usernameBox.getText());
+			admin.setPassword(usernameBox.getText());
+			admin.setName(nameInputBox.getText());
+			admin.setPhone(phoneInputBox.getText());
+			String role = roleComboBox.getText();
+			admin.setRole(role.equals("超级管理员") ? 1 : 0);
+			// 添加到数据库
+			try {
+				adminService.addAdmin(admin);
+				SpringContextUtils.getBean(AdminListPage.class).updateTable();
+				JOptionPane.showMessageDialog(null, "添加成功");
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+		});
 		
 		return pane;
 	}
 	
+	/** 添加宿舍信息界面 */
 	private JPanel getAddDormPanel(String title) {
 		JPanel pane = new JPanel();
 		pane.setBackground(ConstantConfig.BG_COLOR);
@@ -276,7 +334,7 @@ public class PopupFrame extends BaseFrame {
 		pane.add(DormNumberInputBox);
 		
 		// 添加按钮
-		JButton addBtn = new JButton("添加");
+		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
 		pane.add(addBtn);
 
 		// 添加按钮
@@ -298,6 +356,7 @@ public class PopupFrame extends BaseFrame {
 		return pane;
 	}
 	
+	/** 添加楼宇信息界面 */
 	private JPanel getAddBuildingPanel(String title) {
 		JPanel pane = new JPanel();
 		pane.setBackground(ConstantConfig.BG_COLOR);
@@ -321,7 +380,7 @@ public class PopupFrame extends BaseFrame {
 		pane.add(adminComboBox);	
 		
 		// 添加按钮
-		JButton addBtn = new JButton("添加");
+		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
 		pane.add(addBtn);
 		
 		// 按钮监听
@@ -348,7 +407,7 @@ public class PopupFrame extends BaseFrame {
 		return pane;
 	}
 	
-	/** 初始化设置学生信息界面 */
+	/** 设置学生信息界面 */
 	private JPanel getSetStudentPanel(String title) {
 		JPanel pane = new JPanel();
 		pane.setBackground(ConstantConfig.BG_COLOR);
@@ -401,14 +460,12 @@ public class PopupFrame extends BaseFrame {
 		
 		// 宿舍号
 		TitleComboBox dormComboBox = new TitleComboBox("宿舍");
-		// 获得当前楼宇编号
-		String bid = dormComboBox.getText();
-		// 修改宿舍号下拉列表数据
-		dormComboBox.setModel(dormService.getAllNumberByBid(bid));
+		// 根据楼宇编号修改宿舍号下拉列表数据
+		dormComboBox.setModel(dormService.getAllNumberByBid(buildingIdComboBox.getText()));
 		pane.add(dormComboBox);	
 		
 		// 修改按钮
-		JButton setBtn = new JButton("修改");
+		AppButton setBtn = new AppButton("修改", ConstantConfig.SET_IMG);
 		pane.add(setBtn);
 		
 		// 监听器
@@ -418,10 +475,11 @@ public class PopupFrame extends BaseFrame {
 			dormComboBox.setModel(dormService.getAllNumberByBid(buildingIdComboBox.getText()));
 		});
 		
-		// 添加按钮
+		// 修改按钮
 		setBtn.addActionListener((e) -> {
 			// 创建学生对象
 			Student student = new Student();
+			student.setPassword(studntPassword);
 			student.setName(nameInputBox.getText());
 			student.setGender(genderComboBox.getText());
 			student.setIdCard(idCardInputBox.getText());
@@ -444,13 +502,54 @@ public class PopupFrame extends BaseFrame {
 		return pane;
 	}
 	
+	/** 设置管理员信息界面 */
 	private JPanel getSetAdminPanel(String title) {
 		JPanel pane = new JPanel();
 		pane.setBackground(ConstantConfig.BG_COLOR);
 		pane.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 5));
 		pane.setName(title);
 		
+		// 姓名
+		adminName = new TitleInputBox("姓名");
+		pane.add(adminName);
 		
+		// 用户名
+		adminUsername = new TitleInputBox("用户名");
+		adminUsername.setEnabled(false);
+		pane.add(adminUsername);
+		
+		// 联系电话
+		adminPhone = new TitleInputBox("联系电话");
+		pane.add(adminPhone);
+		
+		// 权限
+		String[] roleList = new String[] {"普通管理员", "超级管理员"};
+		adminRole = new TitleComboBox("权限");
+		adminRole.setModel(roleList);
+		pane.add(adminRole);	
+		
+		// 修改按钮
+		AppButton setBtn = new AppButton("修改", ConstantConfig.SET_IMG);
+		pane.add(setBtn);
+
+		// 修改按钮
+		setBtn.addActionListener((e) -> {
+			// 创建管理员对象
+			Admin admin = new Admin();
+			admin.setAid(aid);
+			admin.setPassword(password);
+			admin.setUsername(adminUsername.getText());
+			admin.setPhone(adminPhone.getText());
+			admin.setName(adminName.getText());
+			admin.setRole(adminRole.getText().equals("超级管理员") ? 1 : 0);
+			try {
+				adminService.update(admin);
+				SpringContextUtils.getBean(AdminListPage.class).updateTable();
+				JOptionPane.showMessageDialog(null, "修改成功");
+			} catch (Exception e1) {
+				JOptionPane.showMessageDialog(null, e1.getMessage());
+			}
+		});
 		
 		return pane;
 	}
@@ -479,7 +578,7 @@ public class PopupFrame extends BaseFrame {
 		pane.add(adminComboBox);	
 		
 		// 修改按钮
-		JButton setBtn = new JButton("修改");
+		AppButton setBtn = new AppButton("修改", ConstantConfig.SET_IMG);
 		pane.add(setBtn);
 		
 		// 按钮监听

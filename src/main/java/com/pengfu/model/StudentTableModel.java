@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import com.pengfu.entity.Student;
+import com.pengfu.util.StringUtil;
 
 public class StudentTableModel extends AbstractTableModel {
 
@@ -27,6 +28,8 @@ public class StudentTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Student student = students.get(rowIndex);
+		String bid = student.getBid();
+		String dormName = student.getDormName();
 		switch(columnIndex) {
 		case 0: return rowIndex + 1;
 		case 1: return student.getName();
@@ -36,8 +39,8 @@ public class StudentTableModel extends AbstractTableModel {
 		case 5: return student.getPhone();
 		case 6: return student.getCollege();
 		case 7: return student.getClasses();
-		case 8: return student.getBid();
-		case 9: return student.getDormName();
+		case 8: return StringUtil.isEmpty(bid) ? "-" : bid;
+		case 9: return StringUtil.isEmpty(bid) ? "-" : dormName;
 		}
 		return null;
 	}

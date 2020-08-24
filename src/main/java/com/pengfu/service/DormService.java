@@ -15,16 +15,19 @@ import com.pengfu.util.StringUtil;
 public class DormService {
 
 	@Autowired
-	private DormMapper dormitoryMapper; 
+	private DormMapper dormMapper; 
 	
 	/** 通过楼宇编号查找所有宿舍 */
 	public List<Dorm> getDormitoryByBid(String bid) {
-		return dormitoryMapper.selectAllByBid(bid);
+//		if(StringUtil.isEmpty(bid)) {
+//			//return dormMapper.selectAll(bid)
+//		}
+		return dormMapper.selectAllByBid(bid);
 	}
 
 	/** 通过楼宇编号查找所有宿舍号 */
 	public List<String> getAllNumberByBid(String bid) {
-		return dormitoryMapper.selectAllNumberByBid(bid);
+		return dormMapper.selectAllNumberByBid(bid);
 	}
 
 	/** 添加宿舍 */
@@ -36,15 +39,15 @@ public class DormService {
 			throw new Exception("宿舍楼不能为空");
 		}
 		// 同楼宇里宿舍号唯一
-		if(dormitoryMapper.selectNumber(dorm)) {
+		if(dormMapper.selectNumber(dorm)) {
 			throw new Exception("该宿舍号已存在");
 		}
 		// 添加
-		dormitoryMapper.insert(dorm);
+		dormMapper.insert(dorm);
 	}
 
 	public int delete(Dorm dorm) {
-		return dormitoryMapper.delete(dorm);
+		return dormMapper.delete(dorm);
 	}
 	
 }
