@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.pengfu.model.Role;
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 import com.pengfu.util.SidebarBuilder;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.Sidebar;
@@ -83,7 +83,7 @@ public class MainFrame extends BaseFrame {
 		
 		// 页面显示		
 		pagePanel = new JPanel();
-		pagePanel.setBackground(ConstantConfig.BG_COLOR);
+		pagePanel.setBackground(Constant.BG_COLOR);
 		pagePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 		contentBar.add(pagePanel, BorderLayout.CENTER);
 		
@@ -106,14 +106,15 @@ public class MainFrame extends BaseFrame {
 			/** 实现下拉按钮 */
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 移除侧边栏所有组件
-				sidebar.removeAll();
-				// 添加所有父按钮
+				// 移除侧边栏所有子按钮
 				List<SidebarBtn> sideBtns = sidebar.getSideBtns();
 				for(SidebarBtn sideBtn : sideBtns) {
-					sidebar.add(sideBtn);
+					for(SidebarBtn item : sideBtn.getItems()) {
+						sidebar.remove(item);
+					}
 				}
-				// 获得点击的父按钮
+				
+				// 获得点击的按钮
 				SidebarBtn btn = (SidebarBtn) e.getSource();
 				// 获得该父按钮下标
 				int index = 0;
@@ -141,13 +142,11 @@ public class MainFrame extends BaseFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					SidebarBtn btn = (SidebarBtn) e.getSource();
-					BasePage page = SpringContextUtils.getBean(btn.getPageName(), BasePage.class);
-					pagePanel.add(btn.getPageName(), page);
-					cardLayout.show(pagePanel, btn.getPageName());
+					// 页面跳转
+					goToPage(btn.getPageName());
 					// 显示路径
 					pathLabel.setText(parentPath + " > " + btn.getText());
 				} catch (Exception e1) {
-					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "功能尚未实现，敬请期待!");
 				}
 			}
@@ -163,6 +162,13 @@ public class MainFrame extends BaseFrame {
 			}
 		}
 
+	}
+	
+	/** 跳转页面 */
+	public void goToPage(String name) {
+		BasePage page = SpringContextUtils.getBean(name, BasePage.class);
+		pagePanel.add(name, page);
+		cardLayout.show(pagePanel, name);
 	}
 	
 }

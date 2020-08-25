@@ -3,13 +3,14 @@ package com.pengfu.view.component;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 
 public class TitleComboBox extends JPanel {
 
@@ -18,7 +19,7 @@ public class TitleComboBox extends JPanel {
 	private JComboBox<String> comboBox;
 
 	public TitleComboBox(String title) {
-		setBackground(ConstantConfig.BG_COLOR);
+		setBackground(Constant.BG_COLOR);
 		setPreferredSize(new Dimension(320, 40));
 
 		JLabel titleLab = new JLabel(title);
@@ -27,6 +28,7 @@ public class TitleComboBox extends JPanel {
 
 		comboBox = new JComboBox<String>();
 		comboBox.setPreferredSize(new Dimension(200, 32));
+		comboBox.setBackground(Constant.PAGE_COLOR);
 		add(comboBox);
 	}
 	
@@ -37,6 +39,13 @@ public class TitleComboBox extends JPanel {
 	
 	/** 设置数据 */
 	public void setModel(List<String> list) {
+		String[] strings = new String[list.size()];
+		list.toArray(strings);
+		comboBox.setModel(new DefaultComboBoxModel<String>(strings));
+	}
+	
+	/** 设置数据 */
+	public void setModel(Set<String> list) {
 		String[] strings = new String[list.size()];
 		list.toArray(strings);
 		comboBox.setModel(new DefaultComboBoxModel<String>(strings));
@@ -60,6 +69,11 @@ public class TitleComboBox extends JPanel {
 		return text;
 	}
 	
+	/** 获得当前选中索引 */
+	public int getSelectedIndex() {
+		return comboBox.getSelectedIndex();
+	}
+	
 	public void setText(String text) {
 		if(text == null) {
 			return;
@@ -77,4 +91,5 @@ public class TitleComboBox extends JPanel {
 		super.setEnabled(enabled);
 		comboBox.setEnabled(enabled);
 	}
+	
 }

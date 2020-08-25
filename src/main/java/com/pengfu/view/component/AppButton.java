@@ -13,7 +13,7 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.JButton;
 
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 
 public class AppButton extends JButton {
 
@@ -23,18 +23,17 @@ public class AppButton extends JButton {
 	private boolean pressed = false; // 按下
 
 	private String text;
+	private int testX;
 	private Image img;
-
-	public AppButton(String text, Image img) {
+	
+	public AppButton(String text) {
 		this.text = text;
-		this.img = img;
 		
-		setPreferredSize(new Dimension(text.length() * 12 + 64, 32));
+		testX = 16;
 		
+		setPreferredSize(new Dimension(text.length() * 22, 32));
 		setContentAreaFilled(false);
 		setBorderPainted(false);
-		
-		
 		
 		// 初始化监听器
 		addMouseListener(new MouseAdapter() {
@@ -61,6 +60,23 @@ public class AppButton extends JButton {
 		});
 	}
 
+	public AppButton(String text, Image img) {
+		this(text);
+		this.img = img;
+		
+		testX = 38;
+		
+		setPreferredSize(new Dimension(text.length() * 12 + 64, 32));
+	}
+	
+	public AppButton(String text, int width) {
+		this(text);
+		Dimension dimension = new Dimension(width, 32);
+		setPreferredSize(dimension);
+		setSize(dimension);
+		testX = (width - text.length() * 12) / 2;
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -73,11 +89,11 @@ public class AppButton extends JButton {
 		g2d.clip(r2d);
 		
 		if(pressed) {
-			g2d.setColor(ConstantConfig.BTN_PRESSED_COLOR);
+			g2d.setColor(Constant.BTN_PRESSED_COLOR);
 		}else if(entered) {
-			g2d.setColor(ConstantConfig.BTN_ENTERED_COLOR);
+			g2d.setColor(Constant.BTN_ENTERED_COLOR);
 		}else {
-			g2d.setColor(ConstantConfig.BTN_COLOR);
+			g2d.setColor(Constant.BTN_COLOR);
 		}
 		
 		g2d.fillRect(0, 0, w, h);
@@ -87,7 +103,7 @@ public class AppButton extends JButton {
 		g2d.drawImage(img, 16, (h - 16) / 2, null);
 		// 绘制文本
 		g2d.setColor(Color.WHITE);
-		g2d.drawString(text, 38, (h - 12) / 2 + 10);
+		g2d.drawString(text, testX, (h - 12) / 2 + 10);
 	}
 	
 	

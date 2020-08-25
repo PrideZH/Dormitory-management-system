@@ -3,7 +3,6 @@ package com.pengfu.view;
 import java.awt.Container;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.controller.AppControl;
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
+import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.InputBox;
 
 /**
@@ -30,7 +30,7 @@ public class LoginFrame extends BaseFrame {
 	
 	public LoginFrame() {
 		setText("登陆");
-		setSize(600, 400);
+		setSize(570, 380);
 		setLocationRelativeTo(null);
 		// 设置最大化按钮不可用
 		setMaximizeEnabled(false);
@@ -41,7 +41,7 @@ public class LoginFrame extends BaseFrame {
 	/** 初始化组件 */
 	private void initComponents() {
 		Container contentPane = getContentPane();
-		contentPane.setBackground(ConstantConfig.BG_COLOR);
+		contentPane.setBackground(Constant.BG_COLOR);
 		contentPane.setLayout(null);
 
 		// 账号输入框
@@ -55,12 +55,12 @@ public class LoginFrame extends BaseFrame {
 		
 		// 登陆人员单选按钮
 		JRadioButton studentRBtn = new JRadioButton("学生");
-		studentRBtn.setBackground(ConstantConfig.BG_COLOR);
+		studentRBtn.setBackground(Constant.BG_COLOR);
 		studentRBtn.setSelected(true);
 		studentRBtn.setBounds(90, 240, 64, 32);
 		contentPane.add(studentRBtn);
 		JRadioButton manageRBtn = new JRadioButton("管理员");
-		manageRBtn.setBackground(ConstantConfig.BG_COLOR);
+		manageRBtn.setBackground(Constant.BG_COLOR);
 		manageRBtn.setBounds(190, 240, 64, 32);
 		contentPane.add(manageRBtn);	
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -74,8 +74,8 @@ public class LoginFrame extends BaseFrame {
 //		contentPane.add(keepPassword);	
 		
 		// 登陆按钮
-		JButton LoginBtn = new JButton("登陆");
-		LoginBtn.setBounds(380, 240, 96, 32);
+		AppButton LoginBtn = new AppButton("登陆", 96);
+		LoginBtn.setLocation(380, 240);
 		contentPane.add(LoginBtn);
 
 		// 添加监听器

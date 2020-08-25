@@ -22,15 +22,27 @@
 		where student.sid = #{id}
 	</select>
 	
+	<!-- 根据宿舍编号查 -->
+	<select id="selectByDid" resultType="student">
+		select student.* from student 
+		where student.did = (select dorm.did from dorm where dorm.number = #{dormName} and dorm.bid = #{bid})
+	</select>
+	
 	<!-- 模糊查询 -->
 	<select id="selectByStudent" parameterType="student" resultType="student">
-		select student.*, dorm.number, dorm.bid
+		select student.*, dorm.number dormName, dorm.bid
 		from student
 		left outer join dorm
 		on student.did = dorm.did
 		<where>
 			<if test="bid!=null">
 				and dorm.bid = #{bid}
+			</if>
+			<if test="dormName!=null">
+				and dorm.number = #{dormName}
+			</if>
+			<if test="sid!=null">
+				and student.sid like #{sid}
 			</if>
 			<if test="name!=null">
 				and student.name like #{name}
@@ -41,6 +53,11 @@
 	<!-- 查询学号是否存在 -->
 	<select id="selectSid" resultType="boolean">
 		select count(*) from student where student.sid = #{id}
+	</select>
+	
+	<!-- 查询数量 -->
+	<select id="selectNumber" resultType="long">
+		select count(*) from student
 	</select>
 
 	<!-- 添加 -->
@@ -58,6 +75,8 @@
 		set 
 			password = #{password}, 
 			phone = #{phone}, 
+			college = #{college},
+			classes = #{classes},
 			did = (select dorm.did 
 				from dorm, building 
 				where dorm.number = #{dormName} and  building.bid = #{bid} and dorm.bid = building.bid)

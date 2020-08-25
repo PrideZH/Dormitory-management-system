@@ -37,13 +37,18 @@ public class StudentService {
 		}
 	}
 	
-	/** 根据id获取学生 */
-	public Student getStudentById(String id) {
-		return studentMapper.selectById(id);
+	/** 根据宿舍id获取学生 */
+	public List<Student> getStudentByDid(Student student) {
+		return studentMapper.selectByDid(student);
 	}
 
 	/** 添加学生 */
 	public void addStudent(Student student) throws Exception {
+		// 格式
+		int idCardSize = student.getIdCard().length();
+		if(idCardSize != 15 && idCardSize != 18) {
+			throw new Exception("身份证号错误(" + student.getIdCard() + ")");
+		}
 		// 不为空
 		if(StringUtil.isEmpty(student.getSid())) {
 			throw new Exception("学号不能为空");
@@ -59,8 +64,6 @@ public class StudentService {
 			throw new Exception("班级不能为空");
 		}else if(StringUtil.isEmpty(student.getPhone())) {
 			throw new Exception("联系电话不能为空");
-		}else if(StringUtil.isEmpty(student.getDormName())) {
-			throw new Exception("楼宇号不能为空");
 		}
 		// 学号唯一
 		if(studentMapper.selectSid(student.getSid())) {
@@ -82,6 +85,10 @@ public class StudentService {
 		if(StringUtil.isEmpty(student.getBid())) {
 			student.setBid(null);
 		}
+		// 宿舍号
+		if(StringUtil.isEmpty(student.getDormName())) {
+			student.setDormName(null);
+		}
 		// 学号
 		if(StringUtil.isEmpty(student.getSid())) {
 			student.setSid(null);
@@ -95,6 +102,10 @@ public class StudentService {
 			student.setName("%" + student.getName() + "%");
 		}
 		return studentMapper.selectByStudent(student);
+	}
+	
+	public long getNumber() {
+		return studentMapper.selectNumber();
 	}
 
 	/** 修改 */

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import com.pengfu.entity.Admin;
 import com.pengfu.model.AdminTableModel;
 import com.pengfu.service.AdminService;
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
 import com.pengfu.view.PopupFrame;
@@ -48,31 +48,25 @@ public class AdminListPage extends BasePage {
 		
 		// 列表操作
 		JPanel northPane = new JPanel();
-		northPane.setBackground(ConstantConfig.PAGE_COLOR);
+		northPane.setBackground(Constant.PAGE_COLOR);
 		northPane.setPreferredSize(new Dimension(0, 64));	
 		contxtPane.add(northPane, BorderLayout.NORTH);
 		northPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 16, 5));
 		// 操作按钮
-		AppButton addBtn = new AppButton("添加", ConstantConfig.ADD_IMG);
+		AppButton addBtn = new AppButton("添加", Constant.ADD_IMG);
 		northPane.add(addBtn);
-		AppButton setBtn = new AppButton("修改", ConstantConfig.SET_IMG);
+		AppButton setBtn = new AppButton("修改", Constant.SET_IMG);
 		northPane.add(setBtn);
-		AppButton deleteBtn = new AppButton("删除", ConstantConfig.DELETE_IMG);
+		AppButton deleteBtn = new AppButton("删除", Constant.DELETE_IMG);
 		northPane.add(deleteBtn);
-		AppButton updateBtn = new AppButton("刷新", ConstantConfig.UPDATE_IMG);
+		AppButton updateBtn = new AppButton("刷新", Constant.UPDATE_IMG);
 		northPane.add(updateBtn);
 		
 		// 楼宇信息列表
 		table = TableBuilder.getTableBuilder().build(model);
 		JScrollPane tablePane = new JScrollPane(table);
-		tablePane.getViewport().setBackground(ConstantConfig.PAGE_COLOR);
+		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
-		
-		// 分页
-		JPanel southPane = new JPanel();
-		southPane.setBackground(ConstantConfig.PAGE_COLOR);
-		southPane.setPreferredSize(new Dimension(0, 64));	
-		contxtPane.add(southPane, BorderLayout.SOUTH);
 		
 		// 监听器 
 		addBtn.addActionListener((e) ->{
@@ -94,13 +88,13 @@ public class AdminListPage extends BasePage {
 			popupFrame.setVisible(true);
 		});
 		deleteBtn.addActionListener(e -> {
+			int row = table.getSelectedRow();
+			if(row == -1) {
+				JOptionPane.showMessageDialog(null, "未选择目标");
+				return;
+			}
 			if(JOptionPane.showConfirmDialog(null, "确定删除此管理员?", "删除", JOptionPane.YES_NO_OPTION) 
 					== JOptionPane.YES_OPTION) {
-				int row = table.getSelectedRow();
-				if(row == -1) {
-					JOptionPane.showMessageDialog(null, "未选择目标");
-					return;
-				}
 				if(adminService.delete((String) model.getValueAt(row, 1)) > 0) {
 					updateTable();
 					JOptionPane.showMessageDialog(null, "删除成功");

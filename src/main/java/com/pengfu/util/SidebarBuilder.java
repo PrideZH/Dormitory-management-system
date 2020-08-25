@@ -1,7 +1,5 @@
 package com.pengfu.util;
 
-import static com.pengfu.util.ConstantConfig.SIDEBAR_WIDTH;
-
 import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +8,10 @@ import java.util.Map;
 import com.pengfu.view.component.Sidebar;
 import com.pengfu.view.component.SidebarBtn;
 
+/**
+ * 侧边栏构造
+ * @author pengzihao
+ */
 public class SidebarBuilder {
 	
 	private static SidebarBuilder sidebarBuilder;
@@ -18,49 +20,49 @@ public class SidebarBuilder {
 	
 	private SidebarBuilder() {
 		// 个人中心
-		sidebarBtns.put("personal", new SidebarBtn("images/sidebar/个人中心.png", "个人中心", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("dormitoryInfo", new SidebarBtn("images/sidebar/宿舍_灰.png", "images/sidebar/宿舍_蓝.png", 
-				"宿舍信息", "dormInfoPage", SIDEBAR_WIDTH));
-		sidebarBtns.put("studentProfile", new SidebarBtn("images/sidebar/个人信息_灰.png", "images/sidebar/个人信息_蓝.png", 
-				"个人信息", "studentProfilePage", SIDEBAR_WIDTH));
-		sidebarBtns.put("adminProfile", new SidebarBtn("images/sidebar/个人信息_灰.png", "images/sidebar/个人信息_蓝.png",
-				"个人信息", "adminProfilePage", SIDEBAR_WIDTH));
+		sidebarBtns.put("personal", new SidebarBtn(Constant.PERSONAL_IMG, "个人中心", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("dormInfo", new SidebarBtn(Constant.DORM_GREY_IMG, Constant.DORM_BLUE_IMG, 
+				"宿舍信息", "dormInfoPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("studentProfile", new SidebarBtn(Constant.PROFILE_GREY_IMG, Constant.PROFILE_BLUE_IMG, 
+				"个人信息", "studentProfilePage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("adminProfile", new SidebarBtn(Constant.PROFILE_GREY_IMG, Constant.PROFILE_BLUE_IMG, 
+				"个人信息", "adminProfilePage", Constant.SIDEBAR_WIDTH));
 		
 		// 楼宇管理
-		sidebarBtns.put("building", new SidebarBtn("images/sidebar/楼_灰.png", "楼宇管理", null, SIDEBAR_WIDTH));	
-		sidebarBtns.put("buildingList", new SidebarBtn("images/sidebar/列表_灰.png", "images/sidebar/列表_蓝.png", 
-						"楼宇列表", "buildingListPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("building", new SidebarBtn(Constant.BUILDING_IMG, "楼宇管理", null, Constant.SIDEBAR_WIDTH));	
+		sidebarBtns.put("buildingList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"楼宇列表", "buildingListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 宿舍管理
-		sidebarBtns.put("dormitory", new SidebarBtn("images/sidebar/宿舍_灰.png", "宿舍管理", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("dormitoryList", new SidebarBtn("images/sidebar/列表_灰.png", "images/sidebar/列表_蓝.png", 
-						"宿舍列表", "dormListPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("dorm", new SidebarBtn(Constant.DORM_GREY_IMG, "宿舍管理", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("dormList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"宿舍列表", "dormListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 用户权限管理
-		sidebarBtns.put("manager", new SidebarBtn("images/sidebar/admin.png", "用户权限管理", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("managerList", new SidebarBtn("images/sidebar/列表_灰.png", "images/sidebar/列表_蓝.png", 
-						"用户权限列表", "adminListPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("admin", new SidebarBtn(Constant.ADMIN_IMG, "用户权限管理", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("adminList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"用户权限列表", "adminListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 学生管理
-		sidebarBtns.put("student", new SidebarBtn("images/sidebar/student.png", "学生管理", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("studentList", new SidebarBtn("images/sidebar/列表_灰.png", "images/sidebar/列表_蓝.png", 
-						"学生列表", "studentListPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("student", new SidebarBtn(Constant.STUDENT_IMG, "学生管理", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("studentList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"学生列表", "studentListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 后勤服务
-		sidebarBtns.put("logistics", new SidebarBtn("images/sidebar/logistics.png", "后勤服务", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("damageWarranty", new SidebarBtn("images/sidebar/报修_灰.png", "images/sidebar/报修_蓝.png",
-				"损坏报修", "damageWarrantyPage", SIDEBAR_WIDTH));
-		sidebarBtns.put("damageList", new SidebarBtn("images/sidebar/列表_灰.png", "images/sidebar/列表_蓝.png", 
-						"损坏列表", "damageListPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("logistics", new SidebarBtn(Constant.LOGISTICS_IMG, "后勤服务", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("damageWarranty", new SidebarBtn(Constant.WARRANTY_GREY_IMG, Constant.WARRANTY_BLUE_IMG,
+				"损坏报修", "damageWarrantyPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("damageList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"损坏列表", "damageListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 生活服务
-		sidebarBtns.put("life", new SidebarBtn("images/sidebar/life.png", "生活服务", null, SIDEBAR_WIDTH));
-		sidebarBtns.put("electricity", new SidebarBtn("images/sidebar/电费_灰.png", "images/sidebar/电费_蓝.png",
-				"电费充值", "electricityPage", SIDEBAR_WIDTH));
-		sidebarBtns.put("networkt", new SidebarBtn("images/sidebar/网络_灰.png", "images/sidebar/网络_蓝.png",
-				"校园网充值", "networkPage", SIDEBAR_WIDTH));
-		sidebarBtns.put("card", new SidebarBtn("images/sidebar/卡_灰.png", "images/sidebar/卡_蓝.png",
-				"校园一卡通", "cardPage", SIDEBAR_WIDTH));
+		sidebarBtns.put("life", new SidebarBtn(Constant.LIFE_IMG, "生活服务", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("electricity", new SidebarBtn(Constant.ELECTRICITY_GREY_IMG, Constant.ELECTRICITY_BLUE_IMG,
+				"电费充值", "electricityPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("networkt", new SidebarBtn(Constant.NETWORKT_GREY_IMG, Constant.NETWORKT_BLUE_IMG,
+				"校园网充值", "networkPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("card", new SidebarBtn(Constant.CARD_GREY_IMG, Constant.CARD_BLUE_IMG,
+				"校园一卡通", "cardPage", Constant.SIDEBAR_WIDTH));
 	}
 	
 	public static SidebarBuilder getSidebarBuilder() {
@@ -71,14 +73,20 @@ public class SidebarBuilder {
 	}
 	
 
-	/** 构造侧边栏 */
+	/**
+	 * 构造侧边栏
+	 * @param permissionList 添加的按钮列表
+	 */
 	public Sidebar build(Map<String, List<String>> permissionList) {
 		Sidebar sidebar = new Sidebar();
-		sidebar.setPreferredSize(new Dimension(ConstantConfig.SIDEBAR_WIDTH, 0));
+		sidebar.setPreferredSize(new Dimension(Constant.SIDEBAR_WIDTH, 0));
 		
-		// 单据权限管理列表为添加侧边栏添加按钮
+		// 根据按钮列表为侧边栏添加按钮
 		for (Map.Entry<String, List<String>> entry : permissionList.entrySet()) { 
 			SidebarBtn parentBtn = sidebarBtns.get(entry.getKey());
+			if(parentBtn == null) {
+			System.out.println(entry.getKey());
+			}
 			// 添加父按钮
 			sidebar.addBtn(parentBtn);
 			for(String item : entry.getValue()) {

@@ -13,14 +13,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 
-import com.pengfu.util.ConstantConfig;
-import com.pengfu.util.Resources;
+import com.pengfu.util.Constant;
 
 public class SidebarBtn extends JRadioButton {
 
@@ -42,14 +42,15 @@ public class SidebarBtn extends JRadioButton {
 	
 	// 设置提示图标位置
 	private int tipsY = (height - 16) / 2;
-	
 	// 鼠标是否在按钮上
 	private boolean entered = false; 
 	// 是否为父按钮
 	private boolean isSuper = true;
-	
-	private String pageName; // 绑定Page
-	private List<SidebarBtn> items = new ArrayList<>(); // 子按钮
+	// 绑定的Page名
+	private String pageName; 
+	// 子按钮集合
+	private List<SidebarBtn> items = new ArrayList<>(); 
+	// 侧边栏所有子按钮为一组
 	private static ButtonGroup buttonGroup = new ButtonGroup();
 
 	/**
@@ -103,11 +104,10 @@ public class SidebarBtn extends JRadioButton {
 	 * 构造拥有默认图标的侧边栏按钮
 	 * @param imgPath 图片路径
 	 */
-	public SidebarBtn(String imgPath, String text, String pageName, int width) {
+	public SidebarBtn(BufferedImage img, String text, String pageName, int width) {
 		this(text, pageName, width);
 		// 设置图标大小、位置
-		image = Resources.getBufferedImage(imgPath);
-		image = image.getScaledInstance(24, 24, Image.SCALE_FAST);
+		this.image = img.getScaledInstance(24, 24, Image.SCALE_FAST);
 		imgX = textX - 32;
 		imgY = (height - 24) / 2;
 	}
@@ -117,10 +117,9 @@ public class SidebarBtn extends JRadioButton {
 	 * 图标包含默认状态和选择状态
 	 * @param SelectedimgPath 选中状态的图片路径
 	 */
-	public SidebarBtn(String imgPath, String SelectedImgPath, String text, String pageName, int width) {
-		this(imgPath, text, pageName, width);
-		selectedImg = Resources.getBufferedImage(SelectedImgPath);
-		selectedImg = selectedImg.getScaledInstance(24, 24, Image.SCALE_FAST);
+	public SidebarBtn(BufferedImage img, BufferedImage selectedImg, String text, String pageName, int width) {
+		this(img, text, pageName, width);
+		this.selectedImg = selectedImg.getScaledInstance(24, 24, Image.SCALE_FAST);
 	}
 	
 	/** 获得绑定的page名 */
@@ -165,9 +164,9 @@ public class SidebarBtn extends JRadioButton {
 		
 		// 绘制父按钮上拉下拉提示
 		if(isSuper && isSelected()) {
-			g2.drawImage(ConstantConfig.UP_IMG, width - 32, tipsY, null);
+			g2.drawImage(Constant.UP_IMG, width - 32, tipsY, null);
 		}else if(isSuper) {
-			g2.drawImage(ConstantConfig.DOWN_IMG, width - 32, tipsY, null);
+			g2.drawImage(Constant.DOWN_IMG, width - 32, tipsY, null);
 		}
 		
 		// 绘制图标

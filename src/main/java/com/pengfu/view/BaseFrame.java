@@ -6,9 +6,13 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,8 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.pengfu.controller.MoveFrameEvent;
-import com.pengfu.util.Resources;
+import com.pengfu.util.Constant;
 import com.pengfu.view.component.ImgBtn;
 
 /**
@@ -48,10 +51,32 @@ public class BaseFrame extends JFrame {
 		initComponents();
 		
 		// 添加监听器
-		// - 实现窗口拖动
-		MoveFrameEvent mfe = new MoveFrameEvent(this);
-		addMouseListener(mfe);
-		addMouseMotionListener(mfe);
+		// 实现窗口拖动
+		MouseAdapter ma = new MouseAdapter() {
+			private Point origin = new Point();
+			/** 鼠标按下获得窗口当前位置 */
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 窗口最大化时不可拖动
+				if(getExtendedState() != Frame.MAXIMIZED_BOTH) {
+					origin.x = e.getX();
+					origin.y = e.getY();
+				}
+			}
+			
+			/** 鼠标拖动窗口设置位置 */
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// 窗口最大化时不可拖动
+				if(getExtendedState() != Frame.MAXIMIZED_BOTH) {
+					Point p = getLocation();
+					// 设置窗口的位置
+					setLocation(p.x + e.getX() - origin.x, p.y + e.getY()- origin.y);
+				}
+			}
+		};
+		addMouseListener(ma);
+		addMouseMotionListener(ma);
 	}
 
 	private void initComponents() {
@@ -76,7 +101,7 @@ public class BaseFrame extends JFrame {
 		titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.X_AXIS));
 		
 		// 窗口图标
-		ImageIcon image = Resources.getImageIcon("images/logo/logo_school.png");
+		ImageIcon image = Constant.LOGO_IMG;
 		image.setImage(image.getImage()
 				.getScaledInstance(
 						TITLE_PANE_WIDTH / 2, TITLE_PANE_WIDTH / 2, Image.SCALE_DEFAULT));
@@ -99,22 +124,22 @@ public class BaseFrame extends JFrame {
 		box.setPreferredSize(new Dimension(256, 0));
 		box.setOpaque(false);
 		titlePane.add(box, BorderLayout.EAST);
-		box.setLayout(
-				new FlowLayout(FlowLayout.RIGHT, 20, (TITLE_PANE_WIDTH - 16) / 2));
+		box.setLayout(new FlowLayout(FlowLayout.RIGHT, 20, (TITLE_PANE_WIDTH - 16) / 2));
 		
 		// - 最小化按钮
-		ImgBtn minimizeBtn = new ImgBtn("images/button/最小化_灰.png", 16, 16);
-		minimizeBtn.setRolloverIcon("images/button/最小化_白.png");
+		ImgBtn minimizeBtn = new ImgBtn(Constant.MINIMIZE_GREY_IMG, 16, 16);
+		minimizeBtn.setRolloverIcon(Constant.MINIMIZE_WHITE_IMG);
 		minimizeBtn.setToolTipText("最小化");
-		minimizeBtn.addActionListener((e) -> { setExtendedState(JFrame.ICONIFIED); });
+		minimizeBtn.addActionListener(e -> setExtendedState(JFrame.ICONIFIED));
 		box.add(minimizeBtn);
 		
 		// - 最大化按钮
-		maximize = new ImgBtn("images/button/最大化_灰.png", 16, 16); 
-		maximize.setRolloverIcon("images/button/最大化_白.png");
+		maximize = new ImgBtn(Constant.MAXIMIZE_GREY_IMG, 16, 16); 
+		maximize.setRolloverIcon(Constant.MAXIMIZE_WHITE_IMG);
 		maximize.setToolTipText("最大化");
 		maximize.addActionListener(new ActionListener() {
-			int x, y, w, h; // 最大化时窗口的大小及位置
+			// 最大化时窗口的大小及位置
+			private int x, y, w, h; 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(getExtendedState() != MAXIMIZED_BOTH) {
@@ -131,8 +156,8 @@ public class BaseFrame extends JFrame {
 		box.add(maximize);
 		
 		// - 关闭按钮
-		ImgBtn exitBtn = new ImgBtn("images/button/关闭_灰.png", 16, 16);
-		exitBtn.setRolloverIcon("images/button/关闭_白.png");
+		ImgBtn exitBtn = new ImgBtn(Constant.CLOSE_GREY_IMG, 16, 16);
+		exitBtn.setRolloverIcon(Constant.CLOSE_WHITE_IMG);
 		exitBtn.setToolTipText("关闭");
 		exitBtn.addActionListener((e) -> { 
 			if(getDefaultCloseOperation() == JFrame.DISPOSE_ON_CLOSE) {

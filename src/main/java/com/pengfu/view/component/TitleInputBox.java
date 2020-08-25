@@ -6,7 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 
 /** 添加界面输入框 */
 public class TitleInputBox extends JPanel {
@@ -16,7 +16,7 @@ public class TitleInputBox extends JPanel {
 	private JTextField textField;
 
 	public TitleInputBox(String title) {
-		setBackground(ConstantConfig.BG_COLOR);
+		setBackground(Constant.BG_COLOR);
 		setPreferredSize(new Dimension(320, 40));
 		
 		JLabel titleLab = new JLabel(title);

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.util.Constant;
 
 public class InfoBar extends JPanel {
 
@@ -21,11 +21,11 @@ public class InfoBar extends JPanel {
 
 	public InfoBar(String title, String text) {
 		setPreferredSize(new Dimension(WIDTH + 32, HEIGHT + 16));
-		setBackground(ConstantConfig.PAGE_COLOR);
+		setBackground(Constant.PAGE_COLOR);
 		
 		titleLab = new JLabel(title);
 		titleLab.setFont(new Font("宋体", Font.BOLD, 24));
-		titleLab.setBackground(ConstantConfig.BG_COLOR);
+		titleLab.setBackground(Constant.BG_COLOR);
 		titleLab.setPreferredSize(new Dimension(32 * title.length(), HEIGHT));
 		add(titleLab);
 		

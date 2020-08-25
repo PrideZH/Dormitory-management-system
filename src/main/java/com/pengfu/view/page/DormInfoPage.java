@@ -3,6 +3,7 @@ package com.pengfu.view.page;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -10,7 +11,11 @@ import javax.swing.JPanel;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.pengfu.util.ConstantConfig;
+import com.pengfu.entity.Student;
+import com.pengfu.model.Role;
+import com.pengfu.service.StudentService;
+import com.pengfu.util.Constant;
+import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.InfoBar;
 
 @Component
@@ -26,22 +31,22 @@ public class DormInfoPage extends BasePage {
 	@Override
 	protected void initComponents() {
 		contxtPane.setLayout(new GridLayout(2, 2, 126, 32));
-
-		contxtPane.add(createInofCard("123"));
-		contxtPane.add(createInofCard("222"));
-		contxtPane.add(createInofCard("333"));
-		contxtPane.add(createInofCard("12443"));
+		
+		List<Student> students = SpringContextUtils.getBean(StudentService.class).getStudentByDid(Role.getStudent());
+		for(Student student : students) {
+			contxtPane.add(createInofCard(student));
+		}
 	}
 	
-	private JPanel createInofCard(String text) {
+	private JPanel createInofCard(Student student) {
 		JPanel studentInfo = new JPanel();
-		studentInfo.setBackground(ConstantConfig.PAGE_COLOR);
+		studentInfo.setBackground(Constant.PAGE_COLOR);
 		studentInfo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
 		
-		InfoBar infoBar1 = new InfoBar("姓名", text);
-		InfoBar infoBar2 = new InfoBar("学号", text);
-		InfoBar infoBar3 = new InfoBar("学院", text);
-		InfoBar infoBar4 = new InfoBar("班级", text);
+		InfoBar infoBar1 = new InfoBar("姓名", student.getName());
+		InfoBar infoBar2 = new InfoBar("学号", student.getSid());
+		InfoBar infoBar3 = new InfoBar("学院", student.getCollege());
+		InfoBar infoBar4 = new InfoBar("班级", student.getClasses());
 		
 		studentInfo.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 32));
 		studentInfo.add(infoBar1);
