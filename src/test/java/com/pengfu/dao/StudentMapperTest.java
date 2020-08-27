@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.github.pagehelper.PageInfo;
 import com.pengfu.entity.Student;
 import com.pengfu.service.StudentService;
 
@@ -28,11 +29,14 @@ public class StudentMapperTest {
 	}
 	
 	@Test
-	public void testSelectBy() {
+	public void testSelect() {
 		Student student = new Student();
-		student.setName("%张%");
-		List<Student> students = studnetService.search(student);
-		students.forEach(System.out::println);
+		PageInfo<Student> info = studnetService.search(student, 1, 10);
+		System.out.println("页数:" + info.getSize());
+		System.out.println("每页数据:" + info.getPageSize());
+		System.out.println("第几页:" + info.getPageNum());
+		System.out.println("总数据:" + info.getTotal());
+		info.getList().forEach(System.out::println);
 	}
 	
 	@Test

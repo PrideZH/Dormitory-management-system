@@ -14,7 +14,7 @@ public class StudentTableModel extends AbstractTableModel {
 
 	private String[] title = {"", "姓名", "学号","身份证号", "性别", "联系电话", "学院", "班级", "楼宇号", "宿舍号"};
 	private List<Student> students = new ArrayList<>();
-	
+
 	@Override
 	public int getRowCount() {
 		return students.size();
@@ -45,6 +45,14 @@ public class StudentTableModel extends AbstractTableModel {
 		return null;
 	}
 	
+	@Override
+	public Class<?> getColumnClass(int columnIndex) {
+        if (0 == columnIndex) {  
+        	return Integer.class; 
+        }
+        return String.class;  
+	}
+	
 	/**列名 */
 	@Override
 	public String getColumnName(int column) {
@@ -61,6 +69,7 @@ public class StudentTableModel extends AbstractTableModel {
 		return students;
 	}
 
+	/** 设置数据 */
 	public void setStudents(List<Student> students) {
 		this.students = students;
 	}

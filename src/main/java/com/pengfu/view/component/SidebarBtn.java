@@ -153,10 +153,10 @@ public class SidebarBtn extends JRadioButton {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// 绘制按钮颜色
-		if(isSelected() && !isSuper) {
-			g2.setColor(new Color(89, 88, 89));
-		}else if(entered) {
-			g2.setColor(new Color(59, 58, 59));
+		if(entered) {
+			g2.setColor(new Color(32, 45, 60));
+		}else if(isSuper){
+			g2.setColor(Constant.SIDEBAR_COLOR);
 		}else {
 			g2.setColor(new Color(12, 7, 21));
 		}

@@ -10,6 +10,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 /** 表格构造者 */
 public class TableBuilder {
@@ -39,7 +40,6 @@ public class TableBuilder {
 		// 只能选单行
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
-
 		// 表头设置
 		JTableHeader tableHeader = table.getTableHeader();
 		// 不可改变大小
@@ -50,6 +50,13 @@ public class TableBuilder {
 		tableHeader.setFont(new Font("宋体", Font.BOLD, 16));
 		// 颜色
 		tableHeader.setBackground(Color.WHITE);
+		
+		// 设置行排序器
+		TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(model);
+		table.setRowSorter(rowSorter);
+		table.addPropertyChangeListener(e ->{
+			rowSorter.setModel(table.getModel());
+		});
 		
 		// 单元格渲染器
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {

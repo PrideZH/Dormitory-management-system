@@ -1,11 +1,13 @@
 package com.pengfu.view.component;
 
-import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+
+import com.pengfu.util.Constant;
 
 /**
  * 侧边栏
@@ -21,7 +23,8 @@ public class Sidebar extends JPanel {
 	private ButtonGroup buttonGroup = new ButtonGroup();
 
 	public Sidebar() {
-		setBackground(new Color(57, 62, 75));
+		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		setBackground(Constant.SIDEBAR_COLOR);
 	}
 	
 	public void addBtn(SidebarBtn sideBtn) {

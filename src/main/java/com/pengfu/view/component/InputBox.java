@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -119,6 +120,11 @@ public class InputBox extends JPanel {
 	/** 获得输入框文本 */
 	public String getText() {
 		return jTextField.getText();
+	}
+	
+	/** 添加键盘监听 */
+	public void addKeyListener(KeyListener l) {
+		jTextField.addKeyListener(l);
 	}
 	
 }

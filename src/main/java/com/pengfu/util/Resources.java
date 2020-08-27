@@ -39,4 +39,16 @@ public class Resources {
 		}  
 		return null;
 	}
+	
+	/** 获得指定文件夹的所有文件 */
+	public static File[] getListFiles(String imgPath) {
+		try {
+			String resource = Resources.class.getClassLoader().getResource(imgPath).getPath();
+			resource = java.net.URLDecoder.decode(resource,"utf-8");
+			return new File(resource).listFiles();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		return null;
+	}
 }

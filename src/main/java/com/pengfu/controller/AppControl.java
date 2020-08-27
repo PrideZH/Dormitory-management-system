@@ -22,6 +22,7 @@ import com.pengfu.model.Role;
 import com.pengfu.service.AdminService;
 import com.pengfu.service.StudentService;
 import com.pengfu.util.SpringContextUtils;
+import com.pengfu.util.StringUtil;
 import com.pengfu.view.LoginFrame;
 import com.pengfu.view.MainFrame;
 
@@ -29,27 +30,37 @@ import com.pengfu.view.MainFrame;
 public class AppControl {
 
 	/** 登陆操作  */
-	public void Logint(boolean isStudent, String username, String password) {
+	public void Logint(Role role, String username, String password) {
+		if(StringUtil.isEmpty(username)) {
+			JOptionPane.showMessageDialog(null, "账号不能为空");
+			return;
+		}else if(StringUtil.isEmpty(password)) {
+			JOptionPane.showMessageDialog(null, "密码不能为空");
+			return;
+		}
 		try {
-			if(isStudent) { // 用户登陆
+			switch(role) {
+			case STUDENT:
 				StudentService studentService = SpringContextUtils.getBean(StudentService.class);
-				//Student student = studentService.loginQuery(username, password);
-				Student student = studentService.loginQuery("201910097001", "123456");
+				Student student = studentService.loginQuery(username, password);
 				Role.setStudent(student);
-			}else { // 管理员登陆
+				break;
+			case GENERAL_ADMIN:
 				AdminService adminService = SpringContextUtils.getBean(AdminService.class);
-				//Manager manager = managerService.loginQuery(username, password);
-				Admin admin = adminService.loginQuery("123456", "123456");
+				Admin admin = adminService.loginQuery(username, password);
 				Role.setAdmin(admin);
+				break;
+			default:
+				return;
 			}
+			// 显示主窗口
+			SpringContextUtils.getBean(MainFrame.class).setVisible(true);
+			// 关闭登陆窗口
+			SpringContextUtils.getBean(LoginFrame.class).dispose();
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
-			e.printStackTrace();
 		}
-		// 显示主窗口
-		SpringContextUtils.getBean(MainFrame.class).setVisible(true);
-		// 关闭登陆窗口
-		SpringContextUtils.getBean(LoginFrame.class).dispose();
 	}
 	
 	/** 导出学生信息文件 */

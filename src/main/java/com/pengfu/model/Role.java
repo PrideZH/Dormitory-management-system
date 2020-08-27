@@ -12,11 +12,13 @@ import java.util.Map;
 
 public enum Role {
 	
-	Student("学生") {
+	STUDENT(-1, "学生") {
 		@Override
 		public Map<String, List<String>> getPermissionList() {
 			Map<String, List<String>> permissionList = new LinkedHashMap<String, List<String>>();
 			
+			// 其他：首页、系统设置
+			permissionList.put("other", Arrays.asList("system", "home"));
 			// 个人中心：宿舍信息、个人信息
 			permissionList.put("personal", Arrays.asList("dormInfo", "studentProfile"));
 			// 后勤服务：损坏保修
@@ -31,11 +33,13 @@ public enum Role {
 			return null;
 		}
 	},
-	GeneralManage("普通管理员") {
+	GENERAL_ADMIN(0, "普通管理员") {
 		@Override
 		public Map<String, List<String>> getPermissionList() {
 			Map<String, List<String>> permissionList = new LinkedHashMap<String, List<String>>();
 			
+			// 其他：首页、系统设置
+			permissionList.put("other", Arrays.asList("system", "home"));
 			// 个人中心：个人信息
 			permissionList.put("personal", Arrays.asList("adminProfile"));
 			// 宿舍管理：宿舍列表
@@ -52,11 +56,13 @@ public enum Role {
 			return admin.getBids();
 		}
 	}, 
-	SuperManage("超级管理员") {
+	SUPER_ADMIN(1, "超级管理员") {
 		@Override
 		public Map<String, List<String>> getPermissionList() {
 			Map<String, List<String>> permissionList = new LinkedHashMap<String, List<String>>();
 
+			// 其他：首页、系统设置
+			permissionList.put("other", Arrays.asList("system", "home"));
 			// 个人中心：个人信息
 			permissionList.put("personal", Arrays.asList("adminProfile"));
 			// 楼宇管理：楼宇列表
@@ -78,20 +84,81 @@ public enum Role {
 		}
 	};
 	
-	private final String RoleName;
-	
+	private final int code;
+	private final String name;
+
+	/** 保存当前权限角色信息 */
 	private static Student student;
 	private static Admin admin;
+
+	private Role(int code, String name) { 
+		this.code = code;
+        this.name = name; 
+	}
 	
-	/** 获得已初始化对象 */
+	public int getCode() {
+		return code;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public static Student getStudent() {
+		return student;
+	}
+
+	public static void setStudent(Student student) {
+		Role.student = student;
+	}
+
+	public static Admin getAdmin() {
+		return admin;
+	}
+	
+	public static void setAdmin(Admin admin) {
+		Role.admin = admin;
+	}
+	
+	/** 获得已初始化权限 */
 	public static Role getRole() {
 		if(student != null) {
-			return Student;
+			return STUDENT;
 		}else if(admin != null) {
-			return admin.getRole() == 1 ? SuperManage : GeneralManage;
+			return getbycode(admin.getRole());
 		}else {
 			return null;
 		}
+	}
+	
+	/** 通过编号获得权限 */
+	public static Role getbycode(int code) {
+		for(Role role : values()) {
+			if(role.getCode() == code) {
+				return role;
+			}
+		}
+		return null;
+	}
+	
+	/** 通过权限名获得编号 */
+	public static int getCodeByName(String name) {
+		for(Role role : values()) {
+			if(role.getName().equals(name)) {
+				return role.getCode();
+			}
+		}
+		return 0;
+	}
+	
+	/** 通过编号获得权限名 */
+	public static String getNameByCode(int code) {
+		for(Role role : values()) {
+			if(role.getCode() == code) {
+				return role.getName();
+			}
+		}
+		return null;
 	}
 	
 	/** 获得权限管理列表 */
@@ -100,28 +167,4 @@ public enum Role {
 	/** 获得管理的楼层 */
 	public abstract List<String> getBids();
 	
-	private Role(String RoleName) { 
-        this.RoleName = RoleName; 
-	}
-	
-	public static Student getStudent() {
-		return student;
-	}
-
-	public static Admin getAdmin() {
-		return admin;
-	}
-
-	public static void setStudent(Student student) {
-		Role.student = student;
-	}
-
-	public static void setAdmin(Admin admin) {
-		Role.admin = admin;
-	}
-
-	public String getRoleName() {
-		return RoleName;
-	}
-
 }

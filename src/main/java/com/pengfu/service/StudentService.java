@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.pengfu.dao.StudentMapper;
 import com.pengfu.entity.Student;
 import com.pengfu.util.StringUtil;
@@ -19,11 +21,6 @@ public class StudentService {
 	
 	/** 判断登陆信息是否正确 */
 	public Student loginQuery(String sid, String password) throws Exception {
-		if(StringUtil.isEmpty(sid)) {
-			throw new Exception("账号不能为空");
-		}else if(StringUtil.isEmpty(password)) {
-			throw new Exception("密码不能为空");
-		}
 		// 验证账号密码
 		Student student = studentMapper.selectById(sid);
 		if(student != null) {
@@ -44,11 +41,6 @@ public class StudentService {
 
 	/** 添加学生 */
 	public void addStudent(Student student) throws Exception {
-		// 格式
-		int idCardSize = student.getIdCard().length();
-		if(idCardSize != 15 && idCardSize != 18) {
-			throw new Exception("身份证号错误(" + student.getIdCard() + ")");
-		}
 		// 不为空
 		if(StringUtil.isEmpty(student.getSid())) {
 			throw new Exception("学号不能为空");
@@ -65,6 +57,11 @@ public class StudentService {
 		}else if(StringUtil.isEmpty(student.getPhone())) {
 			throw new Exception("联系电话不能为空");
 		}
+		// 格式
+		int idCardSize = student.getIdCard().length();
+		if(idCardSize != 15 && idCardSize != 18) {
+			throw new Exception("身份证号错误(" + student.getIdCard() + ")");
+		}
 		// 学号唯一
 		if(studentMapper.selectSid(student.getSid())) {
 			throw new Exception("该学号已存在");
@@ -79,8 +76,14 @@ public class StudentService {
 		return studentMapper.selectAll();
 	}
 	
-	/** 模糊搜索 */
-	public List<Student> search(Student student) {
+	/**
+	 * 模糊搜索
+	 * @param student 多条件查询
+	 * @param page 第几页
+	 * @param pageNum 每页数据
+	 * @return PageInfo
+	 */
+	public PageInfo<Student> search(Student student, int pageNum, int pageSize) {
 		// 楼宇编号
 		if(StringUtil.isEmpty(student.getBid())) {
 			student.setBid(null);
@@ -101,7 +104,9 @@ public class StudentService {
 		}else {
 			student.setName("%" + student.getName() + "%");
 		}
-		return studentMapper.selectByStudent(student);
+		PageHelper.startPage(pageNum, pageSize);
+		PageInfo<Student> pageInfo = new PageInfo<>(studentMapper.selectByStudent(student));
+		return pageInfo;
 	}
 	
 	public long getNumber() {

@@ -19,6 +19,13 @@ public class SidebarBuilder {
 	private Map<String, SidebarBtn> sidebarBtns = new HashMap<>();
 	
 	private SidebarBuilder() {
+		// 其他
+		sidebarBtns.put("other", new SidebarBtn(Constant.OTHER_IMG, "其他", null, Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("home", new SidebarBtn(Constant.HOME_GREY_IMG, Constant.HOME_BLUE_IMG, 
+				"首页", "homePage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("system", new SidebarBtn(Constant.SYSTEM_GREY_IMG, Constant.SYSTEM_BLUE_IMG, 
+				"系统设置", "systemPage", Constant.SIDEBAR_WIDTH));
+		
 		// 个人中心
 		sidebarBtns.put("personal", new SidebarBtn(Constant.PERSONAL_IMG, "个人中心", null, Constant.SIDEBAR_WIDTH));
 		sidebarBtns.put("dormInfo", new SidebarBtn(Constant.DORM_GREY_IMG, Constant.DORM_BLUE_IMG, 

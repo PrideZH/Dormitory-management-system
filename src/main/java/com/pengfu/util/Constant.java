@@ -18,6 +18,8 @@ public class Constant {
 	public static final int SIDEBAR_WIDTH = 200; // 侧边栏宽度
 
 	// 颜色
+	public static final Color SIDEBAR_COLOR = new Color(57, 62, 75); // 侧边栏颜色
+	
 	public static final Color BG_COLOR = new Color(234, 237, 242); // 背景颜色
 	public static final Color PAGE_COLOR = Color.WHITE; // 页面颜色
 	
@@ -46,19 +48,27 @@ public class Constant {
 	/**
 	 * 侧边栏图片
 	 */
+	// 其他
+	public static final BufferedImage OTHER_IMG = Resources.getBufferedImage("images/sidebar/other.png");
+	// 首页
+	public static final BufferedImage HOME_GREY_IMG = Resources.getBufferedImage("images/sidebar/home_grey.png");
+	public static final BufferedImage HOME_BLUE_IMG = Resources.getBufferedImage("images/sidebar/home_blue.png");
+	// 系统设置
+	public static final BufferedImage SYSTEM_GREY_IMG = Resources.getBufferedImage("images/sidebar/system_grey.png");
+	public static final BufferedImage SYSTEM_BLUE_IMG = Resources.getBufferedImage("images/sidebar/system_blue.png");
 	// 个人中心
-	public static final BufferedImage PERSONAL_IMG = Resources.getBufferedImage("images/sidebar/个人中心.png");
+	public static final BufferedImage PERSONAL_IMG = Resources.getBufferedImage("images/sidebar/personal.png");
 	// 宿舍
-	public static final BufferedImage DORM_GREY_IMG = Resources.getBufferedImage("images/sidebar/宿舍_灰.png");
-	public static final BufferedImage DORM_BLUE_IMG = Resources.getBufferedImage("images/sidebar/宿舍_蓝.png");
+	public static final BufferedImage DORM_GREY_IMG = Resources.getBufferedImage("images/sidebar/dorm_grey.png");
+	public static final BufferedImage DORM_BLUE_IMG = Resources.getBufferedImage("images/sidebar/dorm_blue.png");
 	// 个人信息
-	public static final BufferedImage PROFILE_GREY_IMG = Resources.getBufferedImage("images/sidebar/个人信息_灰.png");
-	public static final BufferedImage PROFILE_BLUE_IMG = Resources.getBufferedImage("images/sidebar/个人信息_蓝.png");
+	public static final BufferedImage PROFILE_GREY_IMG = Resources.getBufferedImage("images/sidebar/profile_grey.png");
+	public static final BufferedImage PROFILE_BLUE_IMG = Resources.getBufferedImage("images/sidebar/profile_blue.png");
 	// 楼宇
 	public static final BufferedImage BUILDING_IMG = Resources.getBufferedImage("images/sidebar/building.png");
 	// 列表
-	public static final BufferedImage LIST_GREY_IMG = Resources.getBufferedImage("images/sidebar/列表_灰.png");
-	public static final BufferedImage LIST_BLUE_IMG = Resources.getBufferedImage("images/sidebar/列表_蓝.png");
+	public static final BufferedImage LIST_GREY_IMG = Resources.getBufferedImage("images/sidebar/list_grey.png");
+	public static final BufferedImage LIST_BLUE_IMG = Resources.getBufferedImage("images/sidebar/list_blue.png");
 	// 管理员
 	public static final BufferedImage ADMIN_IMG = Resources.getBufferedImage("images/sidebar/admin.png");
 	// 学生
@@ -77,8 +87,8 @@ public class Constant {
 	public static final BufferedImage NETWORKT_GREY_IMG = Resources.getBufferedImage("images/sidebar/网络_灰.png");
 	public static final BufferedImage NETWORKT_BLUE_IMG = Resources.getBufferedImage("images/sidebar/网络_蓝.png");
 	// 卡
-	public static final BufferedImage CARD_GREY_IMG = Resources.getBufferedImage("images/sidebar/卡_灰.png");
-	public static final BufferedImage CARD_BLUE_IMG = Resources.getBufferedImage("images/sidebar/卡_蓝.png");
+	public static final BufferedImage CARD_GREY_IMG = Resources.getBufferedImage("images/sidebar/card_grey.png");
+	public static final BufferedImage CARD_BLUE_IMG = Resources.getBufferedImage("images/sidebar/card_blue.png");
 	// 侧边栏按钮下拉
 	public static final Image DOWN_IMG = Resources.getBufferedImage("images/sidebar/down.png")
 		.getScaledInstance(16, 16, Image.SCALE_FAST);
@@ -107,7 +117,11 @@ public class Constant {
 	// 上一页
 	public static final ImageIcon BACK_BLACK_IMG = Resources.getImageIcon("images/button/back_black.png");
 	public static final ImageIcon BACK_BLUE_IMG = Resources.getImageIcon("images/button/back_blue.png");
+	public static final ImageIcon BACK_GREY_IMG = Resources.getImageIcon("images/button/back_grey.png");
+	public static final ImageIcon BACK_WHITE_IMG = Resources.getImageIcon("images/button/back_white.png");
 	// 下一页
 	public static final ImageIcon NEXT_BLACK_IMG = Resources.getImageIcon("images/button/next_black.png");
 	public static final ImageIcon NEXT_BLUE_IMG = Resources.getImageIcon("images/button/next_blue.png");
+	public static final ImageIcon NEXT_GREY_IMG = Resources.getImageIcon("images/button/next_grey.png");
+	public static final ImageIcon NEXT_WHITE_IMG = Resources.getImageIcon("images/button/next_white.png");
 }

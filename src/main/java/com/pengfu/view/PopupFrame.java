@@ -145,7 +145,7 @@ public class PopupFrame extends BaseFrame {
 		adminName.setText(admin.getName());
 		adminUsername.setText(admin.getUsername());
 		adminPhone.setText(admin.getPhone());
-		adminRole.setText(admin.getRole() == 1 ? "超级管理员" : "普通管理员");
+		adminRole.setText(Role.getNameByCode(admin.getRole()));
 		showAddPane(name);
 	}
 	
@@ -299,7 +299,7 @@ public class PopupFrame extends BaseFrame {
 			admin.setName(nameInputBox.getText());
 			admin.setPhone(phoneInputBox.getText());
 			String role = roleComboBox.getText();
-			admin.setRole(role.equals("超级管理员") ? 1 : 0);
+			admin.setRole(Role.getCodeByName(role));
 			// 添加到数据库
 			try {
 				adminService.addAdmin(admin);
@@ -529,7 +529,7 @@ public class PopupFrame extends BaseFrame {
 			admin.setUsername(adminUsername.getText());
 			admin.setPhone(adminPhone.getText());
 			admin.setName(adminName.getText());
-			admin.setRole(adminRole.getText().equals("超级管理员") ? 1 : 0);
+			admin.setRole(Role.getCodeByName(adminRole.getText()));
 			try {
 				adminService.update(admin);
 				SpringContextUtils.getBean(AdminListPage.class).updateTable();

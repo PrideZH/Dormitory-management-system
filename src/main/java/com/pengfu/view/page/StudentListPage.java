@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import com.github.pagehelper.PageInfo;
 import com.pengfu.controller.AppControl;
 import com.pengfu.entity.Student;
 import com.pengfu.model.Role;
@@ -60,6 +63,13 @@ public class StudentListPage extends BasePage {
 	public TitleComboBox dormNameBox;
 	private TitleInputBox sidInputBox;
 	private TitleInputBox nameInputBox;
+	
+	// 分页栏
+	private JLabel pageTotalLbl;
+	private JLabel pageNumLbl;
+	private JSpinner pageSizeSpinner;
+	private JTextField gotoPageNumField;
+	private PageInfo<Student> pageInfo;
 	
 	@Autowired
 	public StudentListPage(StudentService studentService) {
@@ -112,11 +122,13 @@ public class StudentListPage extends BasePage {
 		table = TableBuilder.getTableBuilder().build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
-		updateTable();
 		contxtPane.add(tablePane, BorderLayout.CENTER);
 		
 		// 分页栏
 		initPaginationBar();
+		
+		// 显示表格数据
+		updateTable();
 		
 		// 监听器 
 		// 导出文件
@@ -215,8 +227,14 @@ public class StudentListPage extends BasePage {
 		// 楼宇
 		bidComboBox = new TitleComboBox("楼宇");
 		bidComboBox.setBackground(Constant.PAGE_COLOR);
+		// 获得管理的楼宇列表
 		ArrayList<String> bidList = new ArrayList<String>(Role.getAdmin().getBids());
-		bidList.add(0, null); // 代表所有楼宇编号
+		// 如果为超级管理员则可查询所有学生
+		// 包括暂时还无入住宿舍楼的所有学生
+		if(1 == Role.getAdmin().getRole()) {
+			// 使用null查询代表不以楼宇编号为条件查询
+			bidList.add(0, null); 
+		}
 		bidComboBox.setModel(bidList);
 		topPane.add(bidComboBox);
 		// 宿舍号
@@ -261,18 +279,18 @@ public class StudentListPage extends BasePage {
 		contxtPane.add(southPane, BorderLayout.SOUTH);
 		southPane.setLayout(new FlowLayout(FlowLayout.LEFT, 16, 4));
 		// 显示数量
-		JLabel dataNumLbl = new JLabel("共" + studentService.getNumber() + "条数据");
-		southPane.add(dataNumLbl);
+		pageTotalLbl = new JLabel();
+		southPane.add(pageTotalLbl);
 		// 每页数量
-		JSpinner pageNumSpinner = new JSpinner(new SpinnerNumberModel(20, 10, 50, 5));
-		southPane.add(pageNumSpinner);
+		pageSizeSpinner = new JSpinner(new SpinnerNumberModel(20, 10, 1000, 5));
+		southPane.add(pageSizeSpinner);
 		// 上一页
 		ImgBtn backBtn = new ImgBtn(Constant.BACK_BLACK_IMG, 32, 32);
 		backBtn.setRolloverIcon(Constant.BACK_BLUE_IMG);
 		backBtn.setSelectedIcon(Constant.BACK_BLUE_IMG);
 		southPane.add(backBtn);
 		// 页数显示
-		JLabel pageNumLbl = new JLabel("1");
+		pageNumLbl = new JLabel("1");
 		southPane.add(pageNumLbl);
 		// 下一页
 		ImgBtn nextBtn = new ImgBtn(Constant.NEXT_BLACK_IMG, 32, 32);
@@ -280,29 +298,66 @@ public class StudentListPage extends BasePage {
 		nextBtn.setSelectedIcon(Constant.NEXT_BLUE_IMG);
 		southPane.add(nextBtn);
 		// 页数跳转
-		JTextField pageNumField = new JTextField(2);
-		southPane.add(pageNumField);
+		gotoPageNumField = new JTextField("1", 3);
+		southPane.add(gotoPageNumField);
 		
 		// 监听器
 		backBtn.addActionListener(e ->{
-			
+			updateTable();
+			// 是否有上一页
+			Integer pageNum = Integer.valueOf(pageNumLbl.getText());
+			if(pageInfo.isHasPreviousPage()) {
+				pageNumLbl.setText(String.valueOf(pageNum - 1));
+				updateTable();
+			}
+			// 由特殊情况超过最大页面时，跳转最后一个页面
+			if(pageNum > pageInfo.getNavigateLastPage()) {
+				pageNumLbl.setText(String.valueOf(pageInfo.getNavigateLastPage()));
+				updateTable();
+			}
 		});
 		nextBtn.addActionListener(e ->{
-			
+			updateTable();
+			// 是否有下一页
+			Integer pageNum = Integer.valueOf(pageNumLbl.getText());
+			if(pageInfo.isHasNextPage()) {
+				pageNumLbl.setText(String.valueOf(pageNum + 1));
+				updateTable();
+			} else if(pageNum > pageInfo.getNavigateLastPage()) {
+				pageNumLbl.setText(String.valueOf(pageInfo.getNavigateLastPage()));
+				updateTable();
+			}
 		});
-		pageNumField.addFocusListener(new FocusListener() {
+		gotoPageNumField.addFocusListener(new FocusListener() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				if(Pattern.compile("[0-9]*").matcher(pageNumField.getText()).matches()) {
-					
-				} else {
-					JOptionPane.showMessageDialog(null, "格式错误");
-					pageNumField.setText(pageNumLbl.getText());
-				}
+				gotoPageNum();
 			}
 			@Override
 			public void focusGained(FocusEvent e) {}
 		});
+		gotoPageNumField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				gotoPageNum();
+			}
+		});
+	}
+	
+	private void gotoPageNum() {
+		if(Pattern.compile("[0-9]*").matcher(gotoPageNumField.getText()).matches()) {
+			if(Integer.valueOf(gotoPageNumField.getText()) < pageInfo.getNavigateLastPage()) {
+				pageNumLbl.setText(gotoPageNumField.getText());
+				updateTable();
+			} else {
+				// 跳转页面超过最大页面时跳转到最后一页
+				pageNumLbl.setText(String.valueOf(pageInfo.getNavigateLastPage()));
+				updateTable();
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "格式错误");
+			gotoPageNumField.setText(pageNumLbl.getText());
+		}
 	}
 	
 	/**
@@ -310,12 +365,17 @@ public class StudentListPage extends BasePage {
 	 * 数据根据搜索栏信息从数据库获得
 	 */
 	public void updateTable() {
+		// 设置查询条件
 		Student student = new Student(); 
 		student.setBid(bidComboBox.getText());
 		student.setSid(sidInputBox.getText());
 		student.setName(nameInputBox.getText());
 		student.setDormName(dormNameBox.getText());
-		model.setStudents(studentService.search(student));
+		// 分页查询获得结果
+		pageInfo = studentService.search(student, 
+				Integer.valueOf(pageNumLbl.getText()), (int) pageSizeSpinner.getValue());
+		pageTotalLbl.setText("共" + pageInfo.getTotal() + "条数据");
+		model.setStudents(pageInfo.getList());
 		table.updateUI();
 	}
 	
