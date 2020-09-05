@@ -1,9 +1,14 @@
 package com.pengfu.view.page;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -35,29 +40,46 @@ public class AdminProfilePage extends BasePage {
 
 	@Override
 	protected void initComponents() {
+		contxtPane.setLayout(new BoxLayout(contxtPane, BoxLayout.Y_AXIS));
+		
+		// 信息栏
+		JPanel infoPane = new JPanel();
+		infoPane.setPreferredSize(new Dimension(0, 450));
+		TitledBorder infoTitledBorder = BorderFactory.createTitledBorder("信息");
+		infoTitledBorder.setTitleColor(Constant.PAGE_FONT_COLOR);
+		infoPane.setBorder(infoTitledBorder);
+		infoPane.setBackground(Constant.PAGE_COLOR);
+		contxtPane.add(infoPane);
+		
 		InfoBar nameInfoBar = new InfoBar("姓名", admin.getName());
 		InfoBar usernameInfoBar = new InfoBar("账号", admin.getUsername());
 		InfoBar phoneInfoBar = new InfoBar("联系电话", admin.getPhone());
 		InfoBar roleInfoBar = new InfoBar("权限", 1 == admin.getRole() ? "超级管理员" : "普通管理员");
 		InfoBar buildingInfoBar = new InfoBar("管理楼层", admin.getBids().toString());
 
-		contxtPane.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 32));
-		contxtPane.add(nameInfoBar);
-		contxtPane.add(usernameInfoBar);
-		contxtPane.add(phoneInfoBar);
-		contxtPane.add(roleInfoBar);
-		contxtPane.add(buildingInfoBar);
+		infoPane.setLayout(new FlowLayout(FlowLayout.CENTER, 32, 32));
+		infoPane.add(nameInfoBar);
+		infoPane.add(usernameInfoBar);
+		infoPane.add(phoneInfoBar);
+		infoPane.add(roleInfoBar);
+		infoPane.add(buildingInfoBar);
+		
+		contxtPane.add(Box.createVerticalStrut(32));
 		
 		// 修改密码
 		JPanel passwordPane = new JPanel();
+		passwordPane.setPreferredSize(new Dimension(0, 64));
+		TitledBorder passwordTitledBorder = BorderFactory.createTitledBorder("修改密码");
+		passwordTitledBorder.setTitleColor(Constant.PAGE_FONT_COLOR);
+		passwordPane.setBorder(passwordTitledBorder);
 		passwordPane.setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(passwordPane);
 		
-		TitleInputBox oldPassword = new TitleInputBox("原密码");
+		TitleInputBox oldPassword = new TitleInputBox("原密码", 64, 128);
 		oldPassword.setBackground(Constant.PAGE_COLOR);
-		TitleInputBox newPassword1 = new TitleInputBox("新密码");
+		TitleInputBox newPassword1 = new TitleInputBox("新密码", 64, 128);
 		newPassword1.setBackground(Constant.PAGE_COLOR);
-		TitleInputBox newPassword2 = new TitleInputBox("确认密码");
+		TitleInputBox newPassword2 = new TitleInputBox("确认密码", 64, 128);
 		newPassword2.setBackground(Constant.PAGE_COLOR);
 		
 		passwordPane.add(oldPassword);
@@ -90,6 +112,9 @@ public class AdminProfilePage extends BasePage {
 			newPassword1.setText("");
 			newPassword2.setText("");
 		});
+		
+		contxtPane.add(Box.createVerticalGlue());
+		
 	}
 
 }

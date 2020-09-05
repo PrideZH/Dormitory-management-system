@@ -45,18 +45,18 @@ public class AdminMapperTest {
 		admin.setPassword("test");
 		admin.setRole(0);
 		admin.setUsername("test");
-		adminMapper.insert(admin);
+		//adminMapper.insert(admin);
 	}
 	
 	@Test
 	public void testUpdate() {
 		Admin admin = adminMapper.selectByUsername("test");
 		admin.setPassword("123456");
-		adminMapper.update(admin);
+		//adminMapper.update(admin);
 	}
 	
 	@Test
 	public void testDelete() {
-		adminMapper.delete("test");
+		//adminMapper.delete("test");
 	}
 }

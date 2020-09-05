@@ -1,7 +1,6 @@
 package com.pengfu.view.page;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
@@ -56,10 +55,10 @@ public class DormListPage extends BasePage {
 		JPanel topPane = new JPanel();
 		topPane.setPreferredSize(new Dimension(0, 64));
 		topPane.setBackground(Constant.PAGE_COLOR);
-		topPane.setBorder(BorderFactory.createLineBorder(new Color(65, 113, 156), 1));
+		topPane.setBorder(BorderFactory.createLineBorder(Constant.PAGE_BORDER_COLOR, 1));
 		add(topPane, 0);
 		// 楼宇
-		bidComboBox = new TitleComboBox("楼宇");
+		bidComboBox = new TitleComboBox("楼宇", 64, 128);
 		bidComboBox.setBackground(Constant.PAGE_COLOR);
 		bidComboBox.setModel(Role.getAdmin().getBids());
 		topPane.add(bidComboBox);
@@ -91,7 +90,7 @@ public class DormListPage extends BasePage {
 		
 		// 宿舍信息列表
 		model.setDorms(dormService.getDormitoryByBid(bidComboBox.getText()));
-		table = TableBuilder.getTableBuilder().build(model);
+		table = SpringContextUtils.getBean(TableBuilder.class).build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);

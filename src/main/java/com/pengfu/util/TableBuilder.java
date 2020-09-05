@@ -1,7 +1,5 @@
 package com.pengfu.util;
 
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JTable;
@@ -12,19 +10,16 @@ import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-/** 表格构造者 */
+import org.springframework.stereotype.Component;
+
+/**
+ * 表格构造
+ * @author PrideZH
+ */
+@Component
 public class TableBuilder {
-	
-	private static TableBuilder tableBuilder;
 
 	private TableBuilder() {}
-	
-	public static TableBuilder getTableBuilder() {
-		if(tableBuilder == null) {
-			tableBuilder = new TableBuilder();
-		}
-		return tableBuilder;
-	}
 
 	/** 构造一个表格 */
 	public JTable build(TableModel model) {
@@ -36,7 +31,9 @@ public class TableBuilder {
 		// 按比例调整列宽
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); 
 		// 选中时背景颜色
-		table.setSelectionBackground(new Color(236, 245, 255));
+		table.setSelectionBackground(Constant.TABLE_SELECT_COLOR);
+		// 字体颜色
+		table.setForeground(Constant.PAGE_FONT_COLOR);
 		// 只能选单行
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
@@ -49,14 +46,13 @@ public class TableBuilder {
 		// 字体
 		tableHeader.setFont(new Font("宋体", Font.BOLD, 16));
 		// 颜色
-		tableHeader.setBackground(Color.WHITE);
+		tableHeader.setBackground(Constant.TABLE_EVEN_COLOR);
+		tableHeader.setForeground(Constant.PAGE_FONT_COLOR);
 		
 		// 设置行排序器
 		TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>(model);
 		table.setRowSorter(rowSorter);
-		table.addPropertyChangeListener(e ->{
-			rowSorter.setModel(table.getModel());
-		});
+		table.addPropertyChangeListener(e -> rowSorter.setModel(table.getModel()));
 		
 		// 单元格渲染器
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer() {
@@ -64,12 +60,12 @@ public class TableBuilder {
 			private static final long serialVersionUID = 1L;
 
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+			public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
 					boolean hasFocus, int row, int column) {
 				if (row % 2 == 0) {
-	                setBackground(new Color(251, 250, 251));
+	                setBackground(Constant.TABLE_ODD_COLOR);
 	            } else {
-	                setBackground(Color.WHITE);
+	                setBackground(Constant.TABLE_EVEN_COLOR);
 	            }
 				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			}

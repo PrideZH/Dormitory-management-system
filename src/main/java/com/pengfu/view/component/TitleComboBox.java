@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.pengfu.util.Constant;
@@ -18,16 +17,17 @@ public class TitleComboBox extends JPanel {
 	
 	private JComboBox<String> comboBox;
 
-	public TitleComboBox(String title) {
-		setBackground(Constant.BG_COLOR);
-		setPreferredSize(new Dimension(320, 40));
+	public TitleComboBox(String title, int titleSize, int textSize) {
+		setBackground(Constant.PAGE_COLOR);
+		setPreferredSize(new Dimension(titleSize + textSize + 20, 40));
 
-		JLabel titleLab = new JLabel(title);
-		titleLab.setPreferredSize(new Dimension(70, 32));
+		AppLabel titleLab = new AppLabel(title);
+		titleLab.setPreferredSize(new Dimension(titleSize, 32));
 		add(titleLab);
 
 		comboBox = new JComboBox<String>();
-		comboBox.setPreferredSize(new Dimension(200, 32));
+		comboBox.setForeground(Constant.PAGE_FONT_COLOR);
+		comboBox.setPreferredSize(new Dimension(textSize, 32));
 		comboBox.setBackground(Constant.PAGE_COLOR);
 		add(comboBox);
 	}
@@ -56,9 +56,10 @@ public class TitleComboBox extends JPanel {
 		comboBox.addItem(item);
 	}
 
+	/** 添加事件 */
 	public void addActionListener(ActionListener l) {
 		comboBox.addActionListener(l);
-    }
+	}
 	
 	/** 获取输入框内容 */
 	public String getText() {
@@ -74,6 +75,7 @@ public class TitleComboBox extends JPanel {
 		return comboBox.getSelectedIndex();
 	}
 	
+	/** 设置下拉框选项 */
 	public void setText(String text) {
 		if(text == null) {
 			return;

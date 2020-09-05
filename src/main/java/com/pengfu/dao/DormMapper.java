@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pengfu.entity.Dorm;
 
+/** 宿舍 */
 public interface DormMapper {
 
 	/** 通过楼宇编号查询所有 */

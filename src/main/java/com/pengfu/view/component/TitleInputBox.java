@@ -2,7 +2,6 @@ package com.pengfu.view.component;
 
 import java.awt.Dimension;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -15,16 +14,18 @@ public class TitleInputBox extends JPanel {
 	
 	private JTextField textField;
 
-	public TitleInputBox(String title) {
+	public TitleInputBox(String title, int titleSize, int textSize) {
 		setBackground(Constant.BG_COLOR);
-		setPreferredSize(new Dimension(320, 40));
+		setPreferredSize(new Dimension(titleSize + textSize + 20, 40));
 		
-		JLabel titleLab = new JLabel(title);
-		titleLab.setPreferredSize(new Dimension(70, 32));
+		AppLabel titleLab = new AppLabel(title);
+		titleLab.setPreferredSize(new Dimension(titleSize, 32));
 		add(titleLab);
 		
 		textField = new JTextField();
-		textField.setPreferredSize(new Dimension(200, 32));
+		textField.setForeground(Constant.PAGE_FONT_COLOR);
+		textField.setPreferredSize(new Dimension(textSize, 32));
+		textField.setBackground(Constant.PAGE_COLOR);
 		add(textField);
 	}
 	

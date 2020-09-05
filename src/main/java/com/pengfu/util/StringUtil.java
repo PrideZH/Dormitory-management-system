@@ -1,6 +1,8 @@
 package com.pengfu.util;
 
 public class StringUtil {
+	
+	private StringUtil() {}
 
 	/** 判断是否为空 */
 	public static boolean isEmpty(String str) {

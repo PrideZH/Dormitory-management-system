@@ -1,6 +1,5 @@
 package com.pengfu.view.component;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +14,10 @@ import javax.swing.JButton;
 
 import com.pengfu.util.Constant;
 
+/**
+ * 自定义样式按钮 
+ * @author PrideZH
+ */
 public class AppButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
@@ -24,14 +27,18 @@ public class AppButton extends JButton {
 
 	private String text;
 	private int testX;
+	
 	private Image img;
+	private int imgSize = 16;
 	
 	public AppButton(String text) {
 		this.text = text;
 		
 		testX = 16;
 		
-		setPreferredSize(new Dimension(text.length() * 22, 32));
+		Dimension dimension = new Dimension(text.length() * 22, 32);
+		setPreferredSize(dimension);
+		setMaximumSize(dimension);
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		
@@ -62,7 +69,7 @@ public class AppButton extends JButton {
 
 	public AppButton(String text, Image img) {
 		this(text);
-		this.img = img;
+		this.img = img.getScaledInstance(imgSize, imgSize, Image.SCALE_FAST);;
 		
 		testX = 38;
 		
@@ -100,9 +107,9 @@ public class AppButton extends JButton {
 		g2d.setClip(clip);
 		
 		// 绘制图标
-		g2d.drawImage(img, 16, (h - 16) / 2, null);
+		g2d.drawImage(img, 16, (h - imgSize) / 2, null);
 		// 绘制文本
-		g2d.setColor(Color.WHITE);
+		g2d.setColor(Constant.BTN_FONT_COLOR);
 		g2d.drawString(text, testX, (h - 12) / 2 + 10);
 	}
 	

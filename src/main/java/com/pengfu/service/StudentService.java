@@ -13,7 +13,7 @@ import com.pengfu.entity.Student;
 import com.pengfu.util.StringUtil;
 
 @Transactional
-@Service("studentService")
+@Service
 public class StudentService {
 
 	@Autowired
@@ -70,11 +70,6 @@ public class StudentService {
 		student.setPassword(student.getIdCard().substring(12));
 		studentMapper.insert(student);
 	}
-
-	/** 查询所有学生 */
-	public List<Student> getAll() {
-		return studentMapper.selectAll();
-	}
 	
 	/**
 	 * 模糊搜索
@@ -107,10 +102,6 @@ public class StudentService {
 		PageHelper.startPage(pageNum, pageSize);
 		PageInfo<Student> pageInfo = new PageInfo<>(studentMapper.selectByStudent(student));
 		return pageInfo;
-	}
-	
-	public long getNumber() {
-		return studentMapper.selectNumber();
 	}
 
 	/** 修改 */

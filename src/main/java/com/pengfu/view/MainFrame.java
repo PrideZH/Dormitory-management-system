@@ -4,13 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,10 +19,12 @@ import javax.swing.JPanel;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.pengfu.controller.AppControl;
 import com.pengfu.model.Role;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SidebarBuilder;
 import com.pengfu.util.SpringContextUtils;
+import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.Sidebar;
 import com.pengfu.view.component.SidebarBtn;
 import com.pengfu.view.page.BasePage;
@@ -41,8 +43,9 @@ public class MainFrame extends BaseFrame {
 	private JPanel pagePanel;
 	private CardLayout cardLayout;
 	
-	// 路径显示
-	private String parentPath;
+	private Sidebar sidebar; // 侧边栏
+	
+	// 侧边栏路径显示
 	private JLabel pathLabel; 
 	
 	// 用户权限
@@ -71,71 +74,51 @@ public class MainFrame extends BaseFrame {
 		contentPane.add(contentBar, BorderLayout.CENTER);
 		contentBar.setLayout(new BorderLayout());
 		
+		// 顶部栏
+		JPanel upPanel = new JPanel();
+		upPanel.setBackground(Constant.BG_COLOR);
+		upPanel.setPreferredSize(new Dimension(0, 48));
+		contentBar.add(upPanel, BorderLayout.NORTH);
+		upPanel.setLayout(new BoxLayout(upPanel, BoxLayout.X_AXIS));
+		upPanel.add(Box.createHorizontalStrut(24));
 		// 路径显示
-		JPanel pathPanel = new JPanel();
-		pathPanel.setPreferredSize(new Dimension(0, 48));
-		contentBar.add(pathPanel, BorderLayout.NORTH);
-		pathPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 16));
-		
 		pathLabel = new JLabel("首页");
 		pathLabel.setFont(new Font("宋体", Font.BOLD, 16));
-		pathPanel.add(pathLabel);
+		pathLabel.setForeground(Constant.PAGE_FONT_COLOR);
+		upPanel.add(pathLabel);
+		upPanel.add(Box.createHorizontalGlue());
+		// 人物信息
+		JLabel roleLbl = new JLabel("欢迎您！" + role.getName() + "，"
+			+ (Role.STUDENT == role ? Role.getStudent().getName() : Role.getAdmin().getName()));
+		roleLbl.setForeground(Constant.PAGE_FONT_COLOR);
+		upPanel.add(roleLbl);
+		upPanel.add(Box.createHorizontalStrut(24));
+		// 退出登陆按钮
+		AppButton appButton = new AppButton("退出登陆");
+		upPanel.add(appButton);
+		upPanel.add(Box.createHorizontalStrut(32));
+		appButton.addActionListener(e -> SpringContextUtils.getBean(AppControl.class).logOut());
 		
 		// 页面显示		
 		pagePanel = new JPanel();
 		pagePanel.setBackground(Constant.BG_COLOR);
 		pagePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 		contentBar.add(pagePanel, BorderLayout.CENTER);
-		
 		// 设置卡片布局
 		cardLayout = new CardLayout();
 		pagePanel.setLayout(cardLayout);
-		// 首页
-		pagePanel.add(SpringContextUtils.getBean("homePage", BasePage.class)); 
+		// 显示首页
+		goToPage("homePage");
 	}
 	
 	/** 初始化侧边 */
 	private void initSidebar() {
 		// 侧边栏
-		Sidebar sidebar = SidebarBuilder.getSidebarBuilder().build(role.getPermissionList());
+		sidebar = SpringContextUtils.getBean(SidebarBuilder.class).build(role.getPermissionList());
 		contentPane.add(sidebar, BorderLayout.WEST);
 
-		// 父级按钮监听器
+		// 子按钮监听器
 		ActionListener al = new ActionListener() {
-			
-			/** 实现下拉按钮 */
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// 移除侧边栏所有子按钮
-				List<SidebarBtn> sideBtns = sidebar.getSideBtns();
-				for(SidebarBtn sideBtn : sideBtns) {
-					for(SidebarBtn item : sideBtn.getItems()) {
-						sidebar.remove(item);
-					}
-				}
-				
-				// 获得点击的按钮
-				SidebarBtn btn = (SidebarBtn) e.getSource();
-				// 获得该父按钮下标
-				int index = 0;
-				for (int i = 0; i < sideBtns.size(); ++i){
-				     if(sideBtns.get(i).equals(e.getSource())){
-				    	 index = i;
-				     }
-				 }
-				// 添加该父按钮的所有子按钮
-				List<SidebarBtn> items = btn.getItems();
-				for(SidebarBtn item : items) {
-					sidebar.add(item, index + 1);
-				}
-				sidebar.updateUI();
-				// 保存父路径
-				parentPath = btn.getText();
-			}
-		};
-		
-		// 子级按钮监听器
-		ActionListener al2 = new ActionListener() {
 
 			/** 实现页面切换 */
 			@Override
@@ -145,7 +128,7 @@ public class MainFrame extends BaseFrame {
 					// 页面跳转
 					goToPage(btn.getPageName());
 					// 显示路径
-					pathLabel.setText(parentPath + " > " + btn.getText());
+					pathLabel.setText(sidebar.getParentPath() + " > " + btn.getText());
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "功能尚未实现，敬请期待!");
 				}
@@ -154,14 +137,7 @@ public class MainFrame extends BaseFrame {
 		};
 		
 		// 为所有侧边栏按钮添加监听器
-		List<SidebarBtn> sideBtns = sidebar.getSideBtns();
-		for(SidebarBtn sideBtn : sideBtns) {
-			sideBtn.addActionListener(al);
-			for(SidebarBtn item : sideBtn.getItems()) {
-				item.addActionListener(al2);
-			}
-		}
-
+		sidebar.setActionListener(al);
 	}
 	
 	/** 跳转页面 */
@@ -171,4 +147,7 @@ public class MainFrame extends BaseFrame {
 		cardLayout.show(pagePanel, name);
 	}
 	
+	public void updateUI() {
+		sidebar.updateUI();
+	}
 }

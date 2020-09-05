@@ -1,7 +1,5 @@
 package com.pengfu.dao;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +19,6 @@ public class StudentMapperTest {
 	
 	@Autowired
 	private StudentService studnetService;
-	
-	@Test
-	public void testSelectAll() {
-		List<Student> students = studentMapper.selectAll();
-		students.forEach(System.out::println);
-	}
 	
 	@Test
 	public void testSelect() {
@@ -52,8 +44,8 @@ public class StudentMapperTest {
 	
 	@Test
 	public void testInsert() {
-		Student student = new Student();
-		studentMapper.insert(student);
+//		Student student = new Student();
+//		studentMapper.insert(student);
 	}
 	
 }

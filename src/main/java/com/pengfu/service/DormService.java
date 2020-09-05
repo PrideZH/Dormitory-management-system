@@ -11,7 +11,7 @@ import com.pengfu.entity.Dorm;
 import com.pengfu.util.StringUtil;
 
 @Transactional
-@Service("dormitoryService")
+@Service
 public class DormService {
 
 	@Autowired

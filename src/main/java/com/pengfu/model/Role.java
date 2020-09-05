@@ -86,6 +86,9 @@ public enum Role {
 	
 	private final int code;
 	private final String name;
+	
+	/** 当前用户类型 */
+	private static Role role;
 
 	/** 保存当前权限角色信息 */
 	private static Student student;
@@ -108,7 +111,9 @@ public enum Role {
 		return student;
 	}
 
+	/** 设置学生用户信息 */
 	public static void setStudent(Student student) {
+		role = Role.STUDENT;
 		Role.student = student;
 	}
 
@@ -116,19 +121,18 @@ public enum Role {
 		return admin;
 	}
 	
+	/** 设置管理员用户信息 */
 	public static void setAdmin(Admin admin) {
+		if(admin.getAid() == 0) {
+			role = Role.GENERAL_ADMIN;
+		} else if(admin.getAid() == 1) {
+			role = Role.SUPER_ADMIN;
+		}
 		Role.admin = admin;
 	}
 	
-	/** 获得已初始化权限 */
 	public static Role getRole() {
-		if(student != null) {
-			return STUDENT;
-		}else if(admin != null) {
-			return getbycode(admin.getRole());
-		}else {
-			return null;
-		}
+		return role;
 	}
 	
 	/** 通过编号获得权限 */
@@ -166,5 +170,5 @@ public enum Role {
 	
 	/** 获得管理的楼层 */
 	public abstract List<String> getBids();
-	
+
 }

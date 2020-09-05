@@ -1,6 +1,5 @@
 package com.pengfu.view.page;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.List;
@@ -41,7 +40,7 @@ public class DormInfoPage extends BasePage {
 	private JPanel createInofCard(Student student) {
 		JPanel studentInfo = new JPanel();
 		studentInfo.setBackground(Constant.PAGE_COLOR);
-		studentInfo.setBorder(BorderFactory.createLineBorder(Color.BLACK, 3));
+		studentInfo.setBorder(BorderFactory.createLineBorder(Constant.PAGE_BORDER_COLOR, 3));
 		
 		InfoBar infoBar1 = new InfoBar("姓名", student.getName());
 		InfoBar infoBar2 = new InfoBar("学号", student.getSid());

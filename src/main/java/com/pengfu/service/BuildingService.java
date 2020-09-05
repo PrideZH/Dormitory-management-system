@@ -11,7 +11,7 @@ import com.pengfu.entity.Building;
 import com.pengfu.util.StringUtil;
 
 @Transactional
-@Service("buildingService")
+@Service
 public class BuildingService {
 
 	@Autowired

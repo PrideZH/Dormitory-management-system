@@ -1,6 +1,5 @@
 package com.pengfu.view.component;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -8,10 +7,11 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+
+import com.pengfu.util.Constant;
 
 public class InputBox extends JPanel {
 
@@ -20,7 +20,7 @@ public class InputBox extends JPanel {
 	private static final int FONTSIZE = 24;
 	
 	JTextField jTextField = null;
-	JLabel jLabel = null;
+	AppLabel jLabel = null;
 
 	public InputBox(String text, int columns, boolean showText) {
 		// 设置大小
@@ -42,13 +42,14 @@ public class InputBox extends JPanel {
 			jTextField = new JPasswordField();
 		}
 		jTextField.setOpaque(false);
+		jTextField.setForeground(Constant.PAGE_FONT_COLOR);
 		jTextField.setFont(font);
 		jTextField.setBounds(0, FONTSIZE * 3 / 2, columns * FONTSIZE, FONTSIZE);
-		jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Constant.PAGE_FONT_COLOR));
 		add(jTextField);
 		
 		// 创建输入框内字体
-		jLabel = new JLabel(text);
+		jLabel = new AppLabel(text);
 		jLabel.setFont(font);
 		jLabel.setBounds(4, FONTSIZE * 3 / 2, text.length() * FONTSIZE, FONTSIZE);
 		add(jLabel);
@@ -77,7 +78,7 @@ public class InputBox extends JPanel {
 	}
 	
 	/**
-	 * 平移效果
+	 * 平移动画效果
 	 * @param flag 指定平移方向 true-向上 false-向下
 	 */
 	private void effect(boolean flag) {
@@ -108,13 +109,6 @@ public class InputBox extends JPanel {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/** 设置边框和字体颜色 */
-	public void setColor(Color color) {
-		jTextField.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, color));
-		jLabel.setForeground(color);
-		
 	}
 	
 	/** 获得输入框文本 */

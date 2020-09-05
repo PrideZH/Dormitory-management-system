@@ -12,7 +12,7 @@ import com.pengfu.entity.Admin;
 import com.pengfu.util.StringUtil;
 
 @Transactional
-@Service("managerService")
+@Service
 public class AdminService {
 
 	@Autowired

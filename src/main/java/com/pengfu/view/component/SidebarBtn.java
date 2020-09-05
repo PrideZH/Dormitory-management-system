@@ -1,6 +1,5 @@
 package com.pengfu.view.component;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -22,6 +21,10 @@ import javax.swing.JRadioButton;
 
 import com.pengfu.util.Constant;
 
+/**
+ * 侧边栏按钮
+ * @author PrideZH
+ */
 public class SidebarBtn extends JRadioButton {
 
 	private static final long serialVersionUID = 1L;
@@ -56,12 +59,10 @@ public class SidebarBtn extends JRadioButton {
 	/**
 	 * 构造只含文本的侧边栏按钮
 	 * @param text 文本
-	 * @param pageName 绑定的page名
 	 * @param width 宽度
 	 */
-	public SidebarBtn(String text, String pageName, int width) {
+	public SidebarBtn(String text, int width) {
 		this.text = text;
-		this.pageName = pageName;
 		this.width = width;
 		
 		// 设置按钮大小
@@ -104,8 +105,8 @@ public class SidebarBtn extends JRadioButton {
 	 * 构造拥有默认图标的侧边栏按钮
 	 * @param imgPath 图片路径
 	 */
-	public SidebarBtn(BufferedImage img, String text, String pageName, int width) {
-		this(text, pageName, width);
+	public SidebarBtn(BufferedImage img, String text, int width) {
+		this(text, width);
 		// 设置图标大小、位置
 		this.image = img.getScaledInstance(24, 24, Image.SCALE_FAST);
 		imgX = textX - 32;
@@ -113,13 +114,27 @@ public class SidebarBtn extends JRadioButton {
 	}
 	
 	/**
-	 * 构造含有图标和文本的侧边栏按钮
+	 * 构造含有图标和文本的侧边栏按钮且可绑定page名
 	 * 图标包含默认状态和选择状态
+	 * @param pageName 绑定的page名
 	 * @param SelectedimgPath 选中状态的图片路径
 	 */
 	public SidebarBtn(BufferedImage img, BufferedImage selectedImg, String text, String pageName, int width) {
-		this(img, text, pageName, width);
+		this(img, text, width);
+		this.pageName = pageName;
 		this.selectedImg = selectedImg.getScaledInstance(24, 24, Image.SCALE_FAST);
+	}
+	
+	/** 
+	 * 设置子按钮图标位置
+	 * 随侧边栏展开收缩而变化 
+	 */
+	public void changeForOpen(boolean open) {
+		if(open) {
+			imgX = textX - 32;
+		} else if(!isSuper) {
+			imgX = textX - 64;
+		}
 	}
 	
 	/** 获得绑定的page名 */
@@ -154,19 +169,22 @@ public class SidebarBtn extends JRadioButton {
 		
 		// 绘制按钮颜色
 		if(entered) {
-			g2.setColor(new Color(32, 45, 60));
+			g2.setColor(Constant.SIDEBAR_BTN_ENTERED_COLOR); // 悬停
 		}else if(isSuper){
-			g2.setColor(Constant.SIDEBAR_COLOR);
+			g2.setColor(Constant.SIDEBAR_PARENT_BTN_COLOR); // 父按钮默认
 		}else {
-			g2.setColor(new Color(12, 7, 21));
+			g2.setColor(Constant.SIDEBAR_SUBCLASS_BTN_COLOR); // 子按钮默认
 		}
 		g2.fillRect(0, 0, width, height);
 		
 		// 绘制父按钮上拉下拉提示
-		if(isSuper && isSelected()) {
-			g2.drawImage(Constant.UP_IMG, width - 32, tipsY, null);
-		}else if(isSuper) {
-			g2.drawImage(Constant.DOWN_IMG, width - 32, tipsY, null);
+		// 若该父按钮无子按钮则不绘制
+		if(isSuper && !items.isEmpty()) {
+			if(isSelected()) {
+				g2.drawImage(Constant.UP_IMG, width - 32, tipsY, null);
+			} else {
+				g2.drawImage(Constant.DOWN_IMG, width - 32, tipsY, null);
+			}
 		}
 		
 		// 绘制图标
@@ -178,11 +196,11 @@ public class SidebarBtn extends JRadioButton {
 
 		// 绘制文本
 		if(isSelected() && !isSuper) {
-			g2.setColor(new Color(56, 156, 255));
+			g2.setColor(Constant.SIDEBAR_FONT_ENTERED_COLOR);
 		}else if(entered) {
-			g2.setColor(new Color(56, 156, 255));
+			g2.setColor(Constant.SIDEBAR_FONT_ENTERED_COLOR);
 		}else {
-			g2.setColor(Color.WHITE);
+			g2.setColor(Constant.SIDEBAR_FONT_COLOR);
 		}
 		g2.setFont(font);
 		g2.drawString(text, textX, textY);

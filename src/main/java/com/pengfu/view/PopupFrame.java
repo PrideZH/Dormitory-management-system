@@ -180,43 +180,43 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 姓名
-		TitleInputBox nameInputBox = new TitleInputBox("姓名");
+		TitleInputBox nameInputBox = new TitleInputBox("姓名", 100, 200);
 		pane.add(nameInputBox);
 		
 		// 性别
-		TitleComboBox genderComboBox = new TitleComboBox("性别");
+		TitleComboBox genderComboBox = new TitleComboBox("性别", 100, 200);
 		genderComboBox.setModel(new String[] {"男", "女"});
 		pane.add(genderComboBox);	
 				
 		// 身份证号
-		TitleInputBox idCardInputBox = new TitleInputBox("身份证号");
+		TitleInputBox idCardInputBox = new TitleInputBox("身份证号", 100, 200);
 		pane.add(idCardInputBox);
 		
 		// 学号
-		TitleInputBox sidInputBox = new TitleInputBox("学号");
+		TitleInputBox sidInputBox = new TitleInputBox("学号", 100, 200);
 		pane.add(sidInputBox);
 		
 		// 联系电话
-		TitleInputBox phoneInputBox = new TitleInputBox("联系电话");
+		TitleInputBox phoneInputBox = new TitleInputBox("联系电话", 100, 200);
 		pane.add(phoneInputBox);
 		
 		// 学院
-		TitleComboBox collegeComboBox = new TitleComboBox("学院");
+		TitleComboBox collegeComboBox = new TitleComboBox("学院", 100, 200);
 		collegeComboBox.setModel(CollegeList.getCollegeList().getColleges());
 		pane.add(collegeComboBox);	
 		
 		// 班级
-		TitleComboBox classesComboBox = new TitleComboBox("班级");
+		TitleComboBox classesComboBox = new TitleComboBox("班级", 100, 200);
 		classesComboBox.setModel(CollegeList.getCollegeList().getClasses(collegeComboBox.getText()));
 		pane.add(classesComboBox);		
 		
 		// 楼宇列表
-		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号");
+		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
 		buildingIdComboBox.setModel(Role.getRole().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号
-		TitleComboBox dormComboBox = new TitleComboBox("宿舍");
+		TitleComboBox dormComboBox = new TitleComboBox("宿舍", 100, 200);
 		// 根据楼宇编号修改宿舍号下拉列表数据
 		dormComboBox.setModel(dormService.getAllNumberByBid(buildingIdComboBox.getText()));
 		pane.add(dormComboBox);		
@@ -270,19 +270,19 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 姓名
-		TitleInputBox nameInputBox = new TitleInputBox("姓名");
+		TitleInputBox nameInputBox = new TitleInputBox("姓名", 100, 200);
 		pane.add(nameInputBox);
 		
 		// 用户名
-		TitleInputBox usernameBox = new TitleInputBox("用户名");
+		TitleInputBox usernameBox = new TitleInputBox("用户名", 100, 200);
 		pane.add(usernameBox);
 		
 		// 联系电话
-		TitleInputBox phoneInputBox = new TitleInputBox("联系电话");
+		TitleInputBox phoneInputBox = new TitleInputBox("联系电话", 100, 200);
 		pane.add(phoneInputBox);
 		
 		// 权限
-		TitleComboBox roleComboBox = new TitleComboBox("权限");
+		TitleComboBox roleComboBox = new TitleComboBox("权限", 100, 200);
 		roleComboBox.setModel(new String[] {"普通管理员", "超级管理员"});
 		pane.add(roleComboBox);	
 		
@@ -321,12 +321,12 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 楼宇编号
-		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号");
+		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
 		buildingIdComboBox.setModel(Role.getAdmin().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号
-		TitleInputBox DormNumberInputBox = new TitleInputBox("宿舍号");
+		TitleInputBox DormNumberInputBox = new TitleInputBox("宿舍号", 100, 200);
 		pane.add(DormNumberInputBox);
 		
 		// 添加按钮
@@ -360,11 +360,11 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 楼宇编号
-		TitleInputBox buildingIdInputBox = new TitleInputBox("楼宇编号");
+		TitleInputBox buildingIdInputBox = new TitleInputBox("楼宇编号", 100, 200);
 		pane.add(buildingIdInputBox);
 		
 		// 管理员
-		TitleComboBox adminComboBox = new TitleComboBox("管理员");
+		TitleComboBox adminComboBox = new TitleComboBox("管理员", 100, 200);
 		// 获得所有管理员
 		List<Admin> admins = adminService.getAll();
 		// 获得所有管理员姓名
@@ -407,48 +407,48 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 
 		// 姓名
-		nameInputBox = new TitleInputBox("姓名");
+		nameInputBox = new TitleInputBox("姓名", 100, 200);
 		nameInputBox.setEnabled(false);
 		pane.add(nameInputBox);
 		
 		// 性别
-		genderComboBox = new TitleComboBox("性别");
+		genderComboBox = new TitleComboBox("性别", 100, 200);
 		genderComboBox.setModel(new String[] {"男", "女"});
 		genderComboBox.setEnabled(false);
 		pane.add(genderComboBox);	
 				
 		// 身份证号
-		idCardInputBox = new TitleInputBox("身份证号");
+		idCardInputBox = new TitleInputBox("身份证号", 100, 200);
 		idCardInputBox.setEnabled(false);
 		pane.add(idCardInputBox);
 		
 		// 学号
-		sidInputBox = new TitleInputBox("学号");
+		sidInputBox = new TitleInputBox("学号", 100, 200);
 		sidInputBox.setEnabled(false);
 		pane.add(sidInputBox);
 		
 		// 联系电话
-		phoneInputBox = new TitleInputBox("联系电话");
+		phoneInputBox = new TitleInputBox("联系电话", 100, 200);
 		phoneInputBox.setEnabled(false);
 		pane.add(phoneInputBox);
 	
 		// 学院
-		TitleComboBox collegeComboBox = new TitleComboBox("学院");
+		TitleComboBox collegeComboBox = new TitleComboBox("学院", 100, 200);
 		collegeComboBox.setModel(CollegeList.getCollegeList().getColleges());
 		pane.add(collegeComboBox);	
 				
 		// 班级
-		TitleComboBox classesComboBox = new TitleComboBox("班级");
+		TitleComboBox classesComboBox = new TitleComboBox("班级", 100, 200);
 		classesComboBox.setModel(CollegeList.getCollegeList().getClasses(collegeComboBox.getText()));
 		pane.add(classesComboBox);	
 				
 		// 楼宇列表
-		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号");
+		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
 		buildingIdComboBox.setModel(Role.getRole().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号
-		TitleComboBox dormComboBox = new TitleComboBox("宿舍");
+		TitleComboBox dormComboBox = new TitleComboBox("宿舍", 100, 200);
 		// 根据楼宇编号修改宿舍号下拉列表数据
 		dormComboBox.setModel(dormService.getAllNumberByBid(buildingIdComboBox.getText()));
 		pane.add(dormComboBox);	
@@ -499,20 +499,20 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 姓名
-		adminName = new TitleInputBox("姓名");
+		adminName = new TitleInputBox("姓名", 100, 200);
 		pane.add(adminName);
 		
 		// 用户名
-		adminUsername = new TitleInputBox("用户名");
+		adminUsername = new TitleInputBox("用户名", 100, 200);
 		adminUsername.setEnabled(false);
 		pane.add(adminUsername);
 		
 		// 联系电话
-		adminPhone = new TitleInputBox("联系电话");
+		adminPhone = new TitleInputBox("联系电话", 100, 200);
 		pane.add(adminPhone);
 		
 		// 权限
-		adminRole = new TitleComboBox("权限");
+		adminRole = new TitleComboBox("权限", 100, 200);
 		adminRole.setModel(new String[] {"普通管理员", "超级管理员"});
 		pane.add(adminRole);	
 		
@@ -550,12 +550,12 @@ public class PopupFrame extends BaseFrame {
 		pane.setName(title);
 		
 		// 楼宇编号
-		buildingIdInputBox = new TitleInputBox("楼宇编号");
+		buildingIdInputBox = new TitleInputBox("楼宇编号", 100, 200);
 		buildingIdInputBox.setEnabled(false);
 		pane.add(buildingIdInputBox);
 		
 		// 管理员
-		TitleComboBox adminComboBox = new TitleComboBox("管理员");
+		TitleComboBox adminComboBox = new TitleComboBox("管理员", 100, 200);
 		// 获得所有管理员
 		List<Admin> admins = adminService.getAll();
 		// 获得所有管理员姓名

@@ -1,8 +1,8 @@
 package com.pengfu.util;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.IOException;
+import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -15,40 +15,29 @@ public class Resources {
 	
 	private Resources() {}
 	
+	/** 获得资源io输入流 */
+	public static InputStream getInputStream(String path) {
+		return Resources.class.getClassLoader().getResourceAsStream(path);
+	}
+	
 	/** 通过路径获得图片资源 */
 	public static ImageIcon getImageIcon(String imgPath) {
 		try {
-			String resource = Resources.class.getClassLoader().getResource(imgPath).getPath();
-			resource = java.net.URLDecoder.decode(resource,"utf-8");
-			return new ImageIcon(resource);
-		} catch (UnsupportedEncodingException e) {
+			return new ImageIcon(ImageIO.read(getInputStream(imgPath)));
+		} catch (IOException e) {
 			e.printStackTrace();
-		}  
+		}
 		return null;
 	}
 	
 	/** 通过路径获得图片资源 */
 	public static BufferedImage getBufferedImage(String imgPath) {
 		try {
-			String resource = Resources.class.getClassLoader().getResource(imgPath).getPath();
-			resource = java.net.URLDecoder.decode(resource,"utf-8");
-			File file = new File(resource);
-			return ImageIO.read(file);
+			return ImageIO.read(getInputStream(imgPath));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}  
 		return null;
 	}
 	
-	/** 获得指定文件夹的所有文件 */
-	public static File[] getListFiles(String imgPath) {
-		try {
-			String resource = Resources.class.getClassLoader().getResource(imgPath).getPath();
-			resource = java.net.URLDecoder.decode(resource,"utf-8");
-			return new File(resource).listFiles();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
-	}
 }

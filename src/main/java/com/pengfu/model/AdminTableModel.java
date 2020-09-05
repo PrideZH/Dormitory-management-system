@@ -32,7 +32,7 @@ public class AdminTableModel extends AbstractTableModel {
 		case 1: return admin.getUsername();
 		case 2: return admin.getName();
 		case 3: return admin.getPhone();
-		case 4: return admin.getRole() == 1 ? "超级管理员" : "普通管理员";
+		case 4: return Role.getNameByCode(admin.getRole());
 		}
 		return null;
 	}

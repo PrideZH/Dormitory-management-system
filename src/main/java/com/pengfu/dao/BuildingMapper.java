@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.pengfu.entity.Building;
 
+/** 楼宇 */
 public interface BuildingMapper {
 
 	/** 查询所有 */

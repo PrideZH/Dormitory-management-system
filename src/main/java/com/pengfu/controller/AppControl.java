@@ -3,19 +3,30 @@ package com.pengfu.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.stereotype.Controller;
 
+import com.pengfu.App;
 import com.pengfu.entity.Admin;
 import com.pengfu.entity.Student;
 import com.pengfu.model.Role;
@@ -26,8 +37,11 @@ import com.pengfu.util.StringUtil;
 import com.pengfu.view.LoginFrame;
 import com.pengfu.view.MainFrame;
 
-@Controller("appControl")
+@Controller
 public class AppControl {
+	
+	@Autowired
+	private StudentService studentService;
 
 	/** 登陆操作  */
 	public void Logint(Role role, String username, String password) {
@@ -64,7 +78,17 @@ public class AppControl {
 	}
 	
 	/** 导出学生信息文件 */
-	public void exportStudentFile(File file, List<Student> students) {
+	public void exportStudentInfo(List<Student> students) {
+		JFileChooser fileChooser = new JFileChooser(readProperties("filePath"));
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			writeStudentFile(file, students);
+		};
+	}
+	
+	/** 将学生信息写入文件 */
+	public void writeStudentFile(File file, List<Student> students) {
 		FileOutputStream fos = null;
 		XSSFWorkbook wb = null;
 		try {
@@ -94,8 +118,53 @@ public class AppControl {
 		}
 	}
 	
-	/** 导入学生信息文件 */
-	public List<Student> exportStudentFile(File file) {
+	/** 导入学生信息文件放入数据库 */
+	public void importStudentInfo() {
+		// 选择文件
+		JFileChooser fileChooser = new JFileChooser(readProperties("filePath"));
+		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		fileChooser.setFileFilter(new FileFilter() {
+			@Override
+			public String getDescription() {
+				return "xlsx文件(*.xlsx)";
+			}
+			
+			@Override
+			public boolean accept(File f) {
+		        if(f.isDirectory()) { 
+		            return true;  
+		        } 
+		        if(f.getName().endsWith(".xlsx")) return true;  
+		        else return false;  
+			}
+		});
+		// 导入数据库
+		if(fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			List<Student> students = readStudentFile(file);
+			// 导入消息显示
+			JDialog dialog = new JDialog();
+			dialog.setSize(300, 300);
+			dialog.setLocationRelativeTo(null);
+			JTextArea message = new JTextArea();
+			JScrollPane messageScrollPane = new JScrollPane(message);
+			dialog.add(messageScrollPane);
+			dialog.setVisible(true);
+			// 保存到数据库
+			for(int i = 0, size = students.size(); i < size; ++i) {
+				try {
+					Student student = students.get(i);
+					studentService.addStudent(student);
+				} catch (Exception e1) {
+					message.append("第" + i + "行错误 : " + e1.getMessage() + "\n");
+				}
+			}
+			message.append("导入完成");
+		}
+	}
+	
+	/** 从文件读取学生信息 */
+	public List<Student> readStudentFile(File file) {
 		List<Student> students = new ArrayList<>();
 		FileInputStream fis = null;
 		XSSFWorkbook wb = null;
@@ -157,4 +226,77 @@ public class AppControl {
 		}
 	}
 	
+	/** 读取配置文件信息 */
+	public String readProperties(String key) {
+		FileReader fr = null;
+		try {
+			Properties pro = new Properties();
+			File file = new File("config.properties");
+			// 文件不存在则创建
+			if(!file.exists()) {
+				file.createNewFile();
+			}
+			// 读取配置
+			fr = new FileReader(file);
+			pro.load(fr);
+			return pro.getProperty(key);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} finally {
+			if(fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+	
+	/** 写配置文件信息 */
+	public void writeProperties(String key, String value) {
+		FileReader fr = null;
+		FileWriter fw = null;
+		try {
+			Properties pro = new Properties();
+			File file = new File("config.properties");
+			// 读取文件
+			fr = new FileReader(file);
+			pro.load(fr);
+			// 修改配置
+			pro.setProperty(key, value);
+			// 写入文件
+			fw = new FileWriter("config.properties");
+			pro.store(fw, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		} finally {
+			if(fr != null) {
+				try {
+					fr.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if(fw != null) {
+				try {
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	/** 登出 */
+	public void logOut() {
+		SpringContextUtils.getBean(MainFrame.class).dispose();
+		new SpringContextUtils()
+			.setApplicationContext(new SpringApplicationBuilder(App.class).headless(false).run(""));
+		SpringContextUtils.getBean(LoginFrame.class).setVisible(true);
+	}
+
 }

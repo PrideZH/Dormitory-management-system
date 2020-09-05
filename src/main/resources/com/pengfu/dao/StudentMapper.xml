@@ -4,14 +4,6 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.pengfu.dao.StudentMapper">
-
-	<!-- 查询所有 -->
-	<select id="selectAll" resultType="student">
-		select student.*, dorm.number dormName, dorm.bid
-		from student
-		left outer join dorm
-		on student.did = dorm.did
-	</select>
 	
 	<!-- 根据id查 -->
 	<select id="selectById" resultType="student">
@@ -53,11 +45,6 @@
 	<!-- 查询学号是否存在 -->
 	<select id="selectSid" resultType="boolean">
 		select count(*) from student where student.sid = #{id}
-	</select>
-	
-	<!-- 查询数量 -->
-	<select id="selectNumber" resultType="long">
-		select count(*) from student
 	</select>
 
 	<!-- 添加 -->

@@ -63,11 +63,13 @@ public class LoginFrame extends BaseFrame {
 		
 		// 登陆人员单选按钮
 		studentRBtn = new JRadioButton("学生");
+		studentRBtn.setForeground(Constant.PAGE_FONT_COLOR);
 		studentRBtn.setBackground(Constant.BG_COLOR);
 		studentRBtn.setSelected(true);
 		studentRBtn.setBounds(90, 240, 64, 32);
 		contentPane.add(studentRBtn);
 		adminRBtn = new JRadioButton("管理员");
+		adminRBtn.setForeground(Constant.PAGE_FONT_COLOR);
 		adminRBtn.setBackground(Constant.BG_COLOR);
 		adminRBtn.setBounds(190, 240, 64, 32);
 		contentPane.add(adminRBtn);	
@@ -81,7 +83,7 @@ public class LoginFrame extends BaseFrame {
 //		keepPassword.setBounds(380, 220, 128, 32);
 //		contentPane.add(keepPassword);	
 		
-		// 忘记密码
+		// 找回密码
 		
 		// 登陆按钮
 		AppButton LoginBtn = new AppButton("登陆", 96);

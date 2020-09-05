@@ -63,7 +63,7 @@ public class BuildingListPage extends BasePage {
 		northPane.add(updateBtn);
 		
 		// 楼宇信息列表
-		table = TableBuilder.getTableBuilder().build(model);
+		table = SpringContextUtils.getBean(TableBuilder.class).build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);	
 		contxtPane.add(tablePane, BorderLayout.CENTER);

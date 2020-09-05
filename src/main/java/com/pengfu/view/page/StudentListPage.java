@@ -1,23 +1,18 @@
 package com.pengfu.view.page;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,7 +20,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.filechooser.FileFilter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -43,6 +37,7 @@ import com.pengfu.util.SpringContextUtils;
 import com.pengfu.util.TableBuilder;
 import com.pengfu.view.PopupFrame;
 import com.pengfu.view.component.AppButton;
+import com.pengfu.view.component.AppLabel;
 import com.pengfu.view.component.ImgBtn;
 import com.pengfu.view.component.TitleComboBox;
 import com.pengfu.view.component.TitleInputBox;
@@ -65,8 +60,8 @@ public class StudentListPage extends BasePage {
 	private TitleInputBox nameInputBox;
 	
 	// 分页栏
-	private JLabel pageTotalLbl;
-	private JLabel pageNumLbl;
+	private AppLabel pageTotalLbl;
+	private AppLabel pageNumLbl;
 	private JSpinner pageSizeSpinner;
 	private JTextField gotoPageNumField;
 	private PageInfo<Student> pageInfo;
@@ -119,7 +114,7 @@ public class StudentListPage extends BasePage {
 		rightPane.add(updateBtn);
 		
 		// 学生信息列表
-		table = TableBuilder.getTableBuilder().build(model);
+		table = SpringContextUtils.getBean(TableBuilder.class).build(model);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
@@ -133,48 +128,13 @@ public class StudentListPage extends BasePage {
 		// 监听器 
 		// 导出文件
 		exportBtn.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			if(fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				SpringContextUtils.getBean(AppControl.class).exportStudentFile(file, model.getStudents());
-			};
+			SpringContextUtils.getBean(AppControl.class).exportStudentInfo(model.getStudents());
 		});
 		// 导入文件
 		importBtn.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileChooser.setFileFilter(new FileFilter() {
-				@Override
-				public String getDescription() {
-					return "xlsx文件(*.xlsx)";
-				}
-				
-				@Override
-				public boolean accept(File f) {
-			        if(f.isDirectory()) { 
-			            return true;  
-			        } 
-			        if(f.getName().endsWith(".xlsx")) return true;  
-			        else return false;  
-				}
-			});
-			if(fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				List<Student> students = SpringContextUtils.getBean(AppControl.class).exportStudentFile(file);
-				// 保存数据库
-				for(int i = 0, size = students.size(); i < size; ++i) {
-					try {
-						Student student = students.get(i);
-						studentService.addStudent(student);
-					} catch (Exception e1) {
-						JOptionPane.showMessageDialog(null, e1.getMessage(), "错误-行" + i, JOptionPane.OK_OPTION);
-					}
-				}
-				// 刷新
-				updateTable();
-				JOptionPane.showMessageDialog(null, "导入完成");
-			};
+			SpringContextUtils.getBean(AppControl.class).importStudentInfo();
+			// 刷新
+			updateTable();
 		});
 		// 添加
 		addBtn.addActionListener((e) -> {
@@ -218,14 +178,14 @@ public class StudentListPage extends BasePage {
 	/** 初始化搜索栏 */
 	private void initSearchBar() {
 		JPanel topPane = new JPanel();
-		topPane.setPreferredSize(new Dimension(0, 96));
+		topPane.setPreferredSize(new Dimension(0, 64));
 		topPane.setBackground(Constant.PAGE_COLOR);
-		topPane.setBorder(BorderFactory.createLineBorder(new Color(65, 113, 156), 1));
-		topPane.setLayout(new FlowLayout(FlowLayout.RIGHT, 16, 5));
+		topPane.setBorder(BorderFactory.createLineBorder(Constant.PAGE_BORDER_COLOR, 1));
+		topPane.setLayout(new FlowLayout(FlowLayout.LEFT, 16, 5));
 		add(topPane, 0);
 		// 搜索栏
 		// 楼宇
-		bidComboBox = new TitleComboBox("楼宇");
+		bidComboBox = new TitleComboBox("楼宇", 64, 128);
 		bidComboBox.setBackground(Constant.PAGE_COLOR);
 		// 获得管理的楼宇列表
 		ArrayList<String> bidList = new ArrayList<String>(Role.getAdmin().getBids());
@@ -238,7 +198,7 @@ public class StudentListPage extends BasePage {
 		bidComboBox.setModel(bidList);
 		topPane.add(bidComboBox);
 		// 宿舍号
-		dormNameBox = new TitleComboBox("宿舍号");
+		dormNameBox = new TitleComboBox("宿舍号", 64, 128);
 		dormNameBox.setBackground(Constant.PAGE_COLOR);
 		DormService dormService = SpringContextUtils.getBean(DormService.class);
 		ArrayList<String> dormNameList = new ArrayList<String>(dormService.getAllNumberByBid(bidComboBox.getText()));
@@ -246,11 +206,11 @@ public class StudentListPage extends BasePage {
 		dormNameBox.setModel(dormNameList);
 		topPane.add(dormNameBox);
 		// 学号
-		sidInputBox = new TitleInputBox("学号");
+		sidInputBox = new TitleInputBox("学号", 64, 128);
 		sidInputBox.setBackground(Constant.PAGE_COLOR);
 		topPane.add(sidInputBox);
 		// 姓名
-		nameInputBox = new TitleInputBox("姓名");
+		nameInputBox = new TitleInputBox("姓名", 64, 128);
 		nameInputBox.setBackground(Constant.PAGE_COLOR);
 		topPane.add(nameInputBox);
 		// 搜索按钮
@@ -266,9 +226,7 @@ public class StudentListPage extends BasePage {
 			dormNameBox.setModel(dormName);
 		});
 		// 搜索
-		searchBtn.addActionListener(e -> {
-			updateTable();
-		});
+		searchBtn.addActionListener(e -> updateTable());
 	}
 	
 	/** 初始化分页栏 */
@@ -279,7 +237,7 @@ public class StudentListPage extends BasePage {
 		contxtPane.add(southPane, BorderLayout.SOUTH);
 		southPane.setLayout(new FlowLayout(FlowLayout.LEFT, 16, 4));
 		// 显示数量
-		pageTotalLbl = new JLabel();
+		pageTotalLbl = new AppLabel();
 		southPane.add(pageTotalLbl);
 		// 每页数量
 		pageSizeSpinner = new JSpinner(new SpinnerNumberModel(20, 10, 1000, 5));
@@ -290,7 +248,7 @@ public class StudentListPage extends BasePage {
 		backBtn.setSelectedIcon(Constant.BACK_BLUE_IMG);
 		southPane.add(backBtn);
 		// 页数显示
-		pageNumLbl = new JLabel("1");
+		pageNumLbl = new AppLabel("1");
 		southPane.add(pageNumLbl);
 		// 下一页
 		ImgBtn nextBtn = new ImgBtn(Constant.NEXT_BLACK_IMG, 32, 32);
@@ -344,6 +302,7 @@ public class StudentListPage extends BasePage {
 		});
 	}
 	
+	/** 跳转页面 */
 	private void gotoPageNum() {
 		if(Pattern.compile("[0-9]*").matcher(gotoPageNumField.getText()).matches()) {
 			if(Integer.valueOf(gotoPageNumField.getText()) < pageInfo.getNavigateLastPage()) {
@@ -372,8 +331,8 @@ public class StudentListPage extends BasePage {
 		student.setName(nameInputBox.getText());
 		student.setDormName(dormNameBox.getText());
 		// 分页查询获得结果
-		pageInfo = studentService.search(student, 
-				Integer.valueOf(pageNumLbl.getText()), (int) pageSizeSpinner.getValue());
+		pageInfo = studentService
+				.search(student, Integer.valueOf(pageNumLbl.getText()), (int) pageSizeSpinner.getValue());
 		pageTotalLbl.setText("共" + pageInfo.getTotal() + "条数据");
 		model.setStudents(pageInfo.getList());
 		table.updateUI();

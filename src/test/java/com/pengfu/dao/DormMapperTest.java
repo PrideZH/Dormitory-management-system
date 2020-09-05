@@ -34,7 +34,7 @@ public class DormMapperTest {
 		Dorm dorm = new Dorm();
 		dorm.setNumber("233");
 		dorm.setBid("C16");
-		dormMapper.insert(dorm);
+		//dormMapper.insert(dorm);
 	}
 	
 	@Test
@@ -42,7 +42,7 @@ public class DormMapperTest {
 		Dorm dorm = new Dorm();
 		dorm.setNumber("233");
 		dorm.setBid("C16");
-		dormMapper.delete(dorm);
+		//dormMapper.delete(dorm);
 	}
 	
 }

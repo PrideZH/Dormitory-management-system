@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,7 +21,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.pengfu.controller.AppControl;
+import com.pengfu.model.ColorModel;
 import com.pengfu.util.Constant;
+import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.ImgBtn;
 
 /**
@@ -48,9 +50,12 @@ public class BaseFrame extends JFrame {
 		// 默认关闭模式为释放资源
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
+		// 设置颜色主题
+		ColorModel.getColorModel().
+			setTheme(SpringContextUtils.getBean(AppControl.class).readProperties("theme"));
+		
 		initComponents();
 		
-		// 添加监听器
 		// 实现窗口拖动
 		MouseAdapter ma = new MouseAdapter() {
 			private Point origin = new Point();
@@ -85,7 +90,6 @@ public class BaseFrame extends JFrame {
 		
 		// 内容面板
 		center = new JPanel();
-		center.setBorder(BorderFactory.createLineBorder(new Color(36, 38, 48)));
 		windowPane.add(center, BorderLayout.CENTER);
 		
 		// 初始化标题栏
@@ -95,7 +99,7 @@ public class BaseFrame extends JFrame {
 	/** 初始化标题栏 */
 	private void initTitleBar() {
 		titlePane = new JPanel();
-		titlePane.setBackground(new Color(36, 38, 48));
+		titlePane.setBackground(Constant.TITLE_COLOR);
 		titlePane.setPreferredSize(new Dimension(0, TITLE_PANE_WIDTH));
 		windowPane.add(titlePane, BorderLayout.NORTH);
 		titlePane.setLayout(new BoxLayout(titlePane, BoxLayout.X_AXIS));
@@ -103,8 +107,7 @@ public class BaseFrame extends JFrame {
 		// 窗口图标
 		ImageIcon image = Constant.LOGO_IMG;
 		image.setImage(image.getImage()
-				.getScaledInstance(
-						TITLE_PANE_WIDTH / 2, TITLE_PANE_WIDTH / 2, Image.SCALE_DEFAULT));
+				.getScaledInstance(TITLE_PANE_WIDTH / 2, TITLE_PANE_WIDTH / 2, Image.SCALE_DEFAULT));
 		JLabel jLabel = new JLabel(image);
 		jLabel.setPreferredSize(new Dimension(TITLE_PANE_WIDTH, TITLE_PANE_WIDTH));
 		titlePane.add(jLabel);
