@@ -6,6 +6,10 @@ import javax.swing.JPanel;
 
 import com.pengfu.util.Constant;
 
+/**
+ * 页面基类
+ * @author PrideZH
+ */
 public abstract class BasePage extends JPanel {
 
 	private static final long serialVersionUID = 1L;

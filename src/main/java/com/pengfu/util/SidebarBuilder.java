@@ -58,10 +58,10 @@ public class SidebarBuilder {
 		
 		// 后勤服务
 		sidebarBtns.put("logistics", new SidebarBtn(Constant.LOGISTICS_IMG, "后勤服务", Constant.SIDEBAR_WIDTH));
-		sidebarBtns.put("damageWarranty", new SidebarBtn(Constant.WARRANTY_GREY_IMG, Constant.WARRANTY_BLUE_IMG,
-				"损坏报修", "damageWarrantyPage", Constant.SIDEBAR_WIDTH));
-		sidebarBtns.put("damageList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
-						"损坏列表", "damageListPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("warranty", new SidebarBtn(Constant.WARRANTY_GREY_IMG, Constant.WARRANTY_BLUE_IMG,
+				"损坏报修", "warrantyPage", Constant.SIDEBAR_WIDTH));
+		sidebarBtns.put("warrantyList", new SidebarBtn(Constant.LIST_GREY_IMG, Constant.LIST_BLUE_IMG, 
+						"损坏列表", "warrantyListPage", Constant.SIDEBAR_WIDTH));
 		
 		// 生活服务
 		sidebarBtns.put("life", new SidebarBtn(Constant.LIFE_IMG, "生活服务", Constant.SIDEBAR_WIDTH));
@@ -86,7 +86,6 @@ public class SidebarBuilder {
 			SidebarBtn parentBtn = sidebarBtns.get(entry.getKey());
 			// 添加父按钮
 			sidebar.addBtn(parentBtn);
-			parentBtn.removeAll();
 			for(String item : entry.getValue()) {
 				// 添加子按钮
 				parentBtn.addSideBtnItem(sidebarBtns.get(item));

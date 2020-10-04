@@ -1,5 +1,6 @@
 package com.pengfu.view.component;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
@@ -13,18 +14,24 @@ import javax.swing.JTextField;
 
 import com.pengfu.util.Constant;
 
-public class InputBox extends JPanel {
+/**
+ * 登陆界面输入框
+ * @author PrideZH
+ */
+public class LoginInputBox extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final int FONTSIZE = 24;
+	private static final int FONTSIZE = 24; // 输入框文本字体大小
+	private static final int TIPSSIZE = 14; // 提示文本字体大小
 	
-	JTextField jTextField = null;
-	AppLabel jLabel = null;
+	private JTextField jTextField; // 输入框
+	private AppLabel jLabel; // 输入框标题
+	private AppLabel tipsLbl; // 提示文本
 
-	public InputBox(String text, int columns, boolean showText) {
+	public LoginInputBox(String text, int columns, boolean showText) {
 		// 设置大小
-		Dimension dimension = new Dimension(columns * FONTSIZE, FONTSIZE * 5 / 2);
+		Dimension dimension = new Dimension(columns * FONTSIZE, FONTSIZE * 5 / 2 + TIPSSIZE * 3 / 2);
 		setSize(dimension);
 		setPreferredSize(dimension);
 		// 设置背景透明
@@ -32,7 +39,7 @@ public class InputBox extends JPanel {
 		
 		setLayout(null);
 		
-		// 设置字体
+		// 输入框字体
 		Font font = new Font("宋体", Font.BOLD, FONTSIZE);
 		
 		// 创建输入框
@@ -53,6 +60,13 @@ public class InputBox extends JPanel {
 		jLabel.setFont(font);
 		jLabel.setBounds(4, FONTSIZE * 3 / 2, text.length() * FONTSIZE, FONTSIZE);
 		add(jLabel);
+		
+		// 创建提示文本
+		tipsLbl = new AppLabel();
+		tipsLbl.setFont(new Font("宋体", Font.PLAIN, TIPSSIZE));
+		tipsLbl.setForeground(Color.RED);
+		tipsLbl.setBounds(4, FONTSIZE * 5 / 2 + FONTSIZE * 1 / 4, columns * FONTSIZE, TIPSSIZE);
+		add(tipsLbl);
 		
 		// 添加监听器
 		jTextField.addFocusListener(new FocusListener() {
@@ -114,6 +128,11 @@ public class InputBox extends JPanel {
 	/** 获得输入框文本 */
 	public String getText() {
 		return jTextField.getText();
+	}
+	
+	/** 设置提示文本 */
+	public void setTipsText(String text) {
+		tipsLbl.setText(text);
 	}
 	
 	/** 添加键盘监听 */

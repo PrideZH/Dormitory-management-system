@@ -4,11 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.springframework.context.annotation.Lazy;
@@ -19,7 +16,10 @@ import com.pengfu.util.Resources;
 import com.pengfu.view.component.AppLabel;
 import com.pengfu.view.component.ImgBtn;
 
-/** 首页 */
+/**
+ * 首页
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class HomePage extends BasePage {
@@ -70,27 +70,12 @@ public class HomePage extends BasePage {
 		pictureShow.add(picture, BorderLayout.CENTER);
 		
 		for(int i = 1; i <= 5; i++) {
-			picture.add(new AppLabel(getScaledIcon(Resources.getBufferedImage("images/picture/" + i +".jpg"))));
+			picture.add(new AppLabel(Resources.getScaledIcon("images/picture/" + i +".jpg", 1000)));
 		}
 		
 		backBtn.addActionListener(e -> cardLayout.previous(picture));
 		nextBtn.addActionListener(e -> cardLayout.next(picture));
 		
-	}
-	
-	/** 调整图片大小 */
-	private ImageIcon getScaledIcon(BufferedImage image) {
-		int size = 1000;
-		int w = image.getWidth();
-		int h = image.getHeight();
-		if(w > h) {
-			h = h  * size / w; 
-			w = size;
-		} else {
-			w = w  * size/ h; 
-			h = size;
-		}
-		return new ImageIcon(image.getScaledInstance(w, h, Image.SCALE_FAST));
 	}
 
 }

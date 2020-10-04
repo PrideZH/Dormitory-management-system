@@ -22,9 +22,11 @@ public class AppButton extends JButton {
 
 	private static final long serialVersionUID = 1L;
 	
+	// 按钮状态
 	private boolean entered = false; // 在按钮上
 	private boolean pressed = false; // 按下
-
+	private boolean enabled = true; // 是否可使用
+	
 	private String text;
 	private int testX;
 	
@@ -36,7 +38,7 @@ public class AppButton extends JButton {
 		
 		testX = 16;
 		
-		Dimension dimension = new Dimension(text.length() * 22, 32);
+		Dimension dimension = new Dimension(32 + text.length() * 14, 32);
 		setPreferredSize(dimension);
 		setMaximumSize(dimension);
 		setContentAreaFilled(false);
@@ -46,21 +48,25 @@ public class AppButton extends JButton {
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
+				if(!enabled) return;
 				entered = false;
 				repaint();
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				if(!enabled) return;
 				entered = true;
 				repaint();
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if(!enabled) return;
 				pressed = true;
 				repaint();
 			}
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				if(!enabled) return;
 				pressed = false;
 				repaint();
 			}
@@ -83,6 +89,12 @@ public class AppButton extends JButton {
 		setSize(dimension);
 		testX = (width - text.length() * 12) / 2;
 	}
+	
+	@Override
+	public void setEnabled(boolean b) {
+		super.setEnabled(b);
+		enabled = b;
+	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -90,6 +102,8 @@ public class AppButton extends JButton {
 		Graphics2D g2d = (Graphics2D) g;
 		int h = getHeight();
 		int w = getWidth();
+		
+		// 绘制圆角按钮
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		RoundRectangle2D.Float r2d = new RoundRectangle2D.Float(0, 0, w - 1, h - 1, 10, 10);
 		Shape clip = g2d.getClip();
@@ -108,10 +122,15 @@ public class AppButton extends JButton {
 		
 		// 绘制图标
 		g2d.drawImage(img, 16, (h - imgSize) / 2, null);
+		
 		// 绘制文本
 		g2d.setColor(Constant.BTN_FONT_COLOR);
 		g2d.drawString(text, testX, (h - 12) / 2 + 10);
 	}
 	
+	public void setEntered(boolean entered) {
+		this.pressed = false;
+		this.entered = entered;
+	}
 	
 }

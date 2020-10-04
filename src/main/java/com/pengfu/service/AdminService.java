@@ -11,6 +11,10 @@ import com.pengfu.dao.BuildingMapper;
 import com.pengfu.entity.Admin;
 import com.pengfu.util.StringUtil;
 
+/**
+ * 管理员信息事务处理
+ * @author PrideZH
+ */
 @Transactional
 @Service
 public class AdminService {

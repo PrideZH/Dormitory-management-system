@@ -1,6 +1,7 @@
 package com.pengfu.view;
 
 import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -14,8 +15,9 @@ import org.springframework.stereotype.Component;
 import com.pengfu.controller.AppControl;
 import com.pengfu.model.Role;
 import com.pengfu.util.Constant;
+import com.pengfu.util.StringUtil;
 import com.pengfu.view.component.AppButton;
-import com.pengfu.view.component.InputBox;
+import com.pengfu.view.component.LoginInputBox;
 
 /**
  * 登陆界面
@@ -27,17 +29,21 @@ public class LoginFrame extends BaseFrame {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private InputBox usernameInputBox;
-	private InputBox passwordInputBox;
+	private LoginInputBox usernameInputBox;
+	private LoginInputBox passwordInputBox;
 	private JRadioButton studentRBtn;
 	private JRadioButton adminRBtn;
+	
+	private AppButton loginBtn;
+	// 是否有加载动画
+	private boolean loadFlag = false;
 	
 	// 控制层对象
 	@Autowired
 	private AppControl control;
 	
 	public LoginFrame() {
-		setText("登陆");
+		setTitle("登陆");
 		setSize(570, 380);
 		setLocationRelativeTo(null);
 		// 设置最大化按钮不可用
@@ -53,11 +59,11 @@ public class LoginFrame extends BaseFrame {
 		contentPane.setLayout(null);
 
 		// 账号输入框
-		usernameInputBox = new InputBox("username", 16, true);
+		usernameInputBox = new LoginInputBox("username", 16, true);
 		usernameInputBox.setLocation(90, 50);
 		contentPane.add(usernameInputBox);
 		// 密码输入框
-		passwordInputBox = new InputBox("password", 16, false);
+		passwordInputBox = new LoginInputBox("password", 16, false);
 		passwordInputBox.setLocation(90, 140);
 		contentPane.add(passwordInputBox);
 		
@@ -86,13 +92,13 @@ public class LoginFrame extends BaseFrame {
 		// 找回密码
 		
 		// 登陆按钮
-		AppButton LoginBtn = new AppButton("登陆", 96);
-		LoginBtn.setLocation(380, 240);
-		contentPane.add(LoginBtn);
+		loginBtn = new AppButton("登陆", 96);
+		loginBtn.setLocation(380, 240);
+		contentPane.add(loginBtn);
 
 		// 添加监听器
 		// 登陆按钮
-		LoginBtn.addActionListener(e -> login());
+		loginBtn.addActionListener(e -> login());
 		// 回车登陆
 		KeyAdapter ka = new KeyAdapter() {
 			@Override
@@ -106,12 +112,68 @@ public class LoginFrame extends BaseFrame {
 		passwordInputBox.addKeyListener(ka);
 	}
 	
+	/** 登陆 */
 	private void login() {
-		if(studentRBtn.isSelected()) {
-			control.Logint(Role.STUDENT, usernameInputBox.getText(), passwordInputBox.getText());
-		}else if(adminRBtn.isSelected()) {
-			control.Logint(Role.GENERAL_ADMIN, usernameInputBox.getText(), passwordInputBox.getText());
+		String username = usernameInputBox.getText();
+		String password = passwordInputBox.getText();
+		
+		usernameInputBox.setTipsText("");
+		passwordInputBox.setTipsText("");
+		if(StringUtil.isEmpty(username)) {
+			usernameInputBox.setTipsText("请输入用户名");
+			return;
+		}else if(StringUtil.isEmpty(password)) {
+			passwordInputBox.setTipsText("请输入密码");
+			return;
 		}
+		
+		if(studentRBtn.isSelected()) {
+			control.Logint(Role.STUDENT, username, password);
+		}else if(adminRBtn.isSelected()) {
+			control.Logint(Role.GENERAL_ADMIN, username, password);
+		}
+	}
+	
+	/** 启动登陆按钮加载动画 */
+	public void loadAnimation() {
+		loadFlag = true;
+		new Thread(() -> {
+			// 设置加载动画位置大小
+			int w = loginBtn.getHeight() * 5 / 6;
+			int h = loginBtn.getHeight() * 5 / 6;
+			int x = (loginBtn.getWidth() - w) / 2;
+			int y = (loginBtn.getHeight() - h) / 2;
+			
+			// 设置按钮状态
+			loginBtn.setEntered(true);
+			loginBtn.setEnabled(false);
+			
+			// 绘制加载动画
+			Graphics g = loginBtn.getGraphics();
+			int a = 0;
+			while(loadFlag) {
+				loginBtn.paint(g);
+				g.setColor(Constant.BTN_ENTERED_COLOR);
+				g.fillRect(x, y, w, h);
+				g.setColor(Constant.BTN_FONT_COLOR);
+				g.fillArc(x, y, w, h, a, 240);
+				g.setColor(Constant.BTN_ENTERED_COLOR);
+				g.fillArc(x + 2, y + 2, w - 4, h - 4, a, 240);
+				a += 50;
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}).start();
+	}
+	
+	/** 关闭登陆按钮加载动画 */
+	public void stopLoadAnimation() {
+		loadFlag = false;
+		loginBtn.updateUI();
+		loginBtn.setEnabled(true);
 	}
 
 }

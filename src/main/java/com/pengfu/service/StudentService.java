@@ -12,6 +12,10 @@ import com.pengfu.dao.StudentMapper;
 import com.pengfu.entity.Student;
 import com.pengfu.util.StringUtil;
 
+/**
+ * 学生信息事务处理
+ * @author PrideZH
+ */
 @Transactional
 @Service
 public class StudentService {

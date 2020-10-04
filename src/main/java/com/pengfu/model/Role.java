@@ -1,15 +1,14 @@
 package com.pengfu.model;
 
-import com.pengfu.entity.Admin;
-import com.pengfu.entity.Student;
-import com.pengfu.service.BuildingService;
-import com.pengfu.util.SpringContextUtils;
-
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 用户权限
+ * @author PrideZH
+ */
 public enum Role {
 	
 	STUDENT(-1, "学生") {
@@ -22,15 +21,11 @@ public enum Role {
 			// 个人中心：宿舍信息、个人信息
 			permissionList.put("personal", Arrays.asList("dormInfo", "studentProfile"));
 			// 后勤服务：损坏保修
-			permissionList.put("logistics", Arrays.asList("damageWarranty"));
+			permissionList.put("logistics", Arrays.asList("warranty"));
 			// 生活服务：电费充值、校园网充值、校园一卡通
 			permissionList.put("life", Arrays.asList("electricity", "networkt", "card"));	
 			
 			return permissionList;
-		}
-		@Override
-		public List<String> getBids() {
-			return null;
 		}
 	},
 	GENERAL_ADMIN(0, "普通管理员") {
@@ -47,13 +42,9 @@ public enum Role {
 			// 学生管理
 			permissionList.put("student", Arrays.asList("studentList"));
 			// 后勤服务
-			permissionList.put("logistics", Arrays.asList("damageList"));
+			permissionList.put("logistics", Arrays.asList("warrantyList"));
 			
 			return permissionList;
-		}
-		@Override
-		public List<String> getBids() {
-			return admin.getBids();
 		}
 	}, 
 	SUPER_ADMIN(1, "超级管理员") {
@@ -74,25 +65,14 @@ public enum Role {
 			// 学生管理
 			permissionList.put("student", Arrays.asList("studentList"));
 			// 后勤服务
-			permissionList.put("logistics", Arrays.asList("damageList"));
+			permissionList.put("logistics", Arrays.asList("warrantyList"));
 
 			return permissionList;
-		}
-		@Override
-		public List<String> getBids() {
-			return SpringContextUtils.getBean(BuildingService.class).getAllId();
 		}
 	};
 	
 	private final int code;
 	private final String name;
-	
-	/** 当前用户类型 */
-	private static Role role;
-
-	/** 保存当前权限角色信息 */
-	private static Student student;
-	private static Admin admin;
 
 	private Role(int code, String name) { 
 		this.code = code;
@@ -105,34 +85,6 @@ public enum Role {
 	
 	public String getName() {
 		return name;
-	}
-	
-	public static Student getStudent() {
-		return student;
-	}
-
-	/** 设置学生用户信息 */
-	public static void setStudent(Student student) {
-		role = Role.STUDENT;
-		Role.student = student;
-	}
-
-	public static Admin getAdmin() {
-		return admin;
-	}
-	
-	/** 设置管理员用户信息 */
-	public static void setAdmin(Admin admin) {
-		if(admin.getAid() == 0) {
-			role = Role.GENERAL_ADMIN;
-		} else if(admin.getAid() == 1) {
-			role = Role.SUPER_ADMIN;
-		}
-		Role.admin = admin;
-	}
-	
-	public static Role getRole() {
-		return role;
 	}
 	
 	/** 通过编号获得权限 */
@@ -167,8 +119,5 @@ public enum Role {
 	
 	/** 获得权限管理列表 */
 	public abstract Map<String, List<String>> getPermissionList();
-	
-	/** 获得管理的楼层 */
-	public abstract List<String> getBids();
 
 }

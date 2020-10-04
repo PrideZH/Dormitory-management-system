@@ -21,6 +21,7 @@ import com.pengfu.entity.Building;
 import com.pengfu.entity.Dorm;
 import com.pengfu.entity.Student;
 import com.pengfu.model.CollegeList;
+import com.pengfu.model.PersonalModel;
 import com.pengfu.model.Role;
 import com.pengfu.service.AdminService;
 import com.pengfu.service.BuildingService;
@@ -80,7 +81,7 @@ public class PopupFrame extends BaseFrame {
 		this.adminService = adminService;
 		this.dormService = dormService;
 		
-		setText("添加学生");
+		setTitle("添加学生");
 		setSize(750, 300);
 		setLocationRelativeTo(null);
 		// 设置最大化按钮不可用
@@ -115,7 +116,7 @@ public class PopupFrame extends BaseFrame {
 	 * @param name 界面名
 	 */
 	public void showAddPane(String name) {
-		setText(panels.get(name).getName());
+		setTitle(panels.get(name).getName());
 		cardLayout.show(getContentPane(), name);
 	}
 	
@@ -212,7 +213,7 @@ public class PopupFrame extends BaseFrame {
 		
 		// 楼宇列表
 		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
-		buildingIdComboBox.setModel(Role.getRole().getBids());
+		buildingIdComboBox.setModel(PersonalModel.getInstance().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号
@@ -322,7 +323,7 @@ public class PopupFrame extends BaseFrame {
 		
 		// 楼宇编号
 		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
-		buildingIdComboBox.setModel(Role.getAdmin().getBids());
+		buildingIdComboBox.setModel(PersonalModel.getInstance().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号
@@ -444,7 +445,7 @@ public class PopupFrame extends BaseFrame {
 				
 		// 楼宇列表
 		TitleComboBox buildingIdComboBox = new TitleComboBox("楼宇编号", 100, 200);
-		buildingIdComboBox.setModel(Role.getRole().getBids());
+		buildingIdComboBox.setModel(PersonalModel.getInstance().getBids());
 		pane.add(buildingIdComboBox);
 		
 		// 宿舍号

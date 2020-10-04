@@ -6,16 +6,16 @@ import java.util.Set;
 
 import com.pengfu.util.Constant;
 
-public class ColorModel {
+/**
+ * 主题
+ * @author PrideZH
+ */
+public class ThemeModel {
 	
 	private static LinkedHashMap<String, Theme> themes = new LinkedHashMap<>();
 	
-	private static ColorModel colorModel = null;
+	private static ThemeModel instance = null;
 	
-	/**
-	 * 主题
-	 * @author PrideZH
-	 */
 	interface Theme {
 		void setTheme();
 	}
@@ -92,13 +92,13 @@ public class ColorModel {
 		});
 	}
 
-	private ColorModel() {}
+	private ThemeModel() {}
 	
-	public static ColorModel getColorModel() {
-		if(null == colorModel) {
-			colorModel = new ColorModel();
+	public static ThemeModel getInstance() {
+		if(null == instance) {
+			instance = new ThemeModel();
 		}
-		return colorModel;
+		return instance;
 	}
 	
 	/** 获得所有主题名称 */

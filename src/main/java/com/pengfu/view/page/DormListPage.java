@@ -18,8 +18,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Dorm;
-import com.pengfu.model.DormTableModel;
-import com.pengfu.model.Role;
+import com.pengfu.model.PersonalModel;
+import com.pengfu.model.table.DormTableModel;
 import com.pengfu.service.DormService;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
@@ -29,6 +29,10 @@ import com.pengfu.view.PopupFrame;
 import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.TitleComboBox;
 
+/**
+ * 宿舍信息管理页面
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class DormListPage extends BasePage {
@@ -37,7 +41,7 @@ public class DormListPage extends BasePage {
 	
 	private TitleComboBox bidComboBox;
 	
-	private DormTableModel model = new DormTableModel();
+	private DormTableModel dormModel = new DormTableModel();
 	private JTable table;
 	
 	DormService dormService;
@@ -60,7 +64,7 @@ public class DormListPage extends BasePage {
 		// 楼宇
 		bidComboBox = new TitleComboBox("楼宇", 64, 128);
 		bidComboBox.setBackground(Constant.PAGE_COLOR);
-		bidComboBox.setModel(Role.getAdmin().getBids());
+		bidComboBox.setModel(PersonalModel.getInstance().getAdmin().getBids());
 		topPane.add(bidComboBox);
 		// 搜索按钮
 		AppButton searchBtn = new AppButton("搜索", Constant.SEARCH_IMG);
@@ -89,8 +93,8 @@ public class DormListPage extends BasePage {
 		northPane.add(updateBtn);
 		
 		// 宿舍信息列表
-		model.setDorms(dormService.getDormitoryByBid(bidComboBox.getText()));
-		table = SpringContextUtils.getBean(TableBuilder.class).build(model);
+		dormModel.setList(dormService.getDormitoryByBid(bidComboBox.getText()));
+		table = SpringContextUtils.getBean(TableBuilder.class).build(dormModel);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
@@ -124,7 +128,7 @@ public class DormListPage extends BasePage {
 				JOptionPane.showMessageDialog(null, "未选择目标");
 				return;
 			}
-			Dorm dorm = model.get(row);
+			Dorm dorm = dormModel.get(row);
 			if(dorm.getStudents().size() > 0) {
 				JOptionPane.showMessageDialog(null, "该宿舍有学生，无法删除");
 				return;
@@ -137,25 +141,28 @@ public class DormListPage extends BasePage {
 				}	
 			}
 		});
-		// 刷新
+
 		// 表格双击
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				//实现双击
 				if(e.getClickCount() == 2) { 
-					int row = table.rowAtPoint(e.getPoint()); //获得行位置 
-					Dorm dorm = model.get(row);
+					Dorm dorm = dormModel.get(table.rowAtPoint(e.getPoint()));
 					if(dorm.getStudents().size() == 0) {
 						JOptionPane.showMessageDialog(null, "该宿舍无学生");
 						return;
 					}
+					// 设置学生列表信息为该宿舍成员
 	                StudentListPage studentListPage = 
 	                		SpringContextUtils.getBean("studentListPage", StudentListPage.class);
 	                studentListPage.bidComboBox.setText(dorm.getBid());
 	                studentListPage.dormNameBox.setText(dorm.getNumber());
 	                studentListPage.updateTable();
+	                // 跳转页面
 	                SpringContextUtils.getBean(MainFrame.class).goToPage("studentListPage");
+	                // 设置侧边栏状态
+	                SpringContextUtils.getBean(MainFrame.class).sidebar.clickItem("studentListPage");
 				}
 			}
 		});
@@ -163,7 +170,7 @@ public class DormListPage extends BasePage {
 	
 	/** 更新表格数据 */
 	public void updateTable() {
-		model.setDorms(dormService.getDormitoryByBid(bidComboBox.getText()));
+		dormModel.setList(dormService.getDormitoryByBid(bidComboBox.getText()));
 		table.updateUI();
 	}
 }

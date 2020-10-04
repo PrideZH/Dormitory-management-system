@@ -10,6 +10,10 @@ import com.pengfu.dao.DormMapper;
 import com.pengfu.entity.Dorm;
 import com.pengfu.util.StringUtil;
 
+/**
+ * 宿舍信息事务处理
+ * @author PrideZH
+ */
 @Transactional
 @Service
 public class DormService {

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Admin;
-import com.pengfu.model.Role;
+import com.pengfu.model.PersonalModel;
 import com.pengfu.service.AdminService;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
@@ -23,7 +23,10 @@ import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.InfoBar;
 import com.pengfu.view.component.TitleInputBox;
 
-/** 管理员个人信息 */
+/**
+ * 管理员个人信息页面
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class AdminProfilePage extends BasePage {
@@ -33,7 +36,7 @@ public class AdminProfilePage extends BasePage {
 	private Admin admin;
 	
 	public AdminProfilePage() {
-		admin = Role.getAdmin();
+		admin = PersonalModel.getInstance().getAdmin();
 		
 		initComponents();
 	}

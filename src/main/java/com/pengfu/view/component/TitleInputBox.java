@@ -7,7 +7,10 @@ import javax.swing.JTextField;
 
 import com.pengfu.util.Constant;
 
-/** 添加界面输入框 */
+/**
+ * 带标题的输入框
+ * @author PrideZH
+ */
 public class TitleInputBox extends JPanel {
 
 	private static final long serialVersionUID = 1L;

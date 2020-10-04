@@ -10,6 +10,10 @@ import com.pengfu.dao.BuildingMapper;
 import com.pengfu.entity.Building;
 import com.pengfu.util.StringUtil;
 
+/**
+ * 楼宇信息事务处理
+ * @author PrideZH
+ */
 @Transactional
 @Service
 public class BuildingService {

@@ -1,5 +1,6 @@
 package com.pengfu.util;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +39,21 @@ public class Resources {
 			e.printStackTrace();
 		}  
 		return null;
+	}
+	
+	/** 获得指定大小图片 */
+	public static ImageIcon getScaledIcon(String imgPath, int maxSize) {
+		BufferedImage image = getBufferedImage(imgPath);
+		int w = image.getWidth();
+		int h = image.getHeight();
+		if(w > h) {
+			h = h  * maxSize / w; 
+			w = maxSize;
+		} else {
+			w = w  * maxSize/ h; 
+			h = maxSize;
+		}
+		return new ImageIcon(image.getScaledInstance(w, h, Image.SCALE_FAST));
 	}
 	
 }

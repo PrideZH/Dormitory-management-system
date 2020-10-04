@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -22,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.pengfu.controller.AppControl;
-import com.pengfu.model.ColorModel;
+import com.pengfu.model.ThemeModel;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.ImgBtn;
@@ -51,7 +52,7 @@ public class BaseFrame extends JFrame {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		// 设置颜色主题
-		ColorModel.getColorModel().
+		ThemeModel.getInstance().
 			setTheme(SpringContextUtils.getBean(AppControl.class).readProperties("theme"));
 		
 		initComponents();
@@ -90,6 +91,7 @@ public class BaseFrame extends JFrame {
 		
 		// 内容面板
 		center = new JPanel();
+		center.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		windowPane.add(center, BorderLayout.CENTER);
 		
 		// 初始化标题栏
@@ -179,8 +181,9 @@ public class BaseFrame extends JFrame {
 	}
 	
 	/** 设置窗口标题 */
-	public void setText(String text) {
-		title.setText(text);
+	public void setTitle(String t) {
+		super.setTitle(t);
+		title.setText(t);
 	}
 	
 	/** 设置最大化按钮是否可用 */

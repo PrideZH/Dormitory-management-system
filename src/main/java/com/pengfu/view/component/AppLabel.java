@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import com.pengfu.util.Constant;
 
 /**
+ * 自定义样式标签
  * 统一标签字体颜色
  * @author PrideZH
  */

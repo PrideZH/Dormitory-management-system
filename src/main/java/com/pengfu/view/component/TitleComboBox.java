@@ -11,6 +11,10 @@ import javax.swing.JPanel;
 
 import com.pengfu.util.Constant;
 
+/**
+ * 带标题的选择框
+ * @author PrideZH
+ */
 public class TitleComboBox extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -18,7 +22,7 @@ public class TitleComboBox extends JPanel {
 	private JComboBox<String> comboBox;
 
 	public TitleComboBox(String title, int titleSize, int textSize) {
-		setBackground(Constant.PAGE_COLOR);
+		setBackground(Constant.BG_COLOR);
 		setPreferredSize(new Dimension(titleSize + textSize + 20, 40));
 
 		AppLabel titleLab = new AppLabel(title);

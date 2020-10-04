@@ -8,7 +8,6 @@ import javax.swing.JButton;
 
 /**
  * 图片按钮 
- * 专门用来显示图片
  * @author PrideZH
  */
 public class ImgBtn extends JButton {

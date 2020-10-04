@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Student;
-import com.pengfu.model.Role;
+import com.pengfu.model.PersonalModel;
 import com.pengfu.service.StudentService;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
@@ -23,7 +23,10 @@ import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.InfoBar;
 import com.pengfu.view.component.TitleInputBox;
 
-/** 学生个人信息 */
+/**
+ * 学生个人信息页面
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class StudentProfilePage extends BasePage {
@@ -33,7 +36,7 @@ public class StudentProfilePage extends BasePage {
 	private Student student;
 	
 	public StudentProfilePage() {
-		student = Role.getStudent();
+		student = PersonalModel.getInstance().getStudent();
 		
 		initComponents();
 	}

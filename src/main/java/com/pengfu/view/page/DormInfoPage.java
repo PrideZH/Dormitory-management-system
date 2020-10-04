@@ -11,12 +11,16 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Student;
-import com.pengfu.model.Role;
+import com.pengfu.model.PersonalModel;
 import com.pengfu.service.StudentService;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
 import com.pengfu.view.component.InfoBar;
 
+/**
+ * 宿舍成员信息页面
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class DormInfoPage extends BasePage {
@@ -31,7 +35,8 @@ public class DormInfoPage extends BasePage {
 	protected void initComponents() {
 		contxtPane.setLayout(new GridLayout(2, 2, 126, 32));
 		
-		List<Student> students = SpringContextUtils.getBean(StudentService.class).getStudentByDid(Role.getStudent());
+		List<Student> students = SpringContextUtils.getBean(StudentService.class)
+				.getStudentByDid(PersonalModel.getInstance().getStudent());
 		for(Student student : students) {
 			contxtPane.add(createInofCard(student));
 		}

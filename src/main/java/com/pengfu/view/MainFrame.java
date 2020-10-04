@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.pengfu.controller.AppControl;
+import com.pengfu.model.PersonalModel;
 import com.pengfu.model.Role;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SidebarBuilder;
@@ -43,7 +44,7 @@ public class MainFrame extends BaseFrame {
 	private JPanel pagePanel;
 	private CardLayout cardLayout;
 	
-	private Sidebar sidebar; // 侧边栏
+	public Sidebar sidebar; // 侧边栏
 	
 	// 侧边栏路径显示
 	private JLabel pathLabel; 
@@ -52,12 +53,12 @@ public class MainFrame extends BaseFrame {
 	private Role role;
 
 	private MainFrame() {
-		setText("宿舍信息管理系统");
+		setTitle("宿舍信息管理系统");
 		setSize(1600, 900);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		role = Role.getRole();
+		role = PersonalModel.getInstance().getRole();
 		
 		initComponents();
 	}
@@ -89,7 +90,9 @@ public class MainFrame extends BaseFrame {
 		upPanel.add(Box.createHorizontalGlue());
 		// 人物信息
 		JLabel roleLbl = new JLabel("欢迎您！" + role.getName() + "，"
-			+ (Role.STUDENT == role ? Role.getStudent().getName() : Role.getAdmin().getName()));
+			+ (Role.STUDENT == role ? 
+			PersonalModel.getInstance().getStudent().getName() : 
+			PersonalModel.getInstance().getAdmin().getName()));
 		roleLbl.setForeground(Constant.PAGE_FONT_COLOR);
 		upPanel.add(roleLbl);
 		upPanel.add(Box.createHorizontalStrut(24));
@@ -105,8 +108,7 @@ public class MainFrame extends BaseFrame {
 		pagePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
 		contentBar.add(pagePanel, BorderLayout.CENTER);
 		// 设置卡片布局
-		cardLayout = new CardLayout();
-		pagePanel.setLayout(cardLayout);
+		pagePanel.setLayout(cardLayout = new CardLayout());
 		// 显示首页
 		goToPage("homePage");
 	}
@@ -115,6 +117,7 @@ public class MainFrame extends BaseFrame {
 	private void initSidebar() {
 		// 侧边栏
 		sidebar = SpringContextUtils.getBean(SidebarBuilder.class).build(role.getPermissionList());
+		sidebar.clickItem("homePage");
 		contentPane.add(sidebar, BorderLayout.WEST);
 
 		// 子按钮监听器
@@ -146,8 +149,5 @@ public class MainFrame extends BaseFrame {
 		pagePanel.add(name, page);
 		cardLayout.show(pagePanel, name);
 	}
-	
-	public void updateUI() {
-		sidebar.updateUI();
-	}
+
 }

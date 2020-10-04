@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.pengfu.entity.Admin;
-import com.pengfu.model.AdminTableModel;
+import com.pengfu.model.table.AdminTableModel;
 import com.pengfu.service.AdminService;
 import com.pengfu.util.Constant;
 import com.pengfu.util.SpringContextUtils;
@@ -22,13 +22,17 @@ import com.pengfu.util.TableBuilder;
 import com.pengfu.view.PopupFrame;
 import com.pengfu.view.component.AppButton;
 
+/**
+ * 管理员信息页面
+ * @author PrideZH
+ */
 @Component
 @Lazy
 public class AdminListPage extends BasePage {
 
 	private static final long serialVersionUID = 1L;
 	
-	private AdminTableModel model = new AdminTableModel();
+	private AdminTableModel adminModel = new AdminTableModel();
 	private JTable table;
 	
 	private AdminService adminService;
@@ -36,7 +40,7 @@ public class AdminListPage extends BasePage {
 	@Autowired
 	public AdminListPage(AdminService adminService) {
 		this.adminService = adminService;
-		model.setAdmins(adminService.getAll());
+		adminModel.setList(adminService.getAll());
 		
 		initComponents();
 	}
@@ -63,7 +67,7 @@ public class AdminListPage extends BasePage {
 		northPane.add(updateBtn);
 		
 		// 楼宇信息列表
-		table = SpringContextUtils.getBean(TableBuilder.class).build(model);
+		table = SpringContextUtils.getBean(TableBuilder.class).build(adminModel);
 		JScrollPane tablePane = new JScrollPane(table);
 		tablePane.getViewport().setBackground(Constant.PAGE_COLOR);
 		contxtPane.add(tablePane, BorderLayout.CENTER);
@@ -81,7 +85,7 @@ public class AdminListPage extends BasePage {
 				return;
 			}
 			// 获得欲修改管理员信息
-			Admin admin = model.get(row);
+			Admin admin = adminModel.get(row);
 			// 显示修改信息面板
 			PopupFrame popupFrame = SpringContextUtils.getBean(PopupFrame.class);
 			popupFrame.showSetPane("setAdmin", admin);
@@ -95,7 +99,7 @@ public class AdminListPage extends BasePage {
 			}
 			if(JOptionPane.showConfirmDialog(null, "确定删除此管理员?", "删除", JOptionPane.YES_NO_OPTION) 
 					== JOptionPane.YES_OPTION) {
-				if(adminService.delete((String) model.getValueAt(row, 1)) > 0) {
+				if(adminService.delete((String) adminModel.getValueAt(row, 1)) > 0) {
 					updateTable();
 					JOptionPane.showMessageDialog(null, "删除成功");
 				}	
@@ -108,7 +112,7 @@ public class AdminListPage extends BasePage {
 	
 	/** 更新表格数据 */
 	public void updateTable() {
-		model.setAdmins(adminService.getAll());
+		adminModel.setList(adminService.getAll());
 		table.updateUI();
 	}
 }
