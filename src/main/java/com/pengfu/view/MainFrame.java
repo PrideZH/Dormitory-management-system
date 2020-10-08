@@ -97,7 +97,7 @@ public class MainFrame extends BaseFrame {
 		upPanel.add(roleLbl);
 		upPanel.add(Box.createHorizontalStrut(24));
 		// 退出登陆按钮
-		AppButton appButton = new AppButton("退出登陆");
+		AppButton appButton = new AppButton("退出登录");
 		upPanel.add(appButton);
 		upPanel.add(Box.createHorizontalStrut(32));
 		appButton.addActionListener(e -> SpringContextUtils.getBean(AppControl.class).logOut());

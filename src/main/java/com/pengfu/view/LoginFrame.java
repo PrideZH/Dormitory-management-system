@@ -20,7 +20,7 @@ import com.pengfu.view.component.AppButton;
 import com.pengfu.view.component.LoginInputBox;
 
 /**
- * 登陆界面
+ * 登录界面
 * @author PrideZH
 */
 @Component
@@ -43,7 +43,7 @@ public class LoginFrame extends BaseFrame {
 	private AppControl control;
 	
 	public LoginFrame() {
-		setTitle("登陆");
+		setTitle("登录");
 		setSize(570, 380);
 		setLocationRelativeTo(null);
 		// 设置最大化按钮不可用
@@ -67,7 +67,7 @@ public class LoginFrame extends BaseFrame {
 		passwordInputBox.setLocation(90, 140);
 		contentPane.add(passwordInputBox);
 		
-		// 登陆人员单选按钮
+		// 登录人员单选按钮
 		studentRBtn = new JRadioButton("学生");
 		studentRBtn.setForeground(Constant.PAGE_FONT_COLOR);
 		studentRBtn.setBackground(Constant.BG_COLOR);
@@ -91,15 +91,15 @@ public class LoginFrame extends BaseFrame {
 		
 		// 找回密码
 		
-		// 登陆按钮
-		loginBtn = new AppButton("登陆", 96);
+		// 登录按钮
+		loginBtn = new AppButton("登录", 96);
 		loginBtn.setLocation(380, 240);
 		contentPane.add(loginBtn);
 
 		// 添加监听器
 		// 登陆按钮
 		loginBtn.addActionListener(e -> login());
-		// 回车登陆
+		// 回车登录
 		KeyAdapter ka = new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
