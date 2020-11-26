@@ -32,8 +32,9 @@ import com.pengfu.view.page.BasePage;
 
 /**
  * 主界面
-* @author PrideZH
-*/
+ * 
+ * @author PrideZH
+ */
 @Controller
 @Lazy
 public class MainFrame extends BaseFrame {
@@ -43,12 +44,12 @@ public class MainFrame extends BaseFrame {
 	private Container contentPane;
 	private JPanel pagePanel;
 	private CardLayout cardLayout;
-	
+
 	public Sidebar sidebar; // 侧边栏
-	
+
 	// 侧边栏路径显示
-	private JLabel pathLabel; 
-	
+	private JLabel pathLabel;
+
 	// 用户权限
 	private Role role;
 
@@ -57,24 +58,24 @@ public class MainFrame extends BaseFrame {
 		setSize(1600, 900);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		role = PersonalModel.getInstance().getRole();
-		
+
 		initComponents();
 	}
 
 	private void initComponents() {
 		contentPane = getContentPane();
 		contentPane.setLayout(new BorderLayout());
-		
+
 		// 侧边栏
 		initSidebar();
-	
+
 		// 内容框
 		JPanel contentBar = new JPanel();
 		contentPane.add(contentBar, BorderLayout.CENTER);
 		contentBar.setLayout(new BorderLayout());
-		
+
 		// 顶部栏
 		JPanel upPanel = new JPanel();
 		upPanel.setBackground(Constant.BG_COLOR);
@@ -82,27 +83,29 @@ public class MainFrame extends BaseFrame {
 		contentBar.add(upPanel, BorderLayout.NORTH);
 		upPanel.setLayout(new BoxLayout(upPanel, BoxLayout.X_AXIS));
 		upPanel.add(Box.createHorizontalStrut(24));
+
 		// 路径显示
 		pathLabel = new JLabel("首页");
 		pathLabel.setFont(new Font("宋体", Font.BOLD, 16));
 		pathLabel.setForeground(Constant.PAGE_FONT_COLOR);
 		upPanel.add(pathLabel);
 		upPanel.add(Box.createHorizontalGlue());
+
 		// 人物信息
 		JLabel roleLbl = new JLabel("欢迎您！" + role.getName() + "，"
-			+ (Role.STUDENT == role ? 
-			PersonalModel.getInstance().getStudent().getName() : 
-			PersonalModel.getInstance().getAdmin().getName()));
+				+ (Role.STUDENT == role ? PersonalModel.getInstance().getStudent().getName()
+						: PersonalModel.getInstance().getAdmin().getName()));
 		roleLbl.setForeground(Constant.PAGE_FONT_COLOR);
 		upPanel.add(roleLbl);
 		upPanel.add(Box.createHorizontalStrut(24));
+
 		// 退出登陆按钮
 		AppButton appButton = new AppButton("退出登录");
 		upPanel.add(appButton);
 		upPanel.add(Box.createHorizontalStrut(32));
 		appButton.addActionListener(e -> SpringContextUtils.getBean(AppControl.class).logOut());
-		
-		// 页面显示		
+
+		// 页面显示
 		pagePanel = new JPanel();
 		pagePanel.setBackground(Constant.BG_COLOR);
 		pagePanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
@@ -112,7 +115,7 @@ public class MainFrame extends BaseFrame {
 		// 显示首页
 		goToPage("homePage");
 	}
-	
+
 	/** 初始化侧边 */
 	private void initSidebar() {
 		// 侧边栏
@@ -136,13 +139,13 @@ public class MainFrame extends BaseFrame {
 					JOptionPane.showMessageDialog(null, "功能尚未实现，敬请期待!");
 				}
 			}
-			
+
 		};
-		
+
 		// 为所有侧边栏按钮添加监听器
 		sidebar.setActionListener(al);
 	}
-	
+
 	/** 跳转页面 */
 	public void goToPage(String name) {
 		BasePage page = SpringContextUtils.getBean(name, BasePage.class);

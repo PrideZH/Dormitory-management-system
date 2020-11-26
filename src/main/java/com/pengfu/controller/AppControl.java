@@ -46,7 +46,7 @@ public class AppControl {
 	/** 登陆操作  */
 	public void Logint(Role role, String username, String password) {
 		LoginFrame loginFrame = SpringContextUtils.getBean(LoginFrame.class);
-
+		
 		try {
 			switch(role) {
 			case STUDENT:
@@ -71,6 +71,7 @@ public class AppControl {
 			// 关闭登陆窗口
 			loginFrame.dispose();
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} finally {
 			// 关闭动画加载

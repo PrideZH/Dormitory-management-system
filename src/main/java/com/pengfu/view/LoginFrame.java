@@ -119,6 +119,7 @@ public class LoginFrame extends BaseFrame {
 		
 		usernameInputBox.setTipsText("");
 		passwordInputBox.setTipsText("");
+		
 		if(StringUtil.isEmpty(username)) {
 			usernameInputBox.setTipsText("请输入用户名");
 			return;

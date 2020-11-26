@@ -47,7 +47,7 @@ public class PersonalModel {
 	
 	/** 设置管理员用户信息 */
 	public void setAdmin(Admin admin) {
-		role = Role.getbycode(admin.getAid());
+		role = Role.getbycode(admin.getRole());
 		this.admin = admin;
 	}
 	
